@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AI Platform - AI and Automation Solutions">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قاعدة المعرفة — AI Platform</title>
+<style>
+:root{
+  --dark:#020617;--dark2:#0f172a;--dark3:#1e293b;--dark4:#334155;
+  --c1:#6366f1;--c2:#8b5cf6;--c3:#22d3ee;--c4:#f59e0b;--c5:#10b981;--c6:#ef4444;
+  --text:#e2e8f0;--muted:#94a3b8;--border:rgba(99,102,241,.18);
+  --glass:rgba(15,23,42,.7);--radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+html,body{height:100%;background:var(--dark);color:var(--text);overflow:hidden}
+body{display:flex}
+
+/* ── Sidebar ── */
+.sidebar{width:260px;min-width:260px;height:100vh;background:var(--glass);
+  border-left:1px solid var(--border);display:flex;flex-direction:column;
+  padding:24px 0;backdrop-filter:blur(20px);z-index:10;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:4px}
+.logo{padding:0 20px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:10px;color:var(--muted)}
+.nav{padding:16px 12px;flex:1}
+.nav-section{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.8px;padding:8px 8px 4px;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  color:var(--muted);text-decoration:none;font-size:13.5px;transition:.2s;margin-bottom:2px}
+.nav-item:hover{background:rgba(99,102,241,.12);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(139,92,246,.15));
+  color:#fff;border:1px solid rgba(99,102,241,.35)}
+.nav-item .icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;background:rgba(255,255,255,.05)}
+.nav-item.active .icon{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px}
+.user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.user-name{font-size:13px;font-weight:600}
+.user-role{font-size:11px;color:var(--muted)}
+
+/* ── Main ── */
+.main{flex:1;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Topbar ── */
+.topbar{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);background:var(--glass);backdrop-filter:blur(20px);
+  position:sticky;top:0;z-index:9}
+.topbar-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar-title .badge{font-size:11px;padding:2px 8px;background:rgba(139,92,246,.2);
+  border:1px solid rgba(139,92,246,.4);border-radius:20px;color:var(--c2);font-weight:600}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.btn{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:.2s;border:none}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+.btn-danger{background:rgba(239,68,68,.12);color:var(--c6);border:1px solid rgba(239,68,68,.25)}
+.btn-danger:hover{background:rgba(239,68,68,.22)}
+
+/* ── Content Area ── */
+.content-wrap{flex:1;display:flex;overflow:hidden}
+
+/* ── Left: KB List ── */
+.kb-sidebar{width:280px;min-width:280px;border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;background:rgba(15,23,42,.5)}
+.kb-sidebar-head{padding:16px 16px 10px;border-bottom:1px solid var(--border)}
+.kb-sidebar-head h3{font-size:13px;font-weight:700;margin-bottom:10px}
+.kb-list{flex:1;overflow-y:auto;padding:10px 10px}
+.kb-list::-webkit-scrollbar{width:3px}
+.kb-list::-webkit-scrollbar-thumb{background:var(--dark4)}
+.kb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  cursor:pointer;transition:.2s;margin-bottom:4px;border:1px solid transparent}
+.kb-item:hover{background:rgba(255,255,255,.05)}
+.kb-item.selected{background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.35)}
+.kb-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0}
+.kb-icon.purple{background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.3)}
+.kb-icon.cyan{background:rgba(34,211,238,.15);border:1px solid rgba(34,211,238,.25)}
+.kb-icon.amber{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25)}
+.kb-icon.green{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25)}
+.kb-icon.blue{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25)}
+.kb-info{flex:1;min-width:0}
+.kb-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kb-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.kb-footer{padding:12px 10px;border-top:1px solid var(--border)}
+
+/* ── Center: Docs Panel ── */
+.docs-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.docs-head{padding:16px 20px 12px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px}
+.docs-title{font-size:15px;font-weight:700;flex:1}
+.docs-body{flex:1;overflow-y:auto;padding:16px 20px}
+.docs-body::-webkit-scrollbar{width:4px}
+.docs-body::-webkit-scrollbar-thumb{background:var(--dark4)}
+
+/* ── Upload Zone ── */
+.upload-zone{
+  border:2px dashed rgba(99,102,241,.35);border-radius:14px;padding:32px;
+  text-align:center;cursor:pointer;transition:.3s;margin-bottom:16px;
+  background:rgba(99,102,241,.04);
+}
+.upload-zone:hover,.upload-zone.drag-over{
+  border-color:var(--c1);background:rgba(99,102,241,.1);
+}
+.upload-icon{font-size:40px;margin-bottom:10px}
+.upload-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.upload-sub{font-size:12px;color:var(--muted)}
+.upload-types{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.type-tag{font-size:10px;padding:2px 8px;border-radius:6px;
+  background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);color:var(--c1)}
+
+/* ── URL Input ── */
+.url-input-row{display:flex;gap:8px;margin-bottom:16px}
+.url-input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;padding:9px 14px;color:var(--text);font-size:13px}
+.url-input:focus{outline:none;border-color:var(--c1)}
+
+/* ── Doc Grid ── */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.doc-card{background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:12px;padding:14px;transition:.2s;position:relative;cursor:default}
+.doc-card:hover{background:rgba(255,255,255,.06);border-color:rgba(99,102,241,.3)}
+.doc-type-icon{font-size:28px;margin-bottom:8px}
+.doc-name{font-size:12px;font-weight:600;margin-bottom:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-size{font-size:10px;color:var(--muted);margin-bottom:6px}
+.doc-status{display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px}
+.status-ready{background:rgba(16,185,129,.15);color:var(--c5);border:1px solid rgba(16,185,129,.2)}
+.status-processing{background:rgba(34,211,238,.1);color:var(--c3);border:1px solid rgba(34,211,238,.2)}
+.status-pending{background:rgba(245,158,11,.1);color:var(--c4);border:1px solid rgba(245,158,11,.2)}
+.status-failed{background:rgba(239,68,68,.1);color:var(--c6);border:1px solid rgba(239,68,68,.2)}
+.doc-chunks{font-size:10px;color:var(--muted);margin-top:4px}
+.doc-del{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:6px;
+  background:rgba(239,68,68,.12);border:none;color:var(--c6);font-size:11px;
+  cursor:pointer;display:none;align-items:center;justify-content:center}
+.doc-card:hover .doc-del{display:flex}
+.upload-progress{width:100%;height:4px;background:var(--dark4);border-radius:2px;margin-top:6px;overflow:hidden}
+.upload-progress-bar{height:100%;background:linear-gradient(90deg,var(--c1),var(--c3));
+  border-radius:2px;transition:width .3s;animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
+
+/* ── Stats Row ── */
+.kb-stats{display:flex;gap:10px;margin-bottom:14px}
+.kb-stat{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;text-align:center}
+.kb-stat-val{font-size:20px;font-weight:800;margin-bottom:2px}
+.kb-stat-label{font-size:10px;color:var(--muted)}
+
+/* ── Right: Query Panel ── */
+.query-panel{width:340px;min-width:340px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;background:rgba(2,6,23,.6)}
+.query-head{padding:16px 16px 10px;border-bottom:1px solid var(--border)}
+.query-head h3{font-size:13px;font-weight:700}
+.query-body{flex:1;overflow-y:auto;padding:14px}
+.query-body::-webkit-scrollbar{width:3px}
+.query-body::-webkit-scrollbar-thumb{background:var(--dark4)}
+
+/* ── Chat UI ── */
+.chat-messages{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;min-height:200px}
+.msg{padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.55;max-width:100%}
+.msg-user{background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);
+  align-self:flex-end;border-bottom-right-radius:4px}
+.msg-ai{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-bottom-left-radius:4px}
+.msg-ai.thinking{opacity:.6;font-style:italic}
+.msg-sources{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);
+  font-size:10px;color:var(--muted)}
+.source-chip{display:inline-block;padding:2px 7px;border-radius:5px;margin:2px;
+  background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);color:var(--c1)}
+.chat-input-row{display:flex;gap:6px}
+.chat-input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:10px;padding:9px 12px;color:var(--text);font-size:13px;resize:none;
+  font-family:inherit;min-height:40px;max-height:100px}
+.chat-input:focus{outline:none;border-color:var(--c1)}
+.send-btn{padding:0 14px;border-radius:10px;background:linear-gradient(135deg,var(--c1),var(--c2));
+  border:none;color:#fff;font-size:16px;cursor:pointer;transition:.2s;align-self:flex-end;height:40px}
+.send-btn:hover{opacity:.85}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,.85);z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:.25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--dark2);border:1px solid var(--border);border-radius:20px;
+  padding:28px;width:min(520px,95vw);max-height:90vh;overflow-y:auto;
+  transform:translateY(20px) scale(.97);transition:.25s}
+.modal-overlay.open .modal{transform:none}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-title{font-size:17px;font-weight:700}
+.close-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);
+  border:none;color:var(--muted);font-size:15px;cursor:pointer}
+.close-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted)}
+.form-input,.form-select,.form-textarea{background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;transition:.2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--c1)}
+.form-select option{background:var(--dark2)}
+.form-textarea{resize:vertical;min-height:70px;font-family:inherit}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;
+  padding-top:16px;border-top:1px solid var(--border)}
+
+/* ── Emoji Row ── */
+.emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.emoji-opt{font-size:22px;cursor:pointer;padding:4px;border-radius:8px;
+  border:2px solid transparent;transition:.15s}
+.emoji-opt.sel{border-color:rgba(99,102,241,.6);background:rgba(99,102,241,.15)}
+
+/* ── Empty State ── */
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-icon{font-size:52px;margin-bottom:12px;opacity:.45}
+.empty-msg{font-size:15px;font-weight:600;color:var(--text);opacity:.65;margin-bottom:6px}
+.empty-sub{font-size:12px}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--dark3);border:1px solid var(--border);border-radius:12px;
+  padding:11px 18px;font-size:13px;font-weight:600;z-index:9999;transition:.35s;
+  display:flex;align-items:center;gap:8px;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,.4);color:var(--c5)}
+.toast.info{border-color:rgba(27,106,201,.4);color:var(--c1)}
+.toast.error{border-color:rgba(239,68,68,.4);color:var(--c6)}
+</style>
+<link rel="stylesheet" href="/static/platform-ui.css">
+<script src="/static/ninja-charts.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div>
+      <div class="logo-text">AI Platform</div>
+      <div class="logo-sub">منصة الأتمتة الذكية</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">الرئيسية</div>
+    <a href="/dashboard" class="nav-item">
+      <div class="icon">📊</div>لوحة التحكم
+    </a>
+    <a href="/actions" class="nav-item">
+      <div class="icon">⚡</div>الإجراءات السريعة
+    </a>
+    <div class="nav-section">الأدوات</div>
+    <a href="/chatbot" class="nav-item">
+      <div class="icon">🤖</div>روبوتات المحادثة
+    </a>
+    <a href="/automation" class="nav-item">
+      <div class="icon">🔄</div>أتمتة العمليات
+    </a>
+    <a href="/knowledge" class="nav-item active">
+      <div class="icon">🧠</div>قاعدة المعرفة
+    </a>
+    <a href="/network" class="nav-item">
+      <div class="icon">📡</div>مراقبة الشبكة
+    </a>
+    <div class="nav-section">الإدارة</div>
+    <a href="/team" class="nav-item"><div class="icon">👥</div>إدارة الفريق</a>
+    <a href="/reports" class="nav-item"><div class="icon">📈</div>التقارير</a>
+    <a href="#" class="nav-item"><div class="icon">💳</div>الاشتراك</a>
+    <a href="/settings" class="nav-item"><div class="icon">⚙️</div>الإعدادات</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av" id="userAv">م</div>
+      <div>
+        <div class="user-name" id="userName">جار التحميل...</div>
+        <div class="user-role">مالك المنظمة</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-title">
+      🧠 قاعدة المعرفة
+      <span class="badge">RAG Engine</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="loadKBList()">🔃 تحديث</button>
+      <button class="btn btn-primary" onclick="openCreateKBModal()">＋ قاعدة معرفة جديدة</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content-wrap">
+
+    <!-- Left: KB List -->
+    <div class="kb-sidebar">
+      <div class="kb-sidebar-head">
+        <h3>📚 قواعد المعرفة</h3>
+        <input class="form-input btn-sm" placeholder="🔍 بحث..."
+          style="font-size:12px;padding:7px 10px" oninput="filterKBs(this.value)">
+      </div>
+      <div class="kb-list" id="kbList">
+        <div class="empty-state" style="padding:30px 10px">
+          <div class="empty-icon">📚</div>
+          <div class="empty-msg" style="font-size:13px">لا توجد قواعد</div>
+          <div class="empty-sub">اضغط + للإنشاء</div>
+        </div>
+      </div>
+      <div class="kb-footer">
+        <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:13px"
+          onclick="openCreateKBModal()">＋ قاعدة جديدة</button>
+      </div>
+    </div>
+
+    <!-- Center: Documents -->
+    <div class="docs-panel">
+      <div class="docs-head">
+        <div class="docs-title" id="docsTitle">اختر قاعدة معرفة ←</div>
+        <div style="display:flex;gap:8px" id="docsActions" style="display:none">
+          <button class="btn btn-ghost btn-sm" onclick="toggleView()" id="viewBtn">⊞ شبكة</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCurrentKB()" id="delKbBtn"
+            style="display:none">🗑 حذف القاعدة</button>
+        </div>
+      </div>
+      <div class="docs-body" id="docsBody">
+        <div class="empty-state">
+          <div class="empty-icon">🧠</div>
+          <div class="empty-msg">اختر قاعدة معرفة من القائمة</div>
+          <div class="empty-sub">أو أنشئ قاعدة جديدة لتبدأ برفع مستنداتك</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: RAG Query -->
+    <div class="query-panel">
+      <div class="query-head">
+        <h3>💬 اختبار الاستعلام</h3>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px" id="queryKbName">اختر قاعدة معرفة أولاً</div>
+      </div>
+      <div class="query-body">
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg msg-ai">
+            👋 مرحباً! اختر قاعدة معرفة ثم اسألني أي سؤال — سأبحث في المستندات وأُجيبك بالذكاء الاصطناعي 🤖
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-input" id="chatInput" placeholder="اكتب سؤالك هنا..." rows="2"
+            onkeydown="handleEnter(event)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendQuery()" disabled>➤</button>
+        </div>
+        <div style="margin-top:10px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer">
+            <input type="checkbox" id="useAI" checked style="accent-color:var(--c1)">
+            استخدام Gemini AI للإجابة
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-wrap -->
+</main><!-- /main -->
+
+<!-- ══════════════════ CREATE KB MODAL ══════════════════ -->
+<div class="modal-overlay" id="createKBModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🧠 قاعدة معرفة جديدة</div>
+      <button class="close-btn" onclick="closeModal('createKBModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">الاسم *</label>
+      <input type="text" class="form-input" id="kbName" placeholder="مثال: وثائق المنتج">
+    </div>
+    <div class="form-group">
+      <label class="form-label">الوصف</label>
+      <textarea class="form-textarea" id="kbDesc" placeholder="وصف مختصر لمحتوى القاعدة..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">الأيقونة</label>
+      <div class="emoji-row" id="kbEmojiPicker"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">اللون</label>
+      <select class="form-select" id="kbColor">
+        <option value="purple">بنفسجي 💜</option>
+        <option value="cyan">سماوي 🩵</option>
+        <option value="amber">عنبري 🟡</option>
+        <option value="green">أخضر 💚</option>
+        <option value="blue">أزرق 💙</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">نموذج التضمين (Embedding)</label>
+      <select class="form-select" id="kbEmbedModel">
+        <option value="models/text-embedding-004">Gemini text-embedding-004 (موصى به)</option>
+        <option value="models/embedding-001">Gemini embedding-001</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('createKBModal')">إلغاء</button>
+      <button class="btn btn-primary" onclick="createKnowledgeBase()">✅ إنشاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- File Input (hidden) -->
+<input type="file" id="fileInput" style="display:none" multiple
+  accept=".pdf,.docx,.txt,.md,.csv,.xlsx,.pptx"
+  onchange="handleFileUpload(this.files)">
+
+<!-- Toast -->
+<div class="toast" id="toast">✅</div>
+
+<script>
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+const API = '/api/v1/knowledge';
+let TOKEN = localStorage.getItem('access_token') || '';
+let kbList = [], selectedKB = null, viewMode = 'grid', kbSearch = '';
+let selectedEmoji = '📚';
+
+const EMOJIS = ['📚','🧠','💡','🔬','📖','🗂️','📑','🔎','🏛️','💼','📋','🌐','⚙️','🎓','🔐','📊'];
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  loadUserInfo();
+  initEmojiPicker();
+  loadKBList();
+  setupDragDrop();
+});
+
+function loadUserInfo() {
+  const name = localStorage.getItem('user_name') || 'مصطفى';
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userAv').textContent = name.charAt(0);
+}
+
+// ════════════════════════════════════════════
+// API HELPERS
+// ════════════════════════════════════════════
+async function apiFetch(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json', ...opts.headers };
+  if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res = await fetch(API + path, { ...opts, headers });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.detail || json.message || 'خطأ في الطلب');
+  return json;
+}
+
+async function apiUpload(path, formData) {
+  const headers = {};
+  if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res = await fetch(API + path, { method: 'POST', headers, body: formData });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.detail || 'فشل الرفع');
+  return json;
+}
+
+// ════════════════════════════════════════════
+// KNOWLEDGE BASES
+// ════════════════════════════════════════════
+async function loadKBList() {
+  try {
+    const data = await apiFetch('');
+    kbList = data.data || [];
+    renderKBList();
+    if (selectedKB) {
+      const updated = kbList.find(k => k.id === selectedKB.id);
+      if (updated) selectKB(updated);
+    }
+  } catch (e) {
+    // Use demo data if not authenticated
+    kbList = getDemoKBs();
+    renderKBList();
+  }
+}
+
+function getDemoKBs() {
+  return [
+    {id:'demo1',name:'وثائق المنتج',description:'دليل المستخدم والمواصفات التقنية',
+     icon:'📚',color:'purple',total_documents:5,total_chunks:142,total_queries:28},
+    {id:'demo2',name:'سياسات الشركة',description:'قواعد العمل والإجراءات الداخلية',
+     icon:'💼',color:'blue',total_documents:3,total_chunks:87,total_queries:14},
+    {id:'demo3',name:'FAQ العملاء',description:'الأسئلة الشائعة ونماذج الردود',
+     icon:'🔎',color:'cyan',total_documents:8,total_chunks:210,total_queries:65},
+  ];
+}
+
+function renderKBList() {
+  const el = document.getElementById('kbList');
+  const filtered = kbList.filter(kb =>
+    !kbSearch || kb.name.includes(kbSearch) || (kb.description || '').includes(kbSearch)
+  );
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state" style="padding:30px 10px">
+      <div class="empty-icon">📚</div>
+      <div class="empty-msg" style="font-size:13px">لا توجد قواعد</div>
+      <div class="empty-sub">اضغط + للإنشاء</div></div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(kb => `
+    <div class="kb-item ${selectedKB?.id === kb.id ? 'selected' : ''}"
+         onclick="selectKB(${JSON.stringify(kb).replace(/"/g,'&quot;')})">
+      <div class="kb-icon ${kb.color}">${kb.icon}</div>
+      <div class="kb-info">
+        <div class="kb-name">${kb.name}</div>
+        <div class="kb-meta">📄 ${kb.total_documents} مستند · 🔗 ${kb.total_chunks} chunk</div>
+      </div>
+    </div>`).join('');
+}
+
+function filterKBs(q) { kbSearch = q; renderKBList(); }
+
+async function selectKB(kb) {
+  selectedKB = kb;
+  renderKBList();
+  document.getElementById('docsTitle').textContent = kb.icon + ' ' + kb.name;
+  document.getElementById('docsActions').style.display = 'flex';
+  document.getElementById('delKbBtn').style.display = '';
+  document.getElementById('queryKbName').textContent = '📚 ' + kb.name;
+  document.getElementById('sendBtn').disabled = false;
+  await loadDocuments(kb.id);
+}
+
+async function loadDocuments(kbId) {
+  if (kbId.startsWith('demo')) { renderDocuments(getDemoDocs()); return; }
+  try {
+    const data = await apiFetch('/' + kbId);
+    renderDocuments(data.data?.documents || []);
+    // Update kb stats
+    const kb = kbList.find(k => k.id === kbId);
+    if (kb && data.data) {
+      Object.assign(kb, data.data);
+      renderKBList();
+    }
+  } catch (e) {
+    renderDocuments(getDemoDocs());
+  }
+}
+
+function getDemoDocs() {
+  return [
+    {id:'d1',name:'دليل_المستخدم.pdf',doc_type:'pdf',status:'ready',file_size:2457600,chunk_count:42,word_count:8200,page_count:35},
+    {id:'d2',name:'المواصفات_التقنية.docx',doc_type:'docx',status:'ready',file_size:512000,chunk_count:28,word_count:4100,page_count:18},
+    {id:'d3',name:'الأسئلة_الشائعة.txt',doc_type:'txt',status:'ready',file_size:32768,chunk_count:15,word_count:2300,page_count:null},
+    {id:'d4',name:'سياسة_الخصوصية.md',doc_type:'md',status:'processing',file_size:8192,chunk_count:0,word_count:null,page_count:null},
+    {id:'d5',name:'https://example.com/docs',doc_type:'url',status:'failed',file_size:0,chunk_count:0,word_count:null,page_count:null},
+  ];
+}
+
+const TYPE_ICONS = {pdf:'📄',docx:'📝',txt:'📃',md:'📋',csv:'📊',xlsx:'📊',pptx:'📑',url:'🌐'};
+const STATUS_LABELS = {ready:'جاهز',processing:'معالجة...',pending:'انتظار',failed:'فشل'};
+const STATUS_CLASSES = {ready:'status-ready',processing:'status-processing',pending:'status-pending',failed:'status-failed'};
+
+function fmtSize(bytes) {
+  if (!bytes) return '—';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1048576).toFixed(1) + ' MB';
+}
+
+function renderDocuments(docs) {
+  const body = document.getElementById('docsBody');
+  const kb = selectedKB;
+  const statsHtml = kb ? `
+    <div class="kb-stats">
+      <div class="kb-stat"><div class="kb-stat-val">${kb.total_documents ?? docs.length}</div><div class="kb-stat-label">مستند</div></div>
+      <div class="kb-stat"><div class="kb-stat-val">${kb.total_chunks ?? docs.reduce((s,d)=>s+d.chunk_count,0)}</div><div class="kb-stat-label">chunk</div></div>
+      <div class="kb-stat"><div class="kb-stat-val">${kb.total_queries ?? 0}</div><div class="kb-stat-label">استعلام</div></div>
+      <div class="kb-stat"><div class="kb-stat-val">${docs.filter(d=>d.status==='ready').length}</div><div class="kb-stat-label">جاهز</div></div>
+    </div>` : '';
+
+  const uploadHtml = `
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
+         ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
+      <div class="upload-icon">📂</div>
+      <div class="upload-title">اسحب الملفات هنا أو انقر للرفع</div>
+      <div class="upload-sub">الحد الأقصى 20 MB لكل ملف</div>
+      <div class="upload-types">
+        <span class="type-tag">PDF</span><span class="type-tag">DOCX</span>
+        <span class="type-tag">TXT</span><span class="type-tag">MD</span>
+        <span class="type-tag">CSV</span><span class="type-tag">XLSX</span>
+      </div>
+    </div>
+    <div class="url-input-row">
+      <input type="text" class="url-input" id="urlInput" placeholder="أو أدخل رابط URL لاستيراد صفحة ويب...">
+      <button class="btn btn-ghost btn-sm" onclick="addURL()">＋ إضافة</button>
+    </div>`;
+
+  if (!docs.length) {
+    body.innerHTML = statsHtml + uploadHtml +
+      `<div class="empty-state"><div class="empty-icon">📄</div>
+       <div class="empty-msg">لا توجد مستندات بعد</div>
+       <div class="empty-sub">ارفع ملفاتك أو أضف روابط لتبدأ</div></div>`;
+    return;
+  }
+
+  const docsHtml = `<div class="doc-grid">` + docs.map(d => `
+    <div class="doc-card">
+      <button class="doc-del" onclick="deleteDoc('${d.id}',event)" title="حذف">✕</button>
+      <div class="doc-type-icon">${TYPE_ICONS[d.doc_type] || '📄'}</div>
+      <div class="doc-name" title="${d.name}">${d.name}</div>
+      <div class="doc-size">${fmtSize(d.file_size)}${d.page_count ? ' · ' + d.page_count + ' صفحة' : ''}</div>
+      <span class="doc-status ${STATUS_CLASSES[d.status] || 'status-pending'}">
+        ${d.status === 'processing' ? '⏳ ' : d.status === 'ready' ? '✅ ' : d.status === 'failed' ? '❌ ' : '⏳ '}
+        ${STATUS_LABELS[d.status] || d.status}
+      </span>
+      ${d.chunk_count > 0 ? `<div class="doc-chunks">🔗 ${d.chunk_count} chunk · 📝 ${(d.word_count||0).toLocaleString('ar')} كلمة</div>` : ''}
+      ${d.status === 'processing' ? `<div class="upload-progress"><div class="upload-progress-bar" style="width:60%"></div></div>` : ''}
+    </div>`).join('') + `</div>`;
+
+  body.innerHTML = statsHtml + uploadHtml + docsHtml;
+}
+
+// ════════════════════════════════════════════
+// FILE UPLOAD
+// ════════════════════════════════════════════
+function setupDragDrop() {
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => e.preventDefault());
+}
+function dragOver(e) { e.preventDefault(); document.getElementById('uploadZone')?.classList.add('drag-over'); }
+function dragLeave(e) { document.getElementById('uploadZone')?.classList.remove('drag-over'); }
+function dropFiles(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone')?.classList.remove('drag-over');
+  handleFileUpload(e.dataTransfer.files);
+}
+
+async function handleFileUpload(files) {
+  if (!selectedKB) { showToast('⚠️ اختر قاعدة معرفة أولاً', 'info'); return; }
+  if (selectedKB.id.startsWith('demo')) { showToast('✨ هذه بيانات تجريبية — سجّل دخول لرفع ملفات حقيقية', 'info'); return; }
+
+  for (const file of files) {
+    showToast(`📤 جارٍ رفع "${file.name}"...`, 'info');
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      await apiUpload('/' + selectedKB.id + '/documents/upload', fd);
+      showToast(`✅ تم رفع "${file.name}" بنجاح`, 'success');
+    } catch (e) {
+      showToast(`❌ فشل رفع "${file.name}": ${e.message}`, 'error');
+    }
+  }
+  await loadDocuments(selectedKB.id);
+}
+
+async function addURL() {
+  if (!selectedKB) { showToast('⚠️ اختر قاعدة معرفة أولاً', 'info'); return; }
+  const url = document.getElementById('urlInput')?.value?.trim();
+  if (!url || !url.startsWith('http')) { showToast('⚠️ أدخل رابط URL صحيح', 'info'); return; }
+  if (selectedKB.id.startsWith('demo')) { showToast('✨ سجّل دخول لإضافة روابط حقيقية', 'info'); return; }
+
+  showToast('🌐 جارٍ استيراد الصفحة...', 'info');
+  try {
+    const fd = new FormData();
+    fd.append('url', url);
+    fd.append('name', new URL(url).hostname);
+    await apiUpload('/' + selectedKB.id + '/documents/url', fd);
+    document.getElementById('urlInput').value = '';
+    showToast('✅ تم استيراد الرابط بنجاح', 'success');
+    await loadDocuments(selectedKB.id);
+  } catch (e) {
+    showToast('❌ فشل الاستيراد: ' + e.message, 'error');
+  }
+}
+
+async function deleteDoc(docId, e) {
+  e.stopPropagation();
+  if (!selectedKB || selectedKB.id.startsWith('demo')) { showToast('✨ بيانات تجريبية', 'info'); return; }
+  try {
+    await apiFetch('/' + selectedKB.id + '/documents/' + docId, { method: 'DELETE' });
+    showToast('🗑 تم حذف المستند', 'info');
+    await loadDocuments(selectedKB.id);
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+  }
+}
+
+// ════════════════════════════════════════════
+// CREATE KB
+// ════════════════════════════════════════════
+function initEmojiPicker() {
+  const p = document.getElementById('kbEmojiPicker');
+  p.innerHTML = EMOJIS.map(e =>
+    `<span class="emoji-opt${e===selectedEmoji?' sel':''}" id="emj-${e}"
+      onclick="pickEmoji('${e}')">${e}</span>`
+  ).join('');
+}
+function pickEmoji(e) {
+  selectedEmoji = e;
+  document.querySelectorAll('.emoji-opt').forEach(el => el.classList.remove('sel'));
+  document.getElementById('emj-' + e)?.classList.add('sel');
+}
+
+function openCreateKBModal() {
+  document.getElementById('kbName').value = '';
+  document.getElementById('kbDesc').value = '';
+  document.getElementById('createKBModal').classList.add('open');
+}
+
+async function createKnowledgeBase() {
+  const name = document.getElementById('kbName').value.trim();
+  if (!name) { showToast('⚠️ أدخل اسم القاعدة', 'info'); return; }
+  try {
+    const res = await apiFetch('', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        description: document.getElementById('kbDesc').value.trim(),
+        icon: selectedEmoji,
+        color: document.getElementById('kbColor').value,
+        embedding_model: document.getElementById('kbEmbedModel').value,
+      })
+    });
+    closeModal('createKBModal');
+    await loadKBList();
+    const newKB = kbList.find(k => k.id === res.data?.id) || res.data;
+    if (newKB) selectKB(newKB);
+    showToast('✅ تم إنشاء قاعدة المعرفة بنجاح!', 'success');
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+  }
+}
+
+async function deleteCurrentKB() {
+  if (!selectedKB) return;
+  if (selectedKB.id.startsWith('demo')) { showToast('✨ لا يمكن حذف البيانات التجريبية', 'info'); return; }
+  if (!confirm(`هل تريد حذف قاعدة "${selectedKB.name}"؟ لا يمكن التراجع.`)) return;
+  try {
+    await apiFetch('/' + selectedKB.id, { method: 'DELETE' });
+    selectedKB = null;
+    await loadKBList();
+    document.getElementById('docsBody').innerHTML = `
+      <div class="empty-state"><div class="empty-icon">🧠</div>
+        <div class="empty-msg">اختر قاعدة معرفة من القائمة</div></div>`;
+    document.getElementById('docsTitle').textContent = 'اختر قاعدة معرفة ←';
+    showToast('🗑 تم حذف قاعدة المعرفة', 'info');
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+  }
+}
+
+// ════════════════════════════════════════════
+// RAG QUERY
+// ════════════════════════════════════════════
+function handleEnter(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuery(); }
+}
+
+async function sendQuery() {
+  const input = document.getElementById('chatInput');
+  const query = input.value.trim();
+  if (!query) return;
+  if (!selectedKB) { showToast('⚠️ اختر قاعدة معرفة أولاً', 'info'); return; }
+
+  addMsg(query, 'user');
+  input.value = '';
+  document.getElementById('sendBtn').disabled = true;
+
+  const thinkId = 'think_' + Date.now();
+  addMsg('⏳ جارٍ البحث في المستندات...', 'ai thinking', thinkId);
+
+  // Demo mode
+  if (selectedKB.id.startsWith('demo')) {
+    await new Promise(r => setTimeout(r, 1500));
+    removeMsg(thinkId);
+    const demoAnswers = [
+      'بناءً على وثائق المنتج، يدعم النظام 3 طرق للمصادقة: JWT، OAuth2، وAPI Key. ويُنصح باستخدام JWT للتطبيقات الداخلية.',
+      'وفقاً لسياسات الشركة، يجب إرسال التقارير الشهرية بحلول اليوم الخامس من كل شهر. تُرسَل للمدير المباشر وإدارة المالية.',
+      'أكثر الأسئلة شيوعاً التي يطرحها العملاء: كيفية إعادة تعيين كلمة المرور (32%)، مشاكل الدفع (28%)، وطلبات الإلغاء (18%).',
+    ];
+    addMsg(demoAnswers[Math.floor(Math.random() * demoAnswers.length)], 'ai');
+    document.getElementById('sendBtn').disabled = false;
+    return;
+  }
+
+  try {
+    const useAI = document.getElementById('useAI').checked;
+    const res = await apiFetch('/' + selectedKB.id + '/query', {
+      method: 'POST',
+      body: JSON.stringify({ query, top_k: 5, use_ai: useAI }),
+    });
+    removeMsg(thinkId);
+    const d = res.data;
+    let html = d.answer;
+    if (d.sources?.length) {
+      html += `<div class="msg-sources">📎 المصادر: ` +
+        d.sources.slice(0, 3).map((s, i) => `<span class="source-chip">مقطع ${i+1}</span>`).join('') +
+        (d.tokens ? ` · ${d.tokens} token` : '') + `</div>`;
+    }
+    addMsgHTML(html, 'ai');
+  } catch (e) {
+    removeMsg(thinkId);
+    addMsg('❌ ' + e.message, 'ai');
+  }
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function addMsg(text, type, id) {
+  const el = document.createElement('div');
+  el.className = 'msg msg-' + type.replace(' ','.');
+  el.textContent = text;
+  if (id) el.id = id;
+  document.getElementById('chatMessages').appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth' });
+}
+function addMsgHTML(html, type) {
+  const el = document.createElement('div');
+  el.className = 'msg msg-' + type;
+  el.innerHTML = html;
+  document.getElementById('chatMessages').appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth' });
+}
+function removeMsg(id) { document.getElementById(id)?.remove(); }
+
+// ════════════════════════════════════════════
+// MISC
+// ════════════════════════════════════════════
+function toggleView() {
+  viewMode = viewMode === 'grid' ? 'list' : 'grid';
+  document.getElementById('viewBtn').textContent = viewMode === 'grid' ? '⊞ شبكة' : '☰ قائمة';
+}
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+
+let toastTimer;
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+<script src="/static/chat-widget.js"></script>
+<script src="/static/platform-i18n.js"></script>
+</body>
+</html>

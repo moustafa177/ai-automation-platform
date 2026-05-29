@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AI Platform - AI and Automation Solutions">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Network Intelligence — AI Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --dark:#020617;--dark2:#0f172a;--dark3:#1e293b;--dark4:#334155;
+  --c1:#6366f1;--c2:#8b5cf6;--c3:#22d3ee;--c4:#f59e0b;--c5:#10b981;--c6:#ef4444;
+  --text:#e2e8f0;--muted:#94a3b8;--border:rgba(99,102,241,.18);
+  --glass:rgba(15,23,42,.75);--radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+html,body{height:100%;background:var(--dark);color:var(--text);overflow:hidden}
+body{display:flex}
+
+/* ── Sidebar ── */
+.sidebar{width:260px;min-width:260px;height:100vh;background:var(--glass);
+  border-left:1px solid var(--border);display:flex;flex-direction:column;
+  padding:24px 0;backdrop-filter:blur(20px);z-index:10;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:4px}
+.logo{padding:0 20px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:10px;color:var(--muted)}
+.nav{padding:16px 12px;flex:1}
+.nav-section{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.8px;padding:8px 8px 4px;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  color:var(--muted);text-decoration:none;font-size:13.5px;transition:.2s;margin-bottom:2px}
+.nav-item:hover{background:rgba(99,102,241,.12);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(139,92,246,.15));
+  color:#fff;border:1px solid rgba(99,102,241,.35)}
+.nav-item .icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;background:rgba(255,255,255,.05)}
+.nav-item.active .icon{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px}
+.user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+
+/* ── Main ── */
+.main{flex:1;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:4px}
+
+/* ── Topbar ── */
+.topbar{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);background:var(--glass);backdrop-filter:blur(20px);
+  position:sticky;top:0;z-index:9}
+.topbar-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+.badge-green{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.35);color:var(--c5)}
+.badge-cyan{background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3);color:var(--c3)}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+
+/* ── Buttons ── */
+.btn{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:.2s;border:none}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+.btn-cyan{background:rgba(34,211,238,.15);color:var(--c3);border:1px solid rgba(34,211,238,.3)}
+.btn-cyan:hover{background:rgba(34,211,238,.25)}
+.btn-danger{background:rgba(239,68,68,.12);color:var(--c6);border:1px solid rgba(239,68,68,.25)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-warn{background:rgba(245,158,11,.12);color:var(--c4);border:1px solid rgba(245,158,11,.25)}
+
+/* ── Content ── */
+.content{padding:20px 28px;flex:1}
+
+/* ── Stats Row ── */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:1300px){.stats-row{grid-template-columns:repeat(3,1fr)}}
+.stat-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 18px;backdrop-filter:blur(16px);position:relative;overflow:hidden;transition:.25s}
+.stat-card:hover{transform:translateY(-2px);border-color:rgba(99,102,241,.35)}
+.stat-icon{font-size:24px;margin-bottom:6px}
+.stat-val{font-size:26px;font-weight:800;line-height:1}
+.stat-label{font-size:11px;color:var(--muted);margin-top:4px}
+.stat-bar{height:3px;border-radius:2px;margin-top:10px;background:var(--dark4)}
+.stat-bar-fill{height:100%;border-radius:2px;transition:width 1s}
+
+/* ── Main Grid ── */
+.grid-top{display:grid;grid-template-columns:1fr 420px;gap:18px;margin-bottom:18px}
+.grid-bottom{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:1200px){.grid-top,.grid-bottom{grid-template-columns:1fr}}
+
+/* ── Panel ── */
+.panel{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  backdrop-filter:blur(16px);overflow:hidden}
+.panel-header{padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.panel-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.panel-body{padding:14px 16px}
+.panel-scroll{max-height:340px;overflow-y:auto}
+.panel-scroll::-webkit-scrollbar{width:4px}
+.panel-scroll::-webkit-scrollbar-thumb{background:var(--dark4)}
+
+/* ── Topology Canvas ── */
+.topo-wrap{position:relative;height:320px;background:rgba(0,0,0,.3);overflow:hidden;
+  border-radius:0 0 var(--radius) var(--radius)}
+.topo-wrap::before{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(99,102,241,.1) 1px,transparent 1px);
+  background-size:28px 28px;pointer-events:none}
+#topoCanvas{position:absolute;inset:0;width:100%;height:100%}
+.topo-legend{position:absolute;bottom:10px;right:12px;display:flex;gap:10px;font-size:11px;
+  background:rgba(2,6,23,.7);padding:6px 10px;border-radius:8px;border:1px solid var(--border)}
+.legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-left:4px}
+
+/* ── Device Table ── */
+.dev-table{width:100%;border-collapse:collapse;font-size:13px}
+.dev-table th{text-align:right;padding:8px 10px;font-size:11px;font-weight:700;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.5px;
+  border-bottom:1px solid var(--border);white-space:nowrap}
+.dev-table td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.dev-table tr:hover td{background:rgba(255,255,255,.03)}
+.dev-table tr:last-child td{border-bottom:none}
+.dev-name{font-weight:600;display:flex;align-items:center;gap:8px}
+.dev-ip{font-size:11px;color:var(--muted);font-family:monospace;margin-top:2px}
+.dev-type-icon{font-size:18px}
+.status-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:20px}
+.pill-up{background:rgba(16,185,129,.15);color:var(--c5);border:1px solid rgba(16,185,129,.25)}
+.pill-down{background:rgba(239,68,68,.12);color:var(--c6);border:1px solid rgba(239,68,68,.25)}
+.pill-degraded{background:rgba(245,158,11,.12);color:var(--c4);border:1px solid rgba(245,158,11,.25)}
+.pill-unknown{background:rgba(148,163,184,.1);color:var(--muted);border:1px solid rgba(148,163,184,.2)}
+.latency-val{font-family:monospace;font-size:12px;font-weight:700}
+.latency-good{color:var(--c5)}
+.latency-warn{color:var(--c4)}
+.latency-bad{color:var(--c6)}
+.latency-na{color:var(--muted)}
+.dev-actions{display:flex;gap:4px}
+.icon-btn{width:28px;height:28px;border-radius:7px;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:13px;transition:.15s}
+.icon-btn-edit{background:rgba(99,102,241,.15);color:var(--c1)}
+.icon-btn-edit:hover{background:rgba(99,102,241,.3)}
+.icon-btn-ping{background:rgba(34,211,238,.12);color:var(--c3)}
+.icon-btn-ping:hover{background:rgba(34,211,238,.25)}
+.icon-btn-del{background:rgba(239,68,68,.1);color:var(--c6)}
+.icon-btn-del:hover{background:rgba(239,68,68,.2)}
+.spin{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Latency Chart ── */
+.chart-wrap{height:180px;position:relative}
+
+/* ── Alerts ── */
+.alert-list{display:flex;flex-direction:column;gap:6px}
+.alert-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+  background:rgba(255,255,255,.025);font-size:12px;border:1px solid transparent;transition:.15s}
+.alert-item:hover{background:rgba(255,255,255,.04)}
+.alert-item.crit{border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.05)}
+.alert-item.warn{border-color:rgba(245,158,11,.15)}
+.alert-item.info{border-color:rgba(34,211,238,.12)}
+.alert-icon{font-size:16px;flex-shrink:0}
+.alert-msg{flex:1;line-height:1.35}
+.alert-dev{font-weight:700;color:var(--text)}
+.alert-time{font-size:10px;color:var(--muted);white-space:nowrap}
+.alert-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:6px}
+.ab-crit{background:rgba(239,68,68,.2);color:var(--c6)}
+.ab-warn{background:rgba(245,158,11,.15);color:var(--c4)}
+.ab-info{background:rgba(34,211,238,.1);color:var(--c3)}
+.ab-ok{background:rgba(16,185,129,.15);color:var(--c5)}
+
+/* ── Search + Filter ── */
+.table-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search-input{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:9px;
+  padding:7px 12px;color:var(--text);font-size:12px;min-width:160px}
+.search-input:focus{outline:none;border-color:var(--c1)}
+.filter-chip{padding:5px 11px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);transition:.15s}
+.filter-chip.active{background:rgba(99,102,241,.18);border-color:rgba(99,102,241,.45);color:var(--c1)}
+.filter-chip:hover:not(.active){background:rgba(255,255,255,.08);color:var(--text)}
+
+/* ══ MODALS ══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,.88);z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:.22s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--dark2);border:1px solid var(--border);border-radius:20px;
+  padding:26px;width:min(680px,96vw);max-height:90vh;overflow-y:auto;
+  transform:translateY(18px) scale(.97);transition:.22s}
+.modal-overlay.open .modal{transform:none}
+.modal::-webkit-scrollbar{width:4px}
+.modal::-webkit-scrollbar-thumb{background:var(--dark4)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px}
+.close-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);
+  border:none;color:var(--muted);font-size:15px;cursor:pointer;transition:.15s}
+.close-btn:hover{background:rgba(255,255,255,.13);color:var(--text)}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-full{grid-column:1/-1}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted)}
+.form-req{color:var(--c6);margin-right:2px}
+.form-input,.form-select,.form-textarea{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;padding:9px 13px;color:var(--text);font-size:13px;
+  transition:.2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--c1);background:rgba(99,102,241,.07)}
+.form-select option{background:var(--dark2)}
+.form-textarea{resize:vertical;min-height:70px;font-family:inherit}
+.form-hint{font-size:11px;color:var(--muted);margin-top:2px}
+.form-section{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.7px;padding:14px 0 8px;border-top:1px solid var(--border);
+  margin-top:6px;grid-column:1/-1}
+.modal-footer{display:flex;justify-content:space-between;align-items:center;
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
+
+/* Ping Detail Modal */
+.ping-result{text-align:center;padding:20px 0}
+.ping-circle{width:120px;height:120px;border-radius:50%;margin:0 auto 16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-weight:800;border:4px solid;transition:1s}
+.ping-circle.up{border-color:var(--c5);background:rgba(16,185,129,.1);color:var(--c5)}
+.ping-circle.down{border-color:var(--c6);background:rgba(239,68,68,.08);color:var(--c6)}
+.ping-circle.degraded{border-color:var(--c4);background:rgba(245,158,11,.08);color:var(--c4)}
+.ping-ms{font-size:30px;line-height:1}
+.ping-unit{font-size:12px;font-weight:600;opacity:.7}
+.ping-stats-row{display:flex;gap:16px;justify-content:center;margin-top:10px}
+.ping-stat{text-align:center}
+.ping-stat-val{font-size:18px;font-weight:800}
+.ping-stat-label{font-size:11px;color:var(--muted)}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--dark3);border:1px solid var(--border);border-radius:12px;
+  padding:11px 20px;font-size:13px;font-weight:600;z-index:9999;transition:.3s;
+  display:flex;align-items:center;gap:8px;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,.4);color:var(--c5)}
+.toast.info{border-color:rgba(99,102,241,.4);color:var(--c1)}
+.toast.error{border-color:rgba(239,68,68,.4);color:var(--c6)}
+.toast.warn{border-color:rgba(245,158,11,.4);color:var(--c4)}
+
+/* ── Empty ── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:10px;opacity:.45}
+.empty-msg{font-size:14px;font-weight:600;color:var(--text);opacity:.65;margin-bottom:5px}
+</style>
+<link rel="stylesheet" href="/static/platform-ui.css">
+<script src="/static/ninja-charts.js"></script>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div>
+      <div class="logo-text">AI Platform</div>
+      <div class="logo-sub">منصة الأتمتة الذكية</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">الرئيسية</div>
+    <a href="/dashboard" class="nav-item"><div class="icon">📊</div>لوحة التحكم</a>
+    <a href="/actions"   class="nav-item"><div class="icon">⚡</div>الإجراءات السريعة</a>
+    <div class="nav-section">الأدوات</div>
+    <a href="/chatbot"    class="nav-item"><div class="icon">🤖</div>روبوتات المحادثة</a>
+    <a href="/automation" class="nav-item"><div class="icon">🔄</div>أتمتة العمليات</a>
+    <a href="/knowledge"  class="nav-item"><div class="icon">🧠</div>قاعدة المعرفة</a>
+    <a href="/network"    class="nav-item active"><div class="icon">📡</div>مراقبة الشبكة</a>
+    <div class="nav-section">الإدارة</div>
+    <a href="/team" class="nav-item"><div class="icon">👥</div>إدارة الفريق</a>
+    <a href="/reports" class="nav-item"><div class="icon">📈</div>التقارير</a>
+    <a href="#" class="nav-item"><div class="icon">💳</div>الاشتراك</a>
+    <a href="/settings" class="nav-item"><div class="icon">⚙️</div>الإعدادات</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av" id="userAv">م</div>
+      <div>
+        <div style="font-size:13px;font-weight:600" id="userName">جار التحميل...</div>
+        <div style="font-size:11px;color:var(--muted)">مالك المنظمة</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-title">
+      📡 Network Intelligence
+      <span class="topbar-badge badge-green" id="liveIndicator">● مباشر</span>
+      <span class="topbar-badge badge-cyan" id="lastScan">آخر مسح: —</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="loadDevices()">🔃 تحديث</button>
+      <button class="btn btn-cyan btn-sm" id="scanAllBtn" onclick="scanAll()">
+        📶 مسح الكل
+      </button>
+      <button class="btn btn-primary" onclick="openAddModal()">＋ إضافة جهاز</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">🖥️</div>
+        <div class="stat-val" id="stTotal">0</div>
+        <div class="stat-label">إجمالي الأجهزة</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barTotal"
+          style="background:var(--c1);width:0%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🟢</div>
+        <div class="stat-val" id="stUp" style="color:var(--c5)">0</div>
+        <div class="stat-label">يعمل (Up)</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barUp"
+          style="background:var(--c5);width:0%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔴</div>
+        <div class="stat-val" id="stDown" style="color:var(--c6)">0</div>
+        <div class="stat-label">متوقف (Down)</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barDown"
+          style="background:var(--c6);width:0%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-val" id="stLatency" style="color:var(--c3)">—</div>
+        <div class="stat-label">متوسط الـ Latency</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barLat"
+          style="background:var(--c3);width:0%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📉</div>
+        <div class="stat-val" id="stLoss" style="color:var(--c4)">0%</div>
+        <div class="stat-label">متوسط Packet Loss</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barLoss"
+          style="background:var(--c4);width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Row 1: Topology + Alerts -->
+    <div class="grid-top">
+
+      <!-- Topology -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🗺️ خريطة الشبكة</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm" onclick="resetTopo()">↺ إعادة ضبط</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleTopoLabels()">🏷️</button>
+          </div>
+        </div>
+        <div class="topo-wrap">
+          <canvas id="topoCanvas"></canvas>
+          <div class="topo-legend">
+            <span><span class="legend-dot" style="background:var(--c5)"></span>Up</span>
+            <span><span class="legend-dot" style="background:var(--c6)"></span>Down</span>
+            <span><span class="legend-dot" style="background:var(--c4)"></span>Degraded</span>
+            <span><span class="legend-dot" style="background:var(--muted)"></span>Unknown</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🔔 التنبيهات <span id="alertCount"
+            style="font-size:11px;padding:1px 7px;border-radius:10px;
+            background:rgba(239,68,68,.2);color:var(--c6);font-weight:700;margin-right:4px">0</span>
+          </span>
+          <button class="btn btn-ghost btn-sm" onclick="clearAlerts()">مسح</button>
+        </div>
+        <div class="panel-body panel-scroll">
+          <div class="alert-list" id="alertList">
+            <div class="empty-state" style="padding:20px 0">
+              <div class="empty-icon" style="font-size:32px">🔔</div>
+              <div class="empty-msg" style="font-size:12px">لا توجد تنبيهات</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: Devices Table + Latency Chart -->
+    <div class="grid-bottom">
+
+      <!-- Devices Table -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🖥️ الأجهزة</span>
+          <div class="table-controls">
+            <input class="search-input" placeholder="🔍 بحث..." oninput="filterDevices(this.value)">
+            <span class="filter-chip active" onclick="setTypeFilter(this,'all')">الكل</span>
+            <span class="filter-chip" onclick="setTypeFilter(this,'router')">🔀</span>
+            <span class="filter-chip" onclick="setTypeFilter(this,'switch')">🔌</span>
+            <span class="filter-chip" onclick="setTypeFilter(this,'server')">🖥️</span>
+            <span class="filter-chip" onclick="setTypeFilter(this,'firewall')">🛡️</span>
+          </div>
+        </div>
+        <div class="panel-body" style="padding:0">
+          <div style="overflow-x:auto;max-height:320px;overflow-y:auto"
+            class="panel-scroll">
+            <table class="dev-table">
+              <thead>
+                <tr>
+                  <th>الجهاز</th>
+                  <th>النوع</th>
+                  <th>الحالة</th>
+                  <th>Latency</th>
+                  <th>Loss%</th>
+                  <th>الموقع</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="devTableBody">
+                <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">
+                  جارٍ التحميل...
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latency Chart -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📈 Latency — آخر 60 دقيقة</span>
+          <select id="chartDeviceSelect" class="search-input" style="min-width:140px"
+            onchange="switchChartDevice(this.value)">
+            <option value="">اختر جهاز...</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div class="chart-wrap">
+            <canvas id="latencyChart"></canvas>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:12px;font-size:12px">
+            <span style="color:var(--muted)">الحالي:
+              <strong id="chartCurrent" style="color:var(--c3)">—</strong></span>
+            <span style="color:var(--muted)">الأعلى:
+              <strong id="chartMax" style="color:var(--c6)">—</strong></span>
+            <span style="color:var(--muted)">الأدنى:
+              <strong id="chartMin" style="color:var(--c5)">—</strong></span>
+            <span style="color:var(--muted)">المتوسط:
+              <strong id="chartAvg" style="color:var(--c4)">—</strong></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /content -->
+</main>
+
+<!-- ═══════════════ ADD DEVICE MODAL ═══════════════ -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🖥️ إضافة جهاز جديد</div>
+      <button class="close-btn" onclick="closeModal('addModal')">✕</button>
+    </div>
+    <div class="form-grid">
+
+      <div class="form-full" style="color:var(--c3);font-size:12px;padding:6px 10px;
+        background:rgba(34,211,238,.07);border-radius:8px;border:1px solid rgba(34,211,238,.2)">
+        📋 أدخل بيانات الجهاز — الحقول المميزة بـ * إلزامية
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><span class="form-req">*</span>اسم الجهاز</label>
+        <input type="text" class="form-input" id="addName" placeholder="Core Router 01">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="form-req">*</span>عنوان IP</label>
+        <input type="text" class="form-input" id="addIP" placeholder="192.168.1.1">
+        <span class="form-hint">IPv4 أو IPv6</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hostname / FQDN</label>
+        <input type="text" class="form-input" id="addHostname" placeholder="router1.local">
+      </div>
+      <div class="form-group">
+        <label class="form-label">MAC Address</label>
+        <input type="text" class="form-input" id="addMAC" placeholder="AA:BB:CC:DD:EE:FF">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="form-req">*</span>نوع الجهاز</label>
+        <select class="form-select" id="addType">
+          <option value="router">🔀 Router — راوتر</option>
+          <option value="switch">🔌 Switch — سويتش</option>
+          <option value="firewall">🛡️ Firewall — جدار الحماية</option>
+          <option value="server">🖥️ Server — خادم</option>
+          <option value="ap">📶 Access Point — نقطة وصول</option>
+          <option value="camera">📷 Camera — كاميرا</option>
+          <option value="printer">🖨️ Printer — طابعة</option>
+          <option value="other">⚙️ Other — أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الموقع</label>
+        <input type="text" class="form-input" id="addLocation" placeholder="الطابق الأول — غرفة الشبكة">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الشركة المصنعة</label>
+        <input type="text" class="form-input" id="addVendor" placeholder="Cisco / Juniper / HP...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الموديل</label>
+        <input type="text" class="form-input" id="addModel" placeholder="ASR 1001-X">
+      </div>
+
+      <div class="form-section">⚙️ إعدادات المراقبة (اختياري)</div>
+
+      <div class="form-group">
+        <label class="form-label">منفذ SNMP / SSH</label>
+        <input type="number" class="form-input" id="addPort" placeholder="161" min="1" max="65535">
+      </div>
+      <div class="form-group">
+        <label class="form-label">SNMP Community</label>
+        <input type="text" class="form-input" id="addSNMP" placeholder="public">
+      </div>
+      <div class="form-full form-group">
+        <label class="form-label">الوصف / ملاحظات</label>
+        <textarea class="form-textarea" id="addDesc" placeholder="أي ملاحظات إضافية عن الجهاز..."></textarea>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addModal')">إلغاء</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-cyan btn-sm" onclick="pingBeforeAdd()">📶 اختبار Ping</button>
+        <button class="btn btn-primary" onclick="saveDevice()">✅ إضافة الجهاز</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EDIT DEVICE MODAL ═══════════════ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">✏️ تعديل الجهاز — <span id="editTitle" style="color:var(--c3)"></span></div>
+      <button class="close-btn" onclick="closeModal('editModal')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label"><span class="form-req">*</span>اسم الجهاز</label>
+        <input type="text" class="form-input" id="editName">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="form-req">*</span>عنوان IP</label>
+        <input type="text" class="form-input" id="editIP">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hostname</label>
+        <input type="text" class="form-input" id="editHostname">
+      </div>
+      <div class="form-group">
+        <label class="form-label">MAC Address</label>
+        <input type="text" class="form-input" id="editMAC">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع الجهاز</label>
+        <select class="form-select" id="editType">
+          <option value="router">🔀 Router</option>
+          <option value="switch">🔌 Switch</option>
+          <option value="firewall">🛡️ Firewall</option>
+          <option value="server">🖥️ Server</option>
+          <option value="ap">📶 Access Point</option>
+          <option value="camera">📷 Camera</option>
+          <option value="printer">🖨️ Printer</option>
+          <option value="other">⚙️ Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الموقع</label>
+        <input type="text" class="form-input" id="editLocation">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الشركة المصنعة</label>
+        <input type="text" class="form-input" id="editVendor">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الموديل</label>
+        <input type="text" class="form-input" id="editModel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">منفذ SNMP</label>
+        <input type="number" class="form-input" id="editPort">
+      </div>
+      <div class="form-group">
+        <label class="form-label">SNMP Community</label>
+        <input type="text" class="form-input" id="editSNMP">
+      </div>
+      <div class="form-full form-group">
+        <label class="form-label">الوصف</label>
+        <textarea class="form-textarea" id="editDesc"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deleteDevice(currentEditId)">🗑 حذف</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="closeModal('editModal')">إلغاء</button>
+        <button class="btn btn-primary" onclick="updateDevice()">💾 حفظ التعديلات</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PING DETAIL MODAL ═══════════════ -->
+<div class="modal-overlay" id="pingModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <div class="modal-title">📶 اختبار Ping</div>
+      <button class="close-btn" onclick="closeModal('pingModal')">✕</button>
+    </div>
+    <div class="ping-result" id="pingResult">
+      <div style="font-size:40px;margin-bottom:12px;animation:spin .8s linear infinite">⏳</div>
+      <div style="color:var(--muted)">جارٍ الاختبار...</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA & STATE
+// ═══════════════════════════════════════════════
+const API = '/api/v1/network';
+let TOKEN = localStorage.getItem('access_token') || '';
+let devices = [], filteredDevices = [], typeFilter = 'all', searchQuery = '';
+let currentEditId = null;
+let latencyChart = null, latencyData = [], chartDeviceId = null;
+let showLabels = true;
+let alertItems = [];
+let liveInterval = null;
+
+// Demo devices when not authenticated
+const DEMO = [
+  {id:'d1',name:'Core Router',ip_address:'192.168.1.1',hostname:'core-rtr.local',
+   mac_address:'AA:BB:CC:11:22:33',device_type:'router',vendor:'Cisco',model:'ASR 1001-X',
+   location:'غرفة الشبكة — B1',status:'up',latency_ms:2.4,packet_loss_pct:0,uptime_pct:99.9,
+   cpu_pct:24,mem_pct:41,tags:['core','production'],x_pos:400,y_pos:150},
+  {id:'d2',name:'Distribution SW-1',ip_address:'192.168.1.2',hostname:'dist-sw1.local',
+   mac_address:'AA:BB:CC:11:22:44',device_type:'switch',vendor:'Cisco',model:'Catalyst 9300',
+   location:'الطابق الثاني',status:'up',latency_ms:1.1,packet_loss_pct:0,uptime_pct:100,
+   cpu_pct:12,mem_pct:28,tags:['distribution'],x_pos:200,y_pos:260},
+  {id:'d3',name:'Distribution SW-2',ip_address:'192.168.1.3',hostname:'dist-sw2.local',
+   mac_address:'AA:BB:CC:11:22:55',device_type:'switch',vendor:'HP',model:'ProCurve 5406zl',
+   location:'الطابق الثالث',status:'degraded',latency_ms:45.8,packet_loss_pct:3.2,uptime_pct:98.1,
+   cpu_pct:8,mem_pct:22,tags:['distribution'],x_pos:600,y_pos:260},
+  {id:'d4',name:'Firewall FW-01',ip_address:'192.168.1.254',hostname:'fw01.local',
+   mac_address:'AA:BB:CC:11:22:66',device_type:'firewall',vendor:'Fortinet',model:'FortiGate 200F',
+   location:'DMZ',status:'up',latency_ms:3.7,packet_loss_pct:0,uptime_pct:99.99,
+   cpu_pct:35,mem_pct:55,tags:['security','edge'],x_pos:400,y_pos:60},
+  {id:'d5',name:'Web Server',ip_address:'192.168.2.10',hostname:'web01.local',
+   mac_address:'AA:BB:CC:11:22:77',device_type:'server',vendor:'Dell',model:'PowerEdge R740',
+   location:'Data Center',status:'up',latency_ms:0.8,packet_loss_pct:0,uptime_pct:99.5,
+   cpu_pct:67,mem_pct:73,tags:['web','production'],x_pos:180,y_pos:360},
+  {id:'d6',name:'Backup Server',ip_address:'192.168.2.20',hostname:'backup01.local',
+   mac_address:null,device_type:'server',vendor:'HP',model:'ProLiant DL380',
+   location:'Data Center',status:'down',latency_ms:null,packet_loss_pct:100,uptime_pct:85.2,
+   cpu_pct:null,mem_pct:null,tags:['backup'],x_pos:620,y_pos:360},
+  {id:'d7',name:'WiFi AP-Floor1',ip_address:'192.168.3.1',hostname:'ap-f1.local',
+   mac_address:'AA:BB:CC:11:33:11',device_type:'ap',vendor:'Ubiquiti',model:'UniFi AC Pro',
+   location:'الطابق الأول',status:'up',latency_ms:5.2,packet_loss_pct:0,uptime_pct:99.1,
+   cpu_pct:15,mem_pct:30,tags:['wifi'],x_pos:200,y_pos:460},
+  {id:'d8',name:'WiFi AP-Floor2',ip_address:'192.168.3.2',hostname:'ap-f2.local',
+   mac_address:'AA:BB:CC:11:33:22',device_type:'ap',vendor:'Ubiquiti',model:'UniFi AC Pro',
+   location:'الطابق الثاني',status:'unknown',latency_ms:null,packet_loss_pct:null,uptime_pct:null,
+   cpu_pct:null,mem_pct:null,tags:['wifi'],x_pos:620,y_pos:460},
+];
+
+const TYPE_ICONS = {
+  router:'🔀',switch:'🔌',firewall:'🛡️',server:'🖥️',
+  ap:'📶',camera:'📷',printer:'🖨️',other:'⚙️'
+};
+const TYPE_LABELS = {
+  router:'Router',switch:'Switch',firewall:'Firewall',server:'Server',
+  ap:'Access Point',camera:'Camera',printer:'Printer',other:'Other'
+};
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  loadUserInfo();
+  loadDevices();
+  initLatencyChart();
+  // Live update every 8 seconds
+  liveInterval = setInterval(liveUpdate, 8000);
+});
+
+function loadUserInfo() {
+  const n = localStorage.getItem('user_name') || 'مصطفى';
+  document.getElementById('userName').textContent = n;
+  document.getElementById('userAv').textContent = n.charAt(0);
+}
+
+// ═══════════════════════════════════════════════
+// API HELPERS
+// ═══════════════════════════════════════════════
+async function apiFetch(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res = await fetch(API + path, { ...opts, headers: { ...headers, ...opts.headers } });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.detail || json.message || 'HTTP ' + res.status);
+  return json;
+}
+
+// ═══════════════════════════════════════════════
+// LOAD DEVICES
+// ═══════════════════════════════════════════════
+async function loadDevices() {
+  try {
+    const data = await apiFetch('');
+    devices = data.data || [];
+    updateStats(data.stats || {});
+  } catch {
+    devices = DEMO.map(d => ({ ...d })); // clone demo
+    updateStats(calcStats(devices));
+    addAlert('info', 'معلومة', 'تعمل بالبيانات التجريبية — سجّل دخول لمراقبة أجهزتك الحقيقية', 'الآن');
+  }
+  applyFilters();
+  renderTable();
+  drawTopology();
+  populateChartSelect();
+  if (!chartDeviceId && devices.length) switchChartDevice(devices[0].id);
+}
+
+function calcStats(devs) {
+  const lats = devs.filter(d => d.latency_ms != null).map(d => d.latency_ms);
+  const losses = devs.filter(d => d.packet_loss_pct != null).map(d => d.packet_loss_pct);
+  return {
+    total: devs.length,
+    up:   devs.filter(d => d.status === 'up').length,
+    down: devs.filter(d => d.status === 'down').length,
+    degraded: devs.filter(d => d.status === 'degraded').length,
+    avg_latency: lats.length ? +(lats.reduce((a,b)=>a+b,0)/lats.length).toFixed(1) : null,
+    avg_loss:    losses.length ? +(losses.reduce((a,b)=>a+b,0)/losses.length).toFixed(1) : 0,
+  };
+}
+
+function updateStats(s) {
+  const total = s.total || devices.length;
+  animCount('stTotal', total);
+  animCount('stUp',    s.up    || 0);
+  animCount('stDown',  s.down  || 0);
+  document.getElementById('stLatency').textContent = s.avg_latency != null ? s.avg_latency + ' ms' : '—';
+  document.getElementById('stLoss').textContent    = (s.avg_loss || 0) + '%';
+  if (total > 0) {
+    setBar('barUp',   (s.up   || 0) / total * 100);
+    setBar('barDown', (s.down || 0) / total * 100);
+    setBar('barLat',  Math.min(100, ((s.avg_latency||0) / 200) * 100));
+    setBar('barLoss', Math.min(100, (s.avg_loss || 0) * 5));
+    setBar('barTotal', 100);
+  }
+}
+function animCount(id, target) {
+  let v = 0; const el = document.getElementById(id);
+  const step = Math.max(1, Math.floor(target / 20));
+  const t = setInterval(() => { v = Math.min(v + step, target); el.textContent = v; if(v>=target)clearInterval(t); }, 50);
+}
+function setBar(id, pct) {
+  setTimeout(() => { const el = document.getElementById(id); if(el) el.style.width = pct + '%'; }, 300);
+}
+
+// ═══════════════════════════════════════════════
+// FILTER & TABLE
+// ═══════════════════════════════════════════════
+function applyFilters() {
+  filteredDevices = devices.filter(d => {
+    if (typeFilter !== 'all' && d.device_type !== typeFilter) return false;
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return d.name.toLowerCase().includes(q) || d.ip_address.includes(q) ||
+        (d.hostname || '').toLowerCase().includes(q) || (d.location || '').toLowerCase().includes(q);
+    }
+    return true;
+  });
+}
+function filterDevices(q) { searchQuery = q; applyFilters(); renderTable(); }
+function setTypeFilter(el, t) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); typeFilter = t; applyFilters(); renderTable();
+}
+
+function latClass(ms) {
+  if (ms == null) return 'latency-na';
+  if (ms < 20) return 'latency-good';
+  if (ms < 100) return 'latency-warn';
+  return 'latency-bad';
+}
+function statusPill(s) {
+  const map = {
+    up:      ['pill-up','🟢 Up'],
+    down:    ['pill-down','🔴 Down'],
+    degraded:['pill-degraded','🟡 Degraded'],
+    unknown: ['pill-unknown','⚪ Unknown'],
+  };
+  const [cls, label] = map[s] || ['pill-unknown', s];
+  return `<span class="status-pill ${cls}">${label}</span>`;
+}
+
+function renderTable() {
+  const body = document.getElementById('devTableBody');
+  if (!filteredDevices.length) {
+    body.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+      <div class="empty-icon">🖥️</div>
+      <div class="empty-msg">لا توجد أجهزة</div></div></td></tr>`;
+    return;
+  }
+  body.innerHTML = filteredDevices.map(d => `
+  <tr>
+    <td>
+      <div class="dev-name">${TYPE_ICONS[d.device_type]||'⚙️'} ${d.name}</div>
+      <div class="dev-ip">${d.ip_address}${d.hostname ? ' · '+d.hostname : ''}</div>
+    </td>
+    <td style="font-size:12px;color:var(--muted)">${TYPE_LABELS[d.device_type]||d.device_type}</td>
+    <td>${statusPill(d.status)}</td>
+    <td class="latency-val ${latClass(d.latency_ms)}">
+      ${d.latency_ms != null ? d.latency_ms + ' ms' : '—'}
+    </td>
+    <td style="font-size:12px;color:${d.packet_loss_pct>0?'var(--c6)':'var(--muted)'}">
+      ${d.packet_loss_pct != null ? d.packet_loss_pct + '%' : '—'}
+    </td>
+    <td style="font-size:11px;color:var(--muted)">${d.location||'—'}</td>
+    <td>
+      <div class="dev-actions">
+        <button class="icon-btn icon-btn-ping" onclick="pingDevice('${d.id}')" title="Ping">📶</button>
+        <button class="icon-btn icon-btn-edit" onclick="openEditModal('${d.id}')" title="تعديل">✏️</button>
+        <button class="icon-btn icon-btn-del"  onclick="deleteDevice('${d.id}')" title="حذف">🗑</button>
+      </div>
+    </td>
+  </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+// TOPOLOGY CANVAS
+// ═══════════════════════════════════════════════
+const STATUS_COLORS = { up:'#10b981', down:'#ef4444', degraded:'#f59e0b', unknown:'#94a3b8' };
+const EDGES = [
+  ['d1','d4'],['d1','d2'],['d1','d3'],
+  ['d2','d5'],['d2','d7'],['d3','d6'],['d3','d8'],
+];
+
+function drawTopology() {
+  const canvas = document.getElementById('topoCanvas');
+  const wrap   = canvas.parentElement;
+  canvas.width  = wrap.clientWidth  || 700;
+  canvas.height = wrap.clientHeight || 320;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const scaleX = canvas.width / 820;
+  const scaleY = canvas.height / 540;
+
+  // Draw edges first
+  ctx.lineWidth = 1.5;
+  EDGES.forEach(([aId, bId]) => {
+    const a = devices.find(d => d.id === aId);
+    const b = devices.find(d => d.id === bId);
+    if (!a || !b) return;
+    const ax = a.x_pos * scaleX, ay = a.y_pos * scaleY;
+    const bx = b.x_pos * scaleX, by = b.y_pos * scaleY;
+    const grad = ctx.createLinearGradient(ax, ay, bx, by);
+    const ca = STATUS_COLORS[a.status] || '#94a3b8';
+    const cb = STATUS_COLORS[b.status] || '#94a3b8';
+    grad.addColorStop(0, ca + '80');
+    grad.addColorStop(1, cb + '80');
+    ctx.strokeStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+  });
+
+  // Draw nodes
+  devices.forEach(d => {
+    const x = d.x_pos * scaleX;
+    const y = d.y_pos * scaleY;
+    const color = STATUS_COLORS[d.status] || '#94a3b8';
+    const r = d.device_type === 'firewall' || d.device_type === 'router' ? 22 : 16;
+
+    // Glow for up devices
+    if (d.status === 'up') {
+      ctx.beginPath(); ctx.arc(x, y, r + 6, 0, Math.PI * 2);
+      ctx.fillStyle = color + '20'; ctx.fill();
+    }
+
+    // Outer ring
+    ctx.beginPath(); ctx.arc(x, y, r + 2, 0, Math.PI * 2);
+    ctx.strokeStyle = color + 'aa'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Node fill
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+    grad.addColorStop(0, color + '60');
+    grad.addColorStop(1, color + '25');
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = grad; ctx.fill();
+
+    // Icon
+    ctx.font = `${r}px serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(TYPE_ICONS[d.device_type] || '⚙️', x, y);
+
+    // Label
+    if (showLabels) {
+      ctx.font = 'bold 10px Segoe UI';
+      ctx.fillStyle = '#e2e8f0';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.name.slice(0, 16), x, y + r + 11);
+      ctx.font = '9px monospace';
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(d.ip_address, x, y + r + 21);
+    }
+  });
+}
+
+function toggleTopoLabels() { showLabels = !showLabels; drawTopology(); }
+function resetTopo() { drawTopology(); showToast('تم إعادة رسم الخريطة', 'info'); }
+window.addEventListener('resize', drawTopology);
+
+// ═══════════════════════════════════════════════
+// LATENCY CHART
+// ═══════════════════════════════════════════════
+function initLatencyChart() {
+  const ctx = document.getElementById('latencyChart');
+  latencyChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: Array.from({length:60}, (_,i) => i===59 ? 'الآن' : -(59-i)+'دق'),
+      datasets: [{
+        label: 'Latency (ms)',
+        data: [],
+        borderColor: '#22d3ee',
+        backgroundColor: 'rgba(34,211,238,.08)',
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        fill: true,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 400 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(15,23,42,.95)',
+          titleColor: '#e2e8f0', bodyColor: '#94a3b8',
+          borderColor: 'rgba(34,211,238,.3)', borderWidth: 1,
+          callbacks: { label: c => c.raw != null ? c.raw + ' ms' : 'غير متاح' }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#475569', font: { size: 9 }, maxTicksLimit: 8 } },
+        y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#475569', font: { size: 10 } }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function populateChartSelect() {
+  const sel = document.getElementById('chartDeviceSelect');
+  sel.innerHTML = '<option value="">اختر جهاز...</option>' +
+    devices.map(d => `<option value="${d.id}">${TYPE_ICONS[d.device_type]} ${d.name} — ${d.ip_address}</option>`).join('');
+  if (chartDeviceId) sel.value = chartDeviceId;
+}
+
+async function switchChartDevice(devId) {
+  if (!devId) return;
+  chartDeviceId = devId;
+  document.getElementById('chartDeviceSelect').value = devId;
+  const dev = devices.find(d => d.id === devId);
+  if (!dev) return;
+
+  // Build history from demo data
+  let pts;
+  if (devId.startsWith('d')) {
+    const base = dev.latency_ms || 10;
+    pts = Array.from({length:60}, () => {
+      const jitter = (Math.random() - 0.5) * base * 0.6;
+      const spike  = Math.random() < 0.05 ? base * 3 : 0;
+      return dev.status === 'down' ? null : +Math.max(0.3, base + jitter + spike).toFixed(2);
+    });
+  } else {
+    try {
+      const res = await apiFetch('/' + devId + '/history');
+      pts = res.data?.latency || [];
+    } catch {
+      pts = [];
+    }
+  }
+
+  latencyData = pts;
+  latencyChart.data.datasets[0].data = pts;
+  latencyChart.data.datasets[0].label = dev.name;
+  latencyChart.update();
+  updateChartStats(pts);
+}
+
+function updateChartStats(pts) {
+  const valid = pts.filter(v => v != null);
+  const fmt = v => v != null ? v + ' ms' : '—';
+  document.getElementById('chartCurrent').textContent = fmt(valid[valid.length - 1]);
+  document.getElementById('chartMax').textContent     = fmt(valid.length ? Math.max(...valid) : null);
+  document.getElementById('chartMin').textContent     = fmt(valid.length ? Math.min(...valid) : null);
+  document.getElementById('chartAvg').textContent     = fmt(valid.length ? +(valid.reduce((a,b)=>a+b,0)/valid.length).toFixed(1) : null);
+}
+
+// ═══════════════════════════════════════════════
+// PING
+// ═══════════════════════════════════════════════
+async function pingDevice(devId) {
+  const dev = devices.find(d => d.id === devId);
+  if (!dev) return;
+
+  // Open ping modal
+  document.getElementById('pingResult').innerHTML = `
+    <div style="font-size:40px;margin-bottom:12px;animation:spin .8s linear infinite">⏳</div>
+    <div style="color:var(--muted);font-size:14px">جارٍ اختبار ${dev.ip_address}...</div>`;
+  document.getElementById('pingModal').classList.add('open');
+
+  await new Promise(r => setTimeout(r, 1200));
+
+  let latency, loss, status;
+  if (devId.startsWith('d')) {
+    // demo simulation
+    if (dev.status === 'down') { latency = null; loss = 100; status = 'down'; }
+    else if (dev.status === 'degraded') { latency = +(30 + Math.random()*40).toFixed(1); loss = +(2+Math.random()*8).toFixed(1); status = 'degraded'; }
+    else { latency = +(dev.latency_ms + (Math.random()-0.5)*2).toFixed(2); loss = 0; status = 'up'; }
+  } else {
+    try {
+      const res = await apiFetch('/' + devId + '/ping', { method: 'POST' });
+      latency = res.data?.latency_ms; loss = res.data?.packet_loss; status = res.data?.status;
+      // Update device in list
+      Object.assign(dev, { latency_ms: latency, packet_loss_pct: loss, status });
+      renderTable(); drawTopology(); updateStats(calcStats(devices));
+    } catch {
+      latency = null; loss = 100; status = 'down';
+    }
+  }
+
+  const statusMap = { up: ['up','✅','var(--c5)'], down: ['down','❌','var(--c6)'], degraded: ['degraded','⚠️','var(--c4)'] };
+  const [cls, icon, color] = statusMap[status] || ['unknown','❓','var(--muted)'];
+  document.getElementById('pingResult').innerHTML = `
+    <div class="ping-circle ${cls}">
+      <span class="ping-ms">${latency != null ? latency : '—'}</span>
+      <span class="ping-unit">ms</span>
+    </div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:8px">${icon} ${dev.name}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px">${dev.ip_address}</div>
+    <div class="ping-stats-row">
+      <div class="ping-stat"><div class="ping-stat-val" style="color:${color}">${latency != null ? latency+' ms' : 'Timeout'}</div><div class="ping-stat-label">Latency</div></div>
+      <div class="ping-stat"><div class="ping-stat-val" style="color:${loss>0?'var(--c6)':'var(--c5)'}">${loss}%</div><div class="ping-stat-label">Packet Loss</div></div>
+      <div class="ping-stat"><div class="ping-stat-val" style="color:${color}">${cls.charAt(0).toUpperCase()+cls.slice(1)}</div><div class="ping-stat-label">Status</div></div>
+    </div>`;
+
+  if (status === 'down') addAlert('crit', '🔴 جهاز متوقف', `${dev.name} (${dev.ip_address}) لا يستجيب`, 'الآن');
+  else if (status === 'degraded') addAlert('warn', '🟡 أداء منخفض', `${dev.name}: ${latency}ms, ${loss}% loss`, 'الآن');
+}
+
+async function pingBeforeAdd() {
+  const ip = document.getElementById('addIP').value.trim();
+  if (!ip) { showToast('⚠️ أدخل عنوان IP أولاً', 'warn'); return; }
+  showToast('📶 جارٍ اختبار ' + ip + '...', 'info');
+  await new Promise(r => setTimeout(r, 1000));
+  const ok = Math.random() > 0.2;
+  showToast(ok ? `✅ ${ip} يستجيب — Latency ~${(2+Math.random()*8).toFixed(1)}ms` : `⚠️ ${ip} لا يستجيب`, ok ? 'success' : 'warn');
+}
+
+// ═══════════════════════════════════════════════
+// SCAN ALL
+// ═══════════════════════════════════════════════
+async function scanAll() {
+  const btn = document.getElementById('scanAllBtn');
+  btn.innerHTML = '⏳ جارٍ المسح...';
+  btn.disabled = true;
+  showToast('📶 جارٍ مسح جميع الأجهزة...', 'info');
+
+  const isDemo = devices.every(d => d.id.startsWith('d'));
+  if (isDemo) {
+    // Simulate scan
+    for (const dev of devices) {
+      await new Promise(r => setTimeout(r, 120));
+      if (dev.status !== 'down') {
+        dev.latency_ms = +(dev.latency_ms + (Math.random()-0.5)*3).toFixed(2);
+      }
+    }
+  } else {
+    try {
+      const res = await apiFetch('/scan/ping-all', { method: 'POST' });
+      (res.data || []).forEach(r => {
+        const d = devices.find(x => x.id === r.id);
+        if (d) Object.assign(d, { latency_ms: r.latency_ms, status: r.status });
+      });
+    } catch (e) { showToast('❌ ' + e.message, 'error'); }
+  }
+
+  updateStats(calcStats(devices));
+  renderTable();
+  drawTopology();
+  document.getElementById('lastScan').textContent = 'آخر مسح: ' + new Date().toLocaleTimeString('ar');
+  btn.innerHTML = '📶 مسح الكل';
+  btn.disabled = false;
+  showToast(`✅ اكتمل المسح — ${devices.length} جهاز`, 'success');
+  if (chartDeviceId) switchChartDevice(chartDeviceId);
+}
+
+// ═══════════════════════════════════════════════
+// CRUD — ADD
+// ═══════════════════════════════════════════════
+function openAddModal() {
+  ['addName','addIP','addHostname','addMAC','addLocation','addVendor','addModel','addDesc','addSNMP'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('addType').value  = 'router';
+  document.getElementById('addPort').value  = '';
+  document.getElementById('addModal').classList.add('open');
+}
+
+async function saveDevice() {
+  const name = document.getElementById('addName').value.trim();
+  const ip   = document.getElementById('addIP').value.trim();
+  if (!name) { showToast('⚠️ أدخل اسم الجهاز', 'warn'); return; }
+  if (!ip)   { showToast('⚠️ أدخل عنوان IP', 'warn'); return; }
+
+  const payload = {
+    name, ip_address: ip,
+    hostname:       document.getElementById('addHostname').value.trim() || null,
+    mac_address:    document.getElementById('addMAC').value.trim()      || null,
+    device_type:    document.getElementById('addType').value,
+    location:       document.getElementById('addLocation').value.trim() || null,
+    vendor:         document.getElementById('addVendor').value.trim()   || null,
+    model:          document.getElementById('addModel').value.trim()    || null,
+    description:    document.getElementById('addDesc').value.trim()     || null,
+    port:           parseInt(document.getElementById('addPort').value)  || null,
+    snmp_community: document.getElementById('addSNMP').value.trim()     || null,
+    tags: [],
+    x_pos: 100 + Math.random() * 600,
+    y_pos: 100 + Math.random() * 300,
+  };
+
+  const isDemo = devices.every(d => d.id.startsWith('d'));
+  if (isDemo) {
+    const newDev = { ...payload, id: 'new_' + Date.now(), status: 'unknown',
+      latency_ms: null, packet_loss_pct: null, uptime_pct: null, cpu_pct: null, mem_pct: null };
+    devices.unshift(newDev);
+    closeModal('addModal');
+    applyFilters(); renderTable(); drawTopology(); populateChartSelect();
+    updateStats(calcStats(devices));
+    showToast('✅ تم إضافة ' + name + ' (تجريبي)', 'success');
+    addAlert('info', '🆕 جهاز جديد', `تم إضافة ${name} — ${ip}`, 'الآن');
+    return;
+  }
+
+  try {
+    const res = await apiFetch('', { method: 'POST', body: JSON.stringify(payload) });
+    devices.unshift(res.data);
+    closeModal('addModal');
+    applyFilters(); renderTable(); drawTopology(); populateChartSelect();
+    updateStats(calcStats(devices));
+    showToast('✅ تم إضافة ' + name, 'success');
+    addAlert('info', '🆕 جهاز جديد', `تم إضافة ${name} — ${ip}`, 'الآن');
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════
+// CRUD — EDIT
+// ═══════════════════════════════════════════════
+function openEditModal(devId) {
+  const dev = devices.find(d => d.id === devId);
+  if (!dev) return;
+  currentEditId = devId;
+  document.getElementById('editTitle').textContent = dev.name;
+  document.getElementById('editName').value     = dev.name     || '';
+  document.getElementById('editIP').value       = dev.ip_address || '';
+  document.getElementById('editHostname').value = dev.hostname  || '';
+  document.getElementById('editMAC').value      = dev.mac_address || '';
+  document.getElementById('editType').value     = dev.device_type || 'other';
+  document.getElementById('editLocation').value = dev.location  || '';
+  document.getElementById('editVendor').value   = dev.vendor    || '';
+  document.getElementById('editModel').value    = dev.model     || '';
+  document.getElementById('editPort').value     = dev.port      || '';
+  document.getElementById('editSNMP').value     = dev.snmp_community || '';
+  document.getElementById('editDesc').value     = dev.description || '';
+  document.getElementById('editModal').classList.add('open');
+}
+
+async function updateDevice() {
+  if (!currentEditId) return;
+  const name = document.getElementById('editName').value.trim();
+  const ip   = document.getElementById('editIP').value.trim();
+  if (!name || !ip) { showToast('⚠️ الاسم وعنوان IP إلزاميان', 'warn'); return; }
+
+  const payload = {
+    name, ip_address: ip,
+    hostname:       document.getElementById('editHostname').value.trim() || null,
+    mac_address:    document.getElementById('editMAC').value.trim()      || null,
+    device_type:    document.getElementById('editType').value,
+    location:       document.getElementById('editLocation').value.trim() || null,
+    vendor:         document.getElementById('editVendor').value.trim()   || null,
+    model:          document.getElementById('editModel').value.trim()    || null,
+    description:    document.getElementById('editDesc').value.trim()     || null,
+    port:           parseInt(document.getElementById('editPort').value)  || null,
+    snmp_community: document.getElementById('editSNMP').value.trim()     || null,
+  };
+
+  const isDemo = currentEditId.startsWith('d') || currentEditId.startsWith('new_');
+  if (isDemo) {
+    const dev = devices.find(d => d.id === currentEditId);
+    if (dev) Object.assign(dev, payload);
+    closeModal('editModal');
+    applyFilters(); renderTable(); drawTopology();
+    showToast('💾 تم حفظ التعديلات (تجريبي)', 'success');
+    return;
+  }
+
+  try {
+    const res = await apiFetch('/' + currentEditId, { method: 'PUT', body: JSON.stringify(payload) });
+    const idx = devices.findIndex(d => d.id === currentEditId);
+    if (idx !== -1) devices[idx] = res.data;
+    closeModal('editModal');
+    applyFilters(); renderTable(); drawTopology();
+    showToast('💾 تم حفظ التعديلات', 'success');
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+}
+
+async function deleteDevice(devId) {
+  const dev = devices.find(d => d.id === devId);
+  if (!dev) return;
+  if (!confirm(`حذف "${dev.name}"؟`)) return;
+
+  const isDemo = devId.startsWith('d') || devId.startsWith('new_');
+  if (!isDemo) {
+    try { await apiFetch('/' + devId, { method: 'DELETE' }); }
+    catch (e) { showToast('❌ ' + e.message, 'error'); return; }
+  }
+
+  devices = devices.filter(d => d.id !== devId);
+  closeModal('editModal');
+  applyFilters(); renderTable(); drawTopology(); populateChartSelect();
+  updateStats(calcStats(devices));
+  showToast('🗑 تم حذف ' + dev.name, 'info');
+}
+
+// ═══════════════════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════════════════
+function addAlert(level, title, msg, time) {
+  alertItems.unshift({ level, title, msg, time });
+  if (alertItems.length > 20) alertItems.pop();
+  renderAlerts();
+}
+function renderAlerts() {
+  const el = document.getElementById('alertList');
+  document.getElementById('alertCount').textContent = alertItems.filter(a=>a.level==='crit').length;
+  if (!alertItems.length) {
+    el.innerHTML = `<div class="empty-state" style="padding:20px 0">
+      <div class="empty-icon" style="font-size:32px">🔔</div>
+      <div class="empty-msg" style="font-size:12px">لا توجد تنبيهات</div></div>`;
+    return;
+  }
+  const badgeMap = {crit:'ab-crit',warn:'ab-warn',info:'ab-info',ok:'ab-ok'};
+  const iconMap  = {crit:'🔴',warn:'🟡',info:'🔵',ok:'🟢'};
+  el.innerHTML = alertItems.map(a => `
+    <div class="alert-item ${a.level}">
+      <span class="alert-icon">${iconMap[a.level]||'⚪'}</span>
+      <div class="alert-msg">
+        <span class="alert-dev">${a.title}</span>
+        <div style="color:var(--muted);font-size:11px;margin-top:2px">${a.msg}</div>
+      </div>
+      <span class="alert-badge ${badgeMap[a.level]||'ab-info'}">${a.level==='crit'?'خطر':a.level==='warn'?'تحذير':a.level==='ok'?'طبيعي':'معلومة'}</span>
+      <span class="alert-time">${a.time}</span>
+    </div>`).join('');
+}
+function clearAlerts() { alertItems = []; renderAlerts(); showToast('تم مسح التنبيهات', 'info'); }
+
+// ═══════════════════════════════════════════════
+// LIVE UPDATE (simulate)
+// ═══════════════════════════════════════════════
+function liveUpdate() {
+  devices.forEach(dev => {
+    if (dev.status === 'down' || dev.latency_ms == null) return;
+    const jitter = (Math.random() - 0.5) * 4;
+    dev.latency_ms = +Math.max(0.5, dev.latency_ms + jitter).toFixed(2);
+    if (dev.latency_ms > 150 && dev.status === 'up') {
+      dev.status = 'degraded';
+      addAlert('warn', '🟡 أداء منخفض', `${dev.name}: ${dev.latency_ms}ms`, 'الآن');
+    } else if (dev.latency_ms < 100 && dev.status === 'degraded') {
+      dev.status = 'up';
+    }
+  });
+  renderTable();
+  drawTopology();
+  updateStats(calcStats(devices));
+
+  // Live latency chart update
+  if (chartDeviceId) {
+    const dev = devices.find(d => d.id === chartDeviceId);
+    if (dev && dev.latency_ms != null) {
+      const data = latencyChart.data.datasets[0].data;
+      data.push(dev.latency_ms);
+      if (data.length > 60) data.shift();
+      latencyChart.update('none');
+      updateChartStats(data);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+
+let toastTimer;
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+<script src="/static/chat-widget.js"></script>
+<script src="/static/platform-i18n.js"></script>
+</body>
+</html>

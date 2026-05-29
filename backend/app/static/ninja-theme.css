@@ -1,0 +1,842 @@
+/*
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║   NinjaOne-Inspired Theme — AI Platform                  ║
+ * ║   Clean · Professional · Enterprise                      ║
+ * ╚══════════════════════════════════════════════════════════╝
+ */
+
+/* ── Google Fonts: Inter ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ══════════════════════════════════════════════════════════
+   1. DESIGN TOKENS — Override dark glassmorphism palette
+   ══════════════════════════════════════════════════════════ */
+:root {
+  /* Backgrounds */
+  --dark:   #f0f4f8;           /* Main content area */
+  --dark2:  #ffffff;           /* Cards, panels */
+  --dark3:  #f8fafc;           /* Subtle input bg */
+  --dark4:  #e2e8f0;           /* Dividers, borders */
+
+  /* Brand — NinjaOne Blue */
+  --c1: #1b6ac9;
+  --c2: #1558b0;
+  --c3: #0ea5e9;
+  --c4: #f59e0b;
+  --c5: #10b981;
+  --c6: #ef4444;
+
+  /* Typography */
+  --text:   #0f172a;
+  --muted:  #64748b;
+
+  /* Surfaces */
+  --border: #e2e8f0;
+  --glass:  #ffffff;
+  --radius: 8px;
+
+  /* Sidebar (stays dark) */
+  --sb:     #0f172a;
+  --sb2:    #1e293b;
+  --sb-txt: #8b9ab3;
+  --sb-act: rgba(27,106,201,.14);
+  --sb-brd: rgba(255,255,255,.07);
+}
+
+/* ══════════════════════════════════════════════════════════
+   2. BASE
+   ══════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  background: var(--dark) !important;
+  color: var(--text) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   3. SIDEBAR — NinjaOne dark navy
+   ══════════════════════════════════════════════════════════ */
+.sidebar {
+  background: var(--sb) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-color: var(--sb-brd) !important;
+  border-right-color: var(--sb-brd) !important;
+  border-left-color: var(--sb-brd) !important;
+}
+
+/* Logo */
+.logo-icon {
+  background: var(--c1) !important;
+  box-shadow: 0 2px 8px rgba(27,106,201,.35) !important;
+}
+
+.logo-text {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  color: #f1f5f9 !important;
+}
+
+.logo-sub { color: #475569 !important; }
+
+/* Nav section labels */
+.nav-section {
+  color: #374151 !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.1px !important;
+}
+
+/* Nav items */
+.nav-item {
+  color: var(--sb-txt) !important;
+  border-radius: 6px !important;
+  border: none !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,.055) !important;
+  color: #d1d5db !important;
+}
+
+.nav-item.active {
+  background: var(--sb-act) !important;
+  color: #60a5fa !important;
+  border: none !important;
+  border-right: 3px solid var(--c1) !important;
+  border-left:  none !important;
+}
+
+.nav-item .icon {
+  background: rgba(255,255,255,.06) !important;
+}
+
+.nav-item.active .icon {
+  background: rgba(27,106,201,.22) !important;
+}
+
+.nav-badge {
+  background: var(--c1) !important;
+  color: #fff !important;
+}
+
+/* User card in footer */
+.sidebar-footer { border-color: var(--sb-brd) !important; }
+.user-av { background: var(--c1) !important; }
+.user-name { color: #e2e8f0 !important; }
+.user-role { color: #4b5563 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   4. MAIN AREA
+   ══════════════════════════════════════════════════════════ */
+.main {
+  background: var(--dark) !important;
+  color: var(--text) !important;
+}
+
+/* Topbar */
+.topbar {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.page-title {
+  color: #0f172a !important;
+  background: none !important;
+  -webkit-text-fill-color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+.page-title span,
+.topbar .muted {
+  color: #94a3b8 !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   5. CARDS & PANELS
+   ══════════════════════════════════════════════════════════ */
+
+/* Remove ALL glassmorphism blur from content area */
+.main *,
+.content * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04) !important;
+  border-radius: 10px !important;
+}
+
+.card-title {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+.card-title .badge {
+  background: #eff6ff !important;
+  color: var(--c1) !important;
+  border: 1px solid #bfdbfe !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   6. KPI / STAT CARDS
+   ══════════════════════════════════════════════════════════ */
+.kpi-card,
+.stat-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.07) !important;
+  backdrop-filter: none !important;
+}
+
+.kpi-card::before { opacity: .04 !important; }
+
+.kpi-val,
+.stat-value,
+.metric-value,
+[class*="-val"],
+[class*="-value"] {
+  color: #0f172a !important;
+  font-weight: 800 !important;
+}
+
+.kpi-label,
+.stat-label,
+.metric-label,
+[class*="-label"] {
+  color: #64748b !important;
+}
+
+.kpi-change.up     { color: #10b981 !important; }
+.kpi-change.down   { color: #ef4444 !important; }
+.kpi-change.neutral{ color: #94a3b8 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   7. TOPBAR EXTRAS (period tabs, buttons)
+   ══════════════════════════════════════════════════════════ */
+.period-tabs {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.period-tab {
+  color: #64748b !important;
+  background: none !important;
+}
+
+.period-tab:hover { color: #0f172a !important; }
+
+.period-tab.active {
+  background: var(--c1) !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(27,106,201,.3) !important;
+}
+
+.export-btn,
+[class*="action-btn"]:not(.nav-item),
+[class*="create-btn"],
+[class*="invite-btn"],
+[class*="save-btn"] {
+  background: var(--c1) !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid var(--c1) !important;
+  box-shadow: 0 1px 3px rgba(27,106,201,.25) !important;
+}
+
+.export-btn:hover { background: var(--c2) !important; border-color: var(--c2) !important; }
+
+/* ══════════════════════════════════════════════════════════
+   8. TABLES
+   ══════════════════════════════════════════════════════════ */
+table {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+thead th {
+  background: #f8fafc !important;
+  color: #475569 !important;
+  border-color: #e2e8f0 !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+}
+
+tbody tr { border-color: #f1f5f9 !important; }
+tbody tr:hover { background: #f8fbff !important; }
+tbody td { color: #334155 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   9. FORMS & INPUTS
+   ══════════════════════════════════════════════════════════ */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+textarea,
+select {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  border-radius: 8px !important;
+  font-size: 13.5px !important;
+}
+
+input::placeholder,
+textarea::placeholder { color: #94a3b8 !important; }
+
+input:focus:not([type="checkbox"]):not([type="radio"]),
+textarea:focus,
+select:focus {
+  background: #ffffff !important;
+  border-color: var(--c1) !important;
+  box-shadow: 0 0 0 3px rgba(27,106,201,.1) !important;
+  outline: none !important;
+}
+
+label,
+.form-label,
+.input-label {
+  color: #374151 !important;
+  font-weight: 500 !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   10. STATUS PILLS & BADGES
+   ══════════════════════════════════════════════════════════ */
+.status-pill.active {
+  background: #f0fdf4 !important;
+  color: #16a34a !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+.status-pill.inactive {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  border: 1px solid #fecaca !important;
+}
+
+.status-pill.draft {
+  background: #fffbeb !important;
+  color: #d97706 !important;
+  border: 1px solid #fde68a !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   11. PROGRESS BARS
+   ══════════════════════════════════════════════════════════ */
+.prog-bar,
+[class*="bar-bg"],
+[class*="progress-bg"] {
+  background: #e2e8f0 !important;
+}
+
+.prog-fill,
+[class*="bar-fill"],
+[class*="progress-fill"] {
+  background: linear-gradient(90deg, var(--c1), var(--c3)) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   12. MODALS & OVERLAYS
+   ══════════════════════════════════════════════════════════ */
+[class*="overlay"],
+.modal-overlay {
+  background: rgba(15,23,42,.5) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+[class*="modal"],
+.dialog {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,.18) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: #0f172a !important;
+}
+
+[class*="modal"] h2,
+[class*="modal"] h3,
+[class*="modal"] .modal-title {
+  color: #0f172a !important;
+}
+
+[class*="modal"] p,
+[class*="modal"] .modal-desc {
+  color: #64748b !important;
+}
+
+[class*="modal"] input,
+[class*="modal"] select,
+[class*="modal"] textarea {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   13. TOASTS
+   ══════════════════════════════════════════════════════════ */
+.toast {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.1) !important;
+}
+
+.toast.success {
+  background: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+  color: #15803d !important;
+}
+
+.toast.error {
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+  color: #991b1b !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   14. SKELETON LOADER
+   ══════════════════════════════════════════════════════════ */
+.skeleton {
+  background: linear-gradient(
+    90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%
+  ) !important;
+  background-size: 200% 100% !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   15. SCROLLBARS
+   ══════════════════════════════════════════════════════════ */
+.main *,
+.content * {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Sidebar scrollbar stays dark */
+.sidebar::-webkit-scrollbar-track { background: #0f172a; }
+.sidebar::-webkit-scrollbar-thumb { background: #1e293b; }
+
+/* ══════════════════════════════════════════════════════════
+   16. SPECIFIC TEXT OVERRIDES
+      (fixes hardcoded hex colors like #e2e8f0 in main area)
+   ══════════════════════════════════════════════════════════ */
+
+/* Common value/title/label patterns */
+.main h1,.main h2,.main h3,.main h4,.main h5 {
+  color: #0f172a !important;
+}
+
+/* Activity feed text */
+.act-title  { color: #334155 !important; }
+.act-time   { color: #94a3b8 !important; }
+
+/* Role cards & permission text */
+[class*="role-"], [class*="perm-"] {
+  color: #0f172a !important;
+}
+
+/* Stats row in right column */
+.right-col * {
+  color: #0f172a;
+}
+
+/* Bot card text */
+[class*="bot-name"],
+[class*="bot-desc"] {
+  color: #0f172a !important;
+}
+
+/* Any element using CSS vars will auto-update via :root */
+/* For hardcoded colors we target common inline patterns: */
+[style*="color:#e2e8f0"],
+[style*="color: #e2e8f0"] {
+  color: #334155 !important;
+}
+
+[style*="color:#94a3b8"],
+[style*="color: #94a3b8"] {
+  color: #64748b !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   17. CHAT WIDGET
+   ══════════════════════════════════════════════════════════ */
+#cw-panel {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 12px 48px rgba(0,0,0,.14) !important;
+}
+
+#cw-header {
+  background: var(--c1) !important;
+  border-color: var(--c1) !important;
+}
+
+#cw-header-title { color: #ffffff !important; }
+#cw-header-icon  { filter: none !important; }
+#cw-header-status{ color: #bfdbfe !important; }
+#cw-header-status .cw-dot { background: #bfdbfe !important; }
+#cw-close { color: rgba(255,255,255,.7) !important; }
+#cw-close:hover { background: rgba(255,255,255,.15) !important; color: #fff !important; }
+
+#cw-channels {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.cw-ch-label { color: #94a3b8 !important; font-size: 9px !important; letter-spacing: 1px !important; }
+.cw-ch-item  { color: #64748b !important; border-radius: 6px !important; }
+.cw-ch-item:hover { background: #eff6ff !important; color: #1b6ac9 !important; }
+.cw-ch-item.active {
+  background: #dbeafe !important;
+  color: var(--c1) !important;
+  border-color: transparent !important;
+  font-weight: 600 !important;
+}
+
+#cw-ch-name  { color: #64748b !important; border-color: #e2e8f0 !important; background: #fafbfc !important; }
+#cw-messages { background: #ffffff !important; }
+
+.cw-bubble {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+.cw-msg.own .cw-bubble {
+  background: #dbeafe !important;
+  border-color: #bfdbfe !important;
+  color: #1e40af !important;
+}
+
+.cw-meta     { color: #94a3b8 !important; }
+.cw-empty    { color: #94a3b8 !important; }
+.cw-sys      { color: #94a3b8 !important; }
+
+.cw-av {
+  background: var(--c1) !important;
+}
+
+[style*="font-size:10px;color:#94a3b8"],
+.cw-msg .cw-bubble + div,
+.cw-msg div[style*="font-size:10px"] {
+  color: #64748b !important;
+}
+
+#cw-input-area { border-color: #e2e8f0 !important; background: #fafbfc !important; }
+
+#cw-input {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+#cw-input:focus {
+  background: #ffffff !important;
+  border-color: var(--c1) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   18. SETTINGS PAGE SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+/* Left settings nav */
+[class*="settings-nav"],
+[class*="left-nav"],
+[class*="mini-nav"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Toggle switches — keep current colors, they work on light bg */
+/* AI model cards */
+[class*="model-card"] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[class*="model-card"]:hover {
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+}
+
+[class*="model-card"].active,
+[class*="model-card"].selected {
+  background: #eff6ff !important;
+  border-color: var(--c1) !important;
+}
+
+/* Danger zone */
+[class*="danger-"] {
+  background: #fff5f5 !important;
+  border-color: #fecaca !important;
+}
+
+/* Usage bars */
+[class*="usage-"] {
+  color: #0f172a !important;
+}
+
+/* Plan card */
+[class*="plan-"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Session cards */
+[class*="session-"] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   19. TEAM PAGE SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+[class*="stats-row"] .kpi-card,
+[class*="stats-row"] .stat-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[class*="right-col"] .card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Role breakdown & permissions table */
+[class*="perm-table"] th { background: #f8fafc !important; color: #475569 !important; }
+[class*="perm-table"] td { color: #334155 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   20. NETWORK PAGE SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+[class*="device-card"],
+[class*="alert-card"],
+[class*="device-item"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[class*="device-name"],
+[class*="device-ip"],
+[class*="device-status"] {
+  color: #334155 !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   21. AUTOMATION PAGE SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+[class*="flow-"],
+[class*="trigger-"],
+[class*="workflow-"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   22. KNOWLEDGE PAGE SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+[class*="kb-card"],
+[class*="doc-card"],
+[class*="knowledge-"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   23. CHATBOT BUILDER SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+[class*="bot-list"] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[class*="bot-card"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+[class*="bot-card"]:hover {
+  background: #f8fbff !important;
+  border-color: #bfdbfe !important;
+}
+
+[class*="bot-card"].active,
+[class*="bot-card"].selected {
+  background: #eff6ff !important;
+  border-color: var(--c1) !important;
+}
+
+[class*="tab-btn"],
+[class*="detail-tab"] {
+  color: #64748b !important;
+  background: none !important;
+  border-color: transparent !important;
+}
+
+[class*="tab-btn"]:hover,
+[class*="detail-tab"]:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+[class*="tab-btn"].active,
+[class*="detail-tab"].active {
+  color: var(--c1) !important;
+  background: #eff6ff !important;
+  border-color: var(--c1) !important;
+}
+
+/* Chat preview area in chatbot builder */
+[class*="preview-"] {
+  background: #f0f4f8 !important;
+  border-color: #e2e8f0 !important;
+}
+
+[class*="chat-bubble"],
+[class*="user-msg"],
+[class*="bot-msg"] {
+  /* keep existing styling */
+}
+
+/* ══════════════════════════════════════════════════════════
+   24. ACTIONS PAGE SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+[class*="action-card"],
+[class*="quick-"],
+[class*="action-item"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[class*="action-card"]:hover,
+[class*="quick-"]:hover {
+  background: #f8fbff !important;
+  border-color: #bfdbfe !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   25. DASHBOARD SPECIFIC
+   ══════════════════════════════════════════════════════════ */
+
+/* Quick access nav */
+[class*="quick-access"],
+[class*="quick-nav"] {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[class*="quick-item"]:hover {
+  background: #f8fbff !important;
+  border-color: #bfdbfe !important;
+}
+
+/* Greeting text on dashboard */
+[class*="greeting"],
+[class*="welcome"] {
+  color: #0f172a !important;
+}
+
+[class*="greeting"] span,
+[class*="welcome"] span {
+  background: none !important;
+  -webkit-text-fill-color: var(--c1) !important;
+  color: var(--c1) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   26. GLOBAL GRADIENT TEXT FIX
+      (remove gradient text effects in main area)
+   ══════════════════════════════════════════════════════════ */
+.main [style*="-webkit-background-clip"],
+.main [style*="background-clip"] {
+  background: none !important;
+  -webkit-text-fill-color: inherit !important;
+  color: var(--text) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   27. RANGE INPUTS & SLIDERS
+   ══════════════════════════════════════════════════════════ */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #e2e8f0 !important;
+  border: none !important;
+  border-radius: 10px;
+  height: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--c1) !important;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(27,106,201,.3);
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════════
+   28. GRADIENT TEXT IN HEADERS/TITLES
+   ══════════════════════════════════════════════════════════ */
+
+/* Page titles that use gradient text */
+.page-title.gradient,
+[class*="title"][style*="gradient"],
+[class*="heading"][style*="gradient"] {
+  background: none !important;
+  -webkit-text-fill-color: #0f172a !important;
+  color: #0f172a !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   29. SELECT2 / CUSTOM DROPDOWNS
+   ══════════════════════════════════════════════════════════ */
+select option {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* ══════════════════════════════════════════════════════════
+   30. RESPONSIVE ADJUSTMENTS
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .sidebar { background: var(--sb) !important; }
+}

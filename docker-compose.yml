@@ -1,0 +1,279 @@
+version: "3.9"
+
+# ============================================================
+# 🐳  Docker Compose — بيئة التطوير
+# ============================================================
+# تشغيل:  docker-compose up -d
+# إيقاف:  docker-compose down
+# لوجات:  docker-compose logs -f api
+# ============================================================
+
+x-common-env: &common-env
+  env_file: .env
+  environment:
+    - PYTHONUNBUFFERED=1
+    - PYTHONDONTWRITEBYTECODE=1
+
+services:
+
+  # ── ① API Backend (FastAPI) ──────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: platform_api
+    <<: *common-env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ② Celery Worker (المهام الخلفية) ─────────────────────
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: platform_worker
+    <<: *common-env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+      - postgres
+    command: celery -A app.worker.celery_app worker --loglevel=info --concurrency=4
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ③ Celery Beat (الجدولة الدورية) ──────────────────────
+  scheduler:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: platform_scheduler
+    <<: *common-env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+      - postgres
+    command: celery -A app.worker.celery_app beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ④ PostgreSQL (قاعدة البيانات الرئيسية) ───────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: platform_postgres
+    environment:
+      POSTGRES_USER: platform_user
+      POSTGRES_PASSWORD: platform_pass
+      POSTGRES_DB: platform_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U platform_user -d platform_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑤ Redis (Cache + Message Broker) ─────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: platform_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑥ ChromaDB (Vector Database للـ RAG) ─────────────────
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: platform_chroma
+    volumes:
+      - chromadata:/chroma/chroma
+    ports:
+      - "8001:8000"
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑦ MinIO (تخزين الملفات) ──────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: platform_minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - miniodata:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"    # واجهة الإدارة
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑧ InfluxDB (بيانات الشبكة الزمنية) ──────────────────
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: platform_influx
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: adminpassword
+      DOCKER_INFLUXDB_INIT_ORG: platform
+      DOCKER_INFLUXDB_INIT_BUCKET: network_metrics
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: platform-influx-token
+    volumes:
+      - influxdata:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑨ n8n (Workflow Automation) ──────────────────────────
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: platform_n8n
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin123
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - WEBHOOK_URL=http://localhost:5678/
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n_db
+      - DB_POSTGRESDB_USER=platform_user
+      - DB_POSTGRESDB_PASSWORD=platform_pass
+    volumes:
+      - n8ndata:/home/node/.n8n
+    ports:
+      - "5678:5678"
+    depends_on:
+      - postgres
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑩ Prometheus (جمع المقاييس) ──────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: platform_prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./scripts/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheusdata:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑪ Grafana (عرض المقاييس) ─────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: platform_grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafanadata:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑫ Frontend (Next.js) ─────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: platform_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_APP_NAME=AI Platform
+    depends_on:
+      - api
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+  # ── ⑬ Nginx (Reverse Proxy) ──────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: platform_nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - frontend
+    networks:
+      - platform_net
+    restart: unless-stopped
+
+# ─── Volumes ──────────────────────────────────────────────
+volumes:
+  pgdata:
+  redisdata:
+  chromadata:
+  miniodata:
+  influxdata:
+  n8ndata:
+  prometheusdata:
+  grafanadata:
+
+# ─── Networks ─────────────────────────────────────────────
+networks:
+  platform_net:
+    driver: bridge

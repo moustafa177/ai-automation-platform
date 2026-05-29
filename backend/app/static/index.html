@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AI Platform - AI and Automation Solutions">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Platform — منصة الذكاء الاصطناعي والأتمتة للشركات</title>
+<meta name="description" content="منصة متقدمة للذكاء الاصطناعي والأتمتة الرقمية — تحليل البيانات، مراقبة الشبكات، روبوتات المحادثة، وإدارة العمليات">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   BASE
+══════════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:#fff;color:#0f172a;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+:root{
+  --blue:#1b6ac9;--blue2:#1558b0;--sky:#0ea5e9;
+  --navy:#060c18;--navy2:#0d1526;--navy3:#1e293b;
+  --text:#0f172a;--muted:#64748b;--light:#f8fafc;--border:#e2e8f0;
+  --r:12px;
+}
+
+/* ══════════════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════════════ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:9000;
+  padding:16px 5%;display:flex;align-items:center;gap:32px;
+  transition:all .35s;
+}
+.navbar.solid{
+  background:rgba(6,12,24,.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  box-shadow:0 2px 24px rgba(0,0,0,.3);
+}
+.nb-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nb-icon{width:38px;height:38px;border-radius:9px;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 2px 10px rgba(27,106,201,.4)}
+.nb-brand{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.nb-brand span{color:#60a5fa}
+
+.nb-links{flex:1;display:flex;align-items:center;gap:6px}
+.nb-links a{color:rgba(255,255,255,.68);text-decoration:none;font-size:13.5px;font-weight:500;
+  padding:7px 14px;border-radius:8px;transition:.2s}
+.nb-links a:hover{color:#fff;background:rgba(255,255,255,.07)}
+
+.nb-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nb-login{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;
+  padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;cursor:pointer;
+  font-family:inherit;transition:.2s}
+.nb-login:hover{background:rgba(255,255,255,.14)}
+.nb-start{background:var(--blue);color:#fff;padding:9px 22px;border-radius:8px;
+  font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;border:none;
+  box-shadow:0 2px 10px rgba(27,106,201,.4);transition:.2s}
+.nb-start:hover{background:var(--blue2);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;background:var(--navy);
+  display:flex;align-items:center;
+  padding:100px 5% 80px;
+  position:relative;overflow:hidden;
+}
+
+/* Background grid */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+
+/* Gradient blobs */
+.hero-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.blob-1{width:700px;height:700px;background:var(--blue);opacity:.08;top:-200px;right:-200px}
+.blob-2{width:500px;height:500px;background:var(--sky);opacity:.06;bottom:-100px;left:-100px}
+.blob-3{width:350px;height:350px;background:#6366f1;opacity:.05;top:40%;left:35%}
+
+.hero-content{
+  flex:1;position:relative;z-index:2;max-width:600px;
+}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(27,106,201,.15);border:1px solid rgba(27,106,201,.3);
+  color:#60a5fa;padding:6px 14px;border-radius:30px;font-size:12.5px;font-weight:600;
+  margin-bottom:28px;letter-spacing:.3px;
+}
+.tag-dot{width:7px;height:7px;border-radius:50%;background:#22d3ee;
+  animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+.hero h1{
+  font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1.1;
+  color:#fff;margin-bottom:24px;letter-spacing:-1.5px;
+}
+.hero h1 .hl{
+  background:linear-gradient(135deg,#60a5fa,#38bdf8,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero-desc{
+  font-size:17px;line-height:1.8;color:rgba(255,255,255,.65);
+  margin-bottom:40px;font-weight:400;max-width:520px;
+}
+
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px}
+.btn-hero-primary{
+  background:var(--blue);color:#fff;padding:14px 32px;border-radius:10px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;border:none;
+  box-shadow:0 4px 20px rgba(27,106,201,.45);transition:.25s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-hero-primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(27,106,201,.5)}
+.btn-hero-outline{
+  background:rgba(255,255,255,.07);color:#fff;padding:14px 28px;border-radius:10px;
+  font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;
+  border:1px solid rgba(255,255,255,.18);transition:.25s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-hero-outline:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
+
+.hero-trust{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hero-trust-item{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.45);font-size:12.5px}
+.trust-icon{color:#22d3ee;font-size:14px}
+.trust-sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2)}
+
+/* Hero visual — right side */
+.hero-visual{
+  flex:0 0 480px;position:relative;z-index:2;height:500px;
+}
+
+.dash-mockup{
+  background:rgba(13,21,38,.9);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:16px;width:380px;
+  box-shadow:0 32px 80px rgba(0,0,0,.6);
+  position:absolute;top:50%;right:50px;transform:translateY(-50%);
+}
+
+.dm-topbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.07)}
+.dm-dot{width:8px;height:8px;border-radius:50%}
+.dm-dot.r{background:#ef4444}.dm-dot.y{background:#f59e0b}.dm-dot.g{background:#10b981}
+.dm-url{flex:1;background:rgba(255,255,255,.05);border-radius:6px;padding:5px 10px;
+  font-size:10.5px;color:rgba(255,255,255,.35);margin:0 8px}
+
+.dm-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.dm-stat{background:rgba(27,106,201,.12);border:1px solid rgba(27,106,201,.2);
+  border-radius:8px;padding:10px;text-align:center}
+.dm-stat-n{font-size:18px;font-weight:800;color:#60a5fa}
+.dm-stat-l{font-size:9.5px;color:rgba(255,255,255,.4);margin-top:2px}
+
+.dm-chart{height:60px;background:rgba(255,255,255,.03);border-radius:8px;
+  display:flex;align-items:flex-end;gap:3px;padding:8px;overflow:hidden}
+.dm-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(to top,#1b6ac9,#0ea5e9);
+  animation:barGrow 1.5s ease forwards;transform-origin:bottom;transform:scaleY(0)}
+@keyframes barGrow{to{transform:scaleY(1)}}
+
+.dm-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.dm-list-item{display:flex;align-items:center;gap:8px;padding:7px 8px;
+  background:rgba(255,255,255,.03);border-radius:7px;font-size:10px}
+.dm-list-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;
+  justify-content:center;font-size:11px;flex-shrink:0}
+.dm-list-text{color:rgba(255,255,255,.65)}
+.dm-badge{margin-right:auto;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:600}
+.dm-badge.green{background:rgba(16,185,129,.15);color:#10b981}
+.dm-badge.blue{background:rgba(27,106,201,.2);color:#60a5fa}
+.dm-badge.amber{background:rgba(245,158,11,.15);color:#f59e0b}
+
+/* Floating cards */
+.float-card{
+  position:absolute;background:rgba(13,21,38,.92);
+  border:1px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:10px 14px;backdrop-filter:blur(12px);
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  font-size:12px;color:rgba(255,255,255,.8);
+  white-space:nowrap;
+}
+.fc-1{top:30px;left:-40px;animation:float1 3.5s ease-in-out infinite}
+.fc-2{bottom:60px;left:-20px;animation:float2 4s ease-in-out infinite}
+.fc-3{top:50%;right:-30px;transform:translateY(-50%);animation:float3 3.8s ease-in-out infinite}
+
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes float3{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 10px))}}
+
+.fc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;flex-shrink:0}
+.fc-label{font-size:11px;color:rgba(255,255,255,.5);margin-top:1px}
+
+/* ══════════════════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════════════════ */
+.stats-bar{
+  background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:40px 5%;
+}
+.stats-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+}
+.stat-item{text-align:center;padding:20px}
+.stat-num{font-size:40px;font-weight:900;color:var(--blue);line-height:1;letter-spacing:-1px}
+.stat-num span{font-size:22px;font-weight:700;color:var(--sky)}
+.stat-label{font-size:13px;color:var(--muted);margin-top:6px;font-weight:500}
+.stat-sep{width:1px;background:var(--border);align-self:stretch}
+
+/* ══════════════════════════════════════════════════════
+   SECTIONS SHARED
+══════════════════════════════════════════════════════ */
+.section{padding:90px 5%}
+.section-inner{max-width:1100px;margin:0 auto}
+
+.section-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#eff6ff;border:1px solid #bfdbfe;
+  color:var(--blue);padding:5px 14px;border-radius:30px;
+  font-size:12px;font-weight:600;margin-bottom:16px;letter-spacing:.3px
+}
+
+.section-title{font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.15;
+  color:var(--text);margin-bottom:16px;letter-spacing:-.8px}
+.section-title .hl{color:var(--blue)}
+.section-title .hls{
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+
+.section-sub{font-size:16px;color:var(--muted);max-width:560px;line-height:1.75}
+
+.section-head{text-align:center;margin-bottom:60px}
+.section-head .section-sub{margin:0 auto}
+
+/* ══════════════════════════════════════════════════════
+   SERVICES
+══════════════════════════════════════════════════════ */
+#services{background:var(--light)}
+
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px
+}
+
+.service-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r);
+  padding:28px 24px;transition:.25s;cursor:default;position:relative;overflow:hidden;
+}
+.service-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--sky));
+  transform:scaleX(0);transform-origin:right;transition:.3s;
+}
+.service-card:hover{border-color:#bfdbfe;transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(27,106,201,.1)}
+.service-card:hover::before{transform:scaleX(1)}
+
+.sc-icon{width:52px;height:52px;border-radius:12px;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:center;font-size:24px}
+.sc-title{font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.sc-desc{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:18px}
+.sc-link{display:inline-flex;align-items:center;gap:6px;color:var(--blue);font-size:13px;
+  font-weight:600;text-decoration:none;transition:.2s}
+.sc-link:hover{gap:10px}
+.sc-link .arr{transition:.2s}
+
+/* ══════════════════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════════════════ */
+#how{background:#fff}
+
+.steps-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative
+}
+.steps-grid::before{
+  content:'';position:absolute;top:52px;right:calc(16.66% + 40px);left:calc(16.66% + 40px);
+  height:2px;background:linear-gradient(90deg,var(--blue),var(--sky),var(--blue));opacity:.25;
+}
+
+.step-item{text-align:center;padding:0 24px;position:relative}
+.step-num{
+  width:56px;height:56px;border-radius:50%;margin:0 auto 22px;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  color:#fff;font-size:20px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(27,106,201,.35);position:relative;z-index:2
+}
+.step-title{font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.step-desc{font-size:13.5px;color:var(--muted);line-height:1.7}
+
+/* ══════════════════════════════════════════════════════
+   FEATURES — dark section
+══════════════════════════════════════════════════════ */
+#features{background:var(--navy2)}
+
+#features .section-tag{
+  background:rgba(27,106,201,.15);border-color:rgba(27,106,201,.3);color:#60a5fa
+}
+#features .section-title{color:#f1f5f9}
+#features .section-sub{color:rgba(255,255,255,.55)}
+
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px
+}
+
+.feat-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r);padding:24px;transition:.2s
+}
+.feat-card:hover{background:rgba(27,106,201,.08);border-color:rgba(27,106,201,.25);
+  transform:translateY(-2px)}
+
+.feat-icon{font-size:28px;margin-bottom:14px}
+.feat-title{font-size:15px;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.feat-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65}
+
+/* ══════════════════════════════════════════════════════
+   AI TECH
+══════════════════════════════════════════════════════ */
+#ai-tech{background:#fff}
+
+.ai-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+
+.ai-models-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ai-model-card{
+  background:var(--light);border:1.5px solid var(--border);border-radius:10px;
+  padding:16px;display:flex;align-items:center;gap:12px;transition:.2s;cursor:default
+}
+.ai-model-card:hover{border-color:#bfdbfe;background:#f0f7ff}
+.ai-model-card.featured{
+  border-color:var(--blue);background:#eff6ff;
+  grid-column:span 2;
+}
+.am-badge{background:var(--blue);color:#fff;font-size:9.5px;font-weight:700;
+  padding:2px 7px;border-radius:10px;margin-top:3px;display:inline-block}
+.am-icon{font-size:26px;flex-shrink:0}
+.am-name{font-size:13.5px;font-weight:700;color:var(--text)}
+.am-desc{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+.ai-text .section-title{margin-bottom:20px}
+.ai-points{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.ai-point{display:flex;align-items:flex-start;gap:12px}
+.ai-point-icon{width:36px;height:36px;border-radius:9px;flex-shrink:0;
+  background:#eff6ff;display:flex;align-items:center;justify-content:center;
+  font-size:17px;margin-top:1px}
+.ai-point-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.ai-point-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ══════════════════════════════════════════════════════
+   PLATFORMS / INTEGRATIONS
+══════════════════════════════════════════════════════ */
+#platforms{background:var(--light)}
+
+.platforms-bar{
+  display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;
+  margin-top:48px
+}
+.plat-item{
+  display:flex;align-items:center;gap:10px;padding:14px 24px;
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  font-size:14px;font-weight:600;color:var(--text);transition:.2s;
+}
+.plat-item:hover{border-color:#bfdbfe;box-shadow:0 4px 16px rgba(27,106,201,.1)}
+.plat-icon{font-size:22px}
+
+/* ══════════════════════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════════════════════ */
+.cta-section{
+  background:linear-gradient(135deg,#060c18 0%,#0d1e3d 50%,#060c18 100%);
+  padding:100px 5%;text-align:center;position:relative;overflow:hidden
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:50px 50px
+}
+.cta-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.cta-blob-1{width:500px;height:500px;background:var(--blue);opacity:.1;top:-100px;right:-100px}
+.cta-blob-2{width:400px;height:400px;background:var(--sky);opacity:.08;bottom:-100px;left:-100px}
+
+.cta-inner{position:relative;z-index:2;max-width:700px;margin:0 auto}
+.cta-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(27,106,201,.2);
+  border:1px solid rgba(27,106,201,.4);color:#60a5fa;padding:6px 16px;
+  border-radius:30px;font-size:12.5px;font-weight:600;margin-bottom:24px}
+.cta-title{font-size:clamp(28px,4.5vw,50px);font-weight:900;line-height:1.1;
+  color:#fff;margin-bottom:18px;letter-spacing:-1px}
+.cta-title .hl{
+  background:linear-gradient(135deg,#60a5fa,#38bdf8,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.cta-desc{font-size:16px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:40px}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.cta-btn-main{background:var(--blue);color:#fff;padding:15px 36px;border-radius:10px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;border:none;
+  box-shadow:0 4px 24px rgba(27,106,201,.5);transition:.25s}
+.cta-btn-main:hover{background:var(--blue2);transform:translateY(-2px)}
+.cta-btn-sec{background:rgba(255,255,255,.08);color:#fff;padding:15px 30px;border-radius:10px;
+  font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;
+  border:1px solid rgba(255,255,255,.18);transition:.25s}
+.cta-btn-sec:hover{background:rgba(255,255,255,.13)}
+
+/* ══════════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════════ */
+footer{background:var(--navy);padding:60px 5% 30px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px;max-width:1100px;margin-left:auto;margin-right:auto}
+.footer-brand .nb-brand{font-size:18px;margin-bottom:14px;display:block}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.8;max-width:260px}
+.footer-col h4{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:16px;
+  text-transform:uppercase;letter-spacing:.7px}
+.footer-col a{display:block;color:rgba(255,255,255,.45);text-decoration:none;font-size:13px;
+  margin-bottom:10px;transition:.2s}
+.footer-col a:hover{color:rgba(255,255,255,.8)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1100px;margin:0 auto}
+.footer-copy{font-size:12.5px;color:rgba(255,255,255,.35)}
+.footer-tech{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.35)}
+.tech-pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  padding:3px 10px;border-radius:20px;font-size:11px;color:rgba(255,255,255,.45)}
+
+/* ══════════════════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════════════════ */
+.overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(6,12,24,.75);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:.25s;padding:16px;
+}
+.overlay.show{opacity:1;pointer-events:all}
+
+.modal-box{
+  background:#fff;border-radius:16px;width:100%;max-width:440px;
+  box-shadow:0 32px 80px rgba(0,0,0,.35);
+  transform:translateY(16px) scale(.97);transition:.25s;
+  overflow:hidden;
+}
+.overlay.show .modal-box{transform:none}
+
+.modal-header{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  padding:28px 28px 24px;display:flex;align-items:flex-start;justify-content:space-between;
+}
+.modal-logo{display:flex;align-items:center;gap:10px}
+.modal-logo .nb-icon{width:36px;height:36px;font-size:17px}
+.modal-logo-text{font-size:15px;font-weight:800;color:#fff}
+.modal-logo-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);
+  width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.modal-close:hover{background:rgba(255,255,255,.18);color:#fff}
+
+.modal-title{font-size:20px;font-weight:800;color:#fff;margin-top:16px;margin-bottom:4px}
+.modal-sub{font-size:13px;color:rgba(255,255,255,.5)}
+
+.modal-body{padding:24px 28px 28px}
+
+.form-field{margin-bottom:18px}
+.form-field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:7px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.fi{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;
+  font-size:13.5px;color:var(--text);background:#f8fafc;font-family:inherit;
+  transition:.2s;outline:none
+}
+.fi:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(27,106,201,.1)}
+.fi::placeholder{color:#94a3b8}
+
+.input-wrap{position:relative}
+.input-wrap .fi{padding-left:42px}
+.input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:15px;color:#94a3b8;pointer-events:none}
+.show-pw{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:#94a3b8;font-size:15px;padding:2px}
+
+.err-msg{color:#dc2626;font-size:12.5px;margin-top:8px;display:none;
+  background:#fef2f2;border:1px solid #fecaca;padding:8px 12px;border-radius:7px}
+
+.pw-strength{margin-top:8px;display:none}
+.pw-bar{height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden}
+.pw-fill{height:100%;border-radius:2px;transition:.3s}
+.pw-lbl{font-size:11px;color:#64748b;margin-top:4px}
+
+.submit-btn{
+  width:100%;padding:12px;background:var(--blue);color:#fff;border:none;
+  border-radius:9px;font-size:14.5px;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:.2s;box-shadow:0 2px 12px rgba(27,106,201,.3);
+  display:flex;align-items:center;justify-content:center;gap:8px
+}
+.submit-btn:hover{background:var(--blue2)}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.modal-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.modal-switch a{color:var(--blue);font-weight:600;cursor:pointer;text-decoration:none}
+.modal-switch a:hover{text-decoration:underline}
+
+.forgot-link{display:block;text-align:left;color:var(--blue);font-size:12px;
+  font-weight:500;cursor:pointer;margin-top:6px;text-decoration:none}
+.forgot-link:hover{text-decoration:underline}
+
+.success-box{text-align:center;padding:10px 0 0;display:none}
+.success-icon{font-size:50px;margin-bottom:12px}
+.success-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px}
+.success-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.divider span{font-size:12px;color:#94a3b8;white-space:nowrap}
+
+/* ══════════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════════ */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:99999;
+  display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:12px 18px;font-size:13.5px;color:var(--text);
+  box-shadow:0 4px 24px rgba(0,0,0,.12);pointer-events:all;
+  animation:toastIn .25s ease;display:flex;align-items:center;gap:10px}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.toast.ok{border-color:#bbf7d0;background:#f0fdf4;color:#15803d}
+.toast.err{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+
+/* ══════════════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════════════ */
+.fade-in{opacity:0;transform:translateY(24px);transition:.6s ease}
+.fade-in.visible{opacity:1;transform:none}
+.fade-in-left{opacity:0;transform:translateX(24px);transition:.6s ease}
+.fade-in-left.visible{opacity:1;transform:none}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .hero-visual{display:none}
+  .hero-content{max-width:100%}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .ai-layout{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .stats-inner{grid-template-columns:1fr 1fr}
+  .services-grid{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr}
+  .steps-grid::before{display:none}
+  .nb-links{display:none}
+  .navbar{padding:14px 5%}
+  .form-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .ai-models-grid{grid-template-columns:1fr}
+  .ai-model-card.featured{grid-column:span 1}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="navbar" id="navbar">
+  <a class="nb-logo" href="/">
+    <div class="nb-icon">🤖</div>
+    <div class="nb-brand">AI <span>Platform</span></div>
+  </a>
+
+  <div class="nb-links">
+    <a href="#services">خدماتنا</a>
+    <a href="#features">المميزات</a>
+    <a href="#how">كيف تعمل</a>
+    <a href="#ai-tech">التقنية</a>
+  </div>
+
+  <div class="nb-actions">
+    <button class="nb-login" onclick="openModal('login')">تسجيل الدخول</button>
+    <button class="nb-start" onclick="openModal('register')">ابدأ مجاناً ←</button>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div class="hero-blob blob-3"></div>
+
+  <div class="hero-content fade-in">
+    <div class="hero-tag">
+      <span class="tag-dot"></span>
+      منصة الذكاء الاصطناعي للشركات السعودية
+    </div>
+
+    <h1>
+      أتمتة أذكى،<br>
+      <span class="hl">كفاءة أعلى</span>,<br>
+      تحول رقمي حقيقي
+    </h1>
+
+    <p class="hero-desc">
+      منصة متقدمة للذكاء الاصطناعي والأتمتة الرقمية، تقدم حلولاً تقنية ذكية مصممة لرفع كفاءة الأعمال وتحسين الأداء التشغيلي — من مراقبة البنية التحتية إلى إنشاء التقارير تلقائياً، ضمن بيئة موحدة وآمنة.
+    </p>
+
+    <div class="hero-cta">
+      <button class="btn-hero-primary" onclick="openModal('register')">
+        🚀 ابدأ رحلتك الرقمية
+      </button>
+      <button class="btn-hero-outline" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+        استكشف الخدمات ↓
+      </button>
+    </div>
+
+    <div class="hero-trust">
+      <div class="hero-trust-item">
+        <span class="trust-icon">✓</span> بدون كود
+      </div>
+      <div class="trust-sep"></div>
+      <div class="hero-trust-item">
+        <span class="trust-icon">✓</span> إعداد في دقائق
+      </div>
+      <div class="trust-sep"></div>
+      <div class="hero-trust-item">
+        <span class="trust-icon">✓</span> دعم عربي كامل
+      </div>
+      <div class="trust-sep"></div>
+      <div class="hero-trust-item">
+        <span class="trust-icon">✓</span> أمان عالي المستوى
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Mockup -->
+  <div class="hero-visual">
+    <div class="float-card fc-1">
+      <div class="fc-icon" style="background:rgba(16,185,129,.15)">📡</div>
+      <div>
+        <div>الشبكة — 24 جهاز متصل</div>
+        <div class="fc-label">وقت التشغيل: 99.9%</div>
+      </div>
+    </div>
+
+    <div class="float-card fc-2">
+      <div class="fc-icon" style="background:rgba(27,106,201,.15)">💬</div>
+      <div>
+        <div>342 رسالة اليوم</div>
+        <div class="fc-label">روبوت الدعم الفني</div>
+      </div>
+    </div>
+
+    <div class="float-card fc-3">
+      <div class="fc-icon" style="background:rgba(245,158,11,.15)">📊</div>
+      <div>
+        <div>تقرير الأسبوع جاهز</div>
+        <div class="fc-label">↑ 18% عن الأسبوع الماضي</div>
+      </div>
+    </div>
+
+    <div class="dash-mockup">
+      <div class="dm-topbar">
+        <span class="dm-dot r"></span>
+        <span class="dm-dot y"></span>
+        <span class="dm-dot g"></span>
+        <div class="dm-url">aiplatform.app/dashboard</div>
+      </div>
+
+      <div class="dm-stats">
+        <div class="dm-stat">
+          <div class="dm-stat-n">6</div>
+          <div class="dm-stat-l">روبوتات نشطة</div>
+        </div>
+        <div class="dm-stat">
+          <div class="dm-stat-n">12.4k</div>
+          <div class="dm-stat-l">رسالة هذا الشهر</div>
+        </div>
+        <div class="dm-stat">
+          <div class="dm-stat-n">18</div>
+          <div class="dm-stat-l">جهاز مراقَب</div>
+        </div>
+        <div class="dm-stat">
+          <div class="dm-stat-n">99.2%</div>
+          <div class="dm-stat-l">وقت التشغيل</div>
+        </div>
+      </div>
+
+      <div class="dm-chart">
+        <div class="dm-bar" style="height:40%;animation-delay:.1s"></div>
+        <div class="dm-bar" style="height:65%;animation-delay:.2s"></div>
+        <div class="dm-bar" style="height:55%;animation-delay:.3s"></div>
+        <div class="dm-bar" style="height:80%;animation-delay:.4s"></div>
+        <div class="dm-bar" style="height:70%;animation-delay:.5s"></div>
+        <div class="dm-bar" style="height:90%;animation-delay:.6s"></div>
+        <div class="dm-bar" style="height:75%;animation-delay:.7s"></div>
+        <div class="dm-bar" style="height:95%;animation-delay:.8s"></div>
+      </div>
+
+      <div class="dm-list">
+        <div class="dm-list-item">
+          <div class="dm-list-icon" style="background:rgba(27,106,201,.15)">🤖</div>
+          <div class="dm-list-text">روبوت الدعم الفني — نشط</div>
+          <span class="dm-badge green">نشط</span>
+        </div>
+        <div class="dm-list-item">
+          <div class="dm-list-icon" style="background:rgba(245,158,11,.15)">⚡</div>
+          <div class="dm-list-text">أتمتة الفواتير — يعمل</div>
+          <span class="dm-badge blue">يعمل</span>
+        </div>
+        <div class="dm-list-item">
+          <div class="dm-list-icon" style="background:rgba(16,185,129,.15)">📡</div>
+          <div class="dm-list-text">تنبيه شبكة — تم معالجته</div>
+          <span class="dm-badge amber">معالج</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STATS BAR ══════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item fade-in">
+      <div class="stat-num"><span id="c1">0</span><span>+</span></div>
+      <div class="stat-label">شركة تستخدم المنصة</div>
+    </div>
+    <div class="stat-item fade-in" style="transition-delay:.1s">
+      <div class="stat-num"><span id="c2">0</span><span>k+</span></div>
+      <div class="stat-label">رسالة ذكاء اصطناعي يومياً</div>
+    </div>
+    <div class="stat-item fade-in" style="transition-delay:.2s">
+      <div class="stat-num"><span id="c3">0</span><span>%</span></div>
+      <div class="stat-label">وقت تشغيل مضمون</div>
+    </div>
+    <div class="stat-item fade-in" style="transition-delay:.3s">
+      <div class="stat-num"><span id="c4">0</span><span>x</span></div>
+      <div class="stat-label">تحسن في الكفاءة التشغيلية</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SERVICES ══════════ -->
+<section class="section" id="services">
+  <div class="section-inner">
+    <div class="section-head fade-in">
+      <div class="section-tag">⚡ خدماتنا</div>
+      <h2 class="section-title">حلول ذكية لكل <span class="hls">احتياجات عملك</span></h2>
+      <p class="section-sub">ستة أدوات متكاملة تعمل معاً لتحويل عملياتك إلى منظومة رقمية ذكية وفعّالة</p>
+    </div>
+
+    <div class="services-grid">
+
+      <div class="service-card fade-in">
+        <div class="sc-icon" style="background:#eff6ff">🤖</div>
+        <div class="sc-title">روبوتات المحادثة الذكية</div>
+        <p class="sc-desc">أنشئ روبوتات محادثة مدعومة بـ Gemini وClaude في دقائق — دعم عملاء، مبيعات، موارد بشرية، وأكثر. بدون كود، نتائج فورية.</p>
+        <a class="sc-link" href="#" onclick="openModal('register');return false">
+          ابدأ الآن <span class="arr">←</span>
+        </a>
+      </div>
+
+      <div class="service-card fade-in" style="transition-delay:.08s">
+        <div class="sc-icon" style="background:#f0fdf4">🔄</div>
+        <div class="sc-title">أتمتة العمليات التشغيلية</div>
+        <p class="sc-desc">حوّل مهامك اليدوية المتكررة إلى سير عمل تلقائية — من الفواتير إلى التقارير إلى إشعارات الفريق، كل شيء يعمل وحده.</p>
+        <a class="sc-link" href="#" onclick="openModal('register');return false">
+          ابدأ الآن <span class="arr">←</span>
+        </a>
+      </div>
+
+      <div class="service-card fade-in" style="transition-delay:.16s">
+        <div class="sc-icon" style="background:#fef9ec">🧠</div>
+        <div class="sc-title">قاعدة المعرفة الذكية</div>
+        <p class="sc-desc">ارفع ملفاتك وPDFs ووثائقك، وسيتعلم الذكاء الاصطناعي منها تلقائياً ليجيب على أسئلة عملائك وفريقك بدقة عالية.</p>
+        <a class="sc-link" href="#" onclick="openModal('register');return false">
+          ابدأ الآن <span class="arr">←</span>
+        </a>
+      </div>
+
+      <div class="service-card fade-in" style="transition-delay:.24s">
+        <div class="sc-icon" style="background:#eff6ff">📡</div>
+        <div class="sc-title">مراقبة البنية التحتية</div>
+        <p class="sc-desc">راقب أجهزتك وشبكاتك وخوادمك في الوقت الفعلي. تنبيهات فورية عند انقطاع الخدمة قبل أن تؤثر على عملك.</p>
+        <a class="sc-link" href="#" onclick="openModal('register');return false">
+          ابدأ الآن <span class="arr">←</span>
+        </a>
+      </div>
+
+      <div class="service-card fade-in" style="transition-delay:.32s">
+        <div class="sc-icon" style="background:#fdf4ff">📊</div>
+        <div class="sc-title">التقارير والتحليلات التلقائية</div>
+        <p class="sc-desc">تقارير أسبوعية وشهرية تُنشأ تلقائياً بالذكاء الاصطناعي — أداء الروبوتات، نشاط الفريق، حالة الشبكة، كل شيء في مكان واحد.</p>
+        <a class="sc-link" href="#" onclick="openModal('register');return false">
+          ابدأ الآن <span class="arr">←</span>
+        </a>
+      </div>
+
+      <div class="service-card fade-in" style="transition-delay:.40s">
+        <div class="sc-icon" style="background:#f0fdf4">👥</div>
+        <div class="sc-title">إدارة الفريق والصلاحيات</div>
+        <p class="sc-desc">أضف أعضاء فريقك بأدوار محددة — مالك، مشرف، عضو، مشاهد. شات داخلي فوري للتواصل بين الأقسام في بيئة آمنة ومشفرة.</p>
+        <a class="sc-link" href="#" onclick="openModal('register');return false">
+          ابدأ الآن <span class="arr">←</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="section" id="how" style="background:#fff">
+  <div class="section-inner">
+    <div class="section-head fade-in">
+      <div class="section-tag">🗺️ كيف تعمل المنصة</div>
+      <h2 class="section-title">ثلاث خطوات إلى <span class="hls">التحول الرقمي</span></h2>
+      <p class="section-sub">من التسجيل إلى التشغيل الكامل في أقل من 24 ساعة</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-item fade-in">
+        <div class="step-num">١</div>
+        <div class="step-title">أنشئ حسابك واربط أنظمتك</div>
+        <p class="step-desc">سجّل في ثوانٍ، وقم بتوصيل أنظمتك الحالية ومفاتيح API الخاصة بمزودي الذكاء الاصطناعي — الإعداد سهل بدون خبرة تقنية.</p>
+      </div>
+      <div class="step-item fade-in" style="transition-delay:.15s">
+        <div class="step-num">٢</div>
+        <div class="step-title">خصّص أدواتك وسير العمل</div>
+        <p class="step-desc">أنشئ روبوتات المحادثة، اضبط قواعد الأتمتة، أضف قاعدة المعرفة، وراقب شبكتك — كل شيء من واجهة واحدة موحدة.</p>
+      </div>
+      <div class="step-item fade-in" style="transition-delay:.3s">
+        <div class="step-num">٣</div>
+        <div class="step-title">انطلق وراقب النتائج</div>
+        <p class="step-desc">فعّل الأدوات ودعها تعمل 24/7. تابع الأداء عبر لوحة تحكم مباشرة، واتخذ قرارات أفضل مدعومة بتحليلات ذكية.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FEATURES ══════════ -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="section-head fade-in">
+      <div class="section-tag">⭐ المميزات التقنية</div>
+      <h2 class="section-title" style="color:#f1f5f9">لماذا تختار <span class="hl">منصتنا؟</span></h2>
+      <p class="section-sub" style="color:rgba(255,255,255,.55)">مميزات مصممة خصيصاً لتلبية متطلبات الشركات العربية</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feat-card fade-in">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">أداء فائق السرعة</div>
+        <p class="feat-desc">بنية تحتية سحابية موزعة تضمن استجابة فورية حتى في أوقات الذروة، مع وقت تشغيل 99.9%.</p>
+      </div>
+      <div class="feat-card fade-in" style="transition-delay:.08s">
+        <div class="feat-icon">🔒</div>
+        <div class="feat-title">أمان من الدرجة الأولى</div>
+        <p class="feat-desc">تشفير AES-256 لجميع البيانات، JWT محدود الصلاحية، وعزل كامل بين بيانات كل منظمة.</p>
+      </div>
+      <div class="feat-card fade-in" style="transition-delay:.16s">
+        <div class="feat-icon">🌐</div>
+        <div class="feat-title">دعم عربي كامل</div>
+        <p class="feat-desc">واجهة كاملة باللغة العربية، نماذج ذكاء اصطناعي مدربة على العربية، تقارير باللغتين.</p>
+      </div>
+      <div class="feat-card fade-in" style="transition-delay:.24s">
+        <div class="feat-icon">🔗</div>
+        <div class="feat-title">تكامل مرن مع أنظمتك</div>
+        <p class="feat-desc">API مفتوح و Webhooks جاهزة للتكامل مع أي نظام حالي — ERP، CRM، WhatsApp، وأكثر.</p>
+      </div>
+      <div class="feat-card fade-in" style="transition-delay:.32s">
+        <div class="feat-icon">📈</div>
+        <div class="feat-title">تحليلات في الوقت الفعلي</div>
+        <p class="feat-desc">لوحات تحكم تفاعلية تُظهر مؤشرات الأداء الرئيسية لحظة بلحظة — اتخذ قراراتك بناءً على بيانات دقيقة.</p>
+      </div>
+      <div class="feat-card fade-in" style="transition-delay:.40s">
+        <div class="feat-icon">🤝</div>
+        <div class="feat-title">تعاون الفريق في مكان واحد</div>
+        <p class="feat-desc">شات داخلي فوري، صلاحيات متدرجة، وسجل نشاط كامل — كل فريقك متصل ومتزامن دائماً.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ AI TECH ══════════ -->
+<section class="section" id="ai-tech">
+  <div class="section-inner">
+    <div class="ai-layout">
+      <div class="ai-text fade-in">
+        <div class="section-tag">🧠 تقنية الذكاء الاصطناعي</div>
+        <h2 class="section-title">مدعومة بأفضل<br><span class="hls">نماذج AI العالمية</span></h2>
+        <p class="section-sub">نوفر لك الوصول إلى أقوى نماذج الذكاء الاصطناعي في العالم — اختر النموذج المناسب لكل حالة استخدام.</p>
+
+        <div class="ai-points">
+          <div class="ai-point">
+            <div class="ai-point-icon">🎯</div>
+            <div>
+              <div class="ai-point-title">دقة عالية في الإجابات</div>
+              <p class="ai-point-desc">النماذج مُعدَّلة للإجابة بالعربية بدقة واحترافية عالية في جميع السياقات التجارية.</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-point-icon">💰</div>
+            <div>
+              <div class="ai-point-title">تحكم كامل في التكلفة</div>
+              <p class="ai-point-desc">استخدم مفتاح API الخاص بك أو اشترك في باقاتنا — تحكم كامل في الاستهلاك والتكلفة.</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-point-icon">🔄</div>
+            <div>
+              <div class="ai-point-title">تبديل فوري بين النماذج</div>
+              <p class="ai-point-desc">غيّر نموذج الذكاء الاصطناعي بنقرة واحدة دون إعادة إعداد أي شيء.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-in-left" style="transition-delay:.15s">
+        <div class="ai-models-grid">
+          <div class="ai-model-card featured">
+            <div class="am-icon">✨</div>
+            <div>
+              <div class="am-name">Google Gemini 2.5 Flash</div>
+              <div class="am-desc">أسرع وأذكى — مثالي للمحادثات العالية الحجم</div>
+              <span class="am-badge">موصى به</span>
+            </div>
+          </div>
+          <div class="ai-model-card">
+            <div class="am-icon">🔮</div>
+            <div>
+              <div class="am-name">Gemini Flash Latest</div>
+              <div class="am-desc">آخر إصدار — أحدث القدرات</div>
+            </div>
+          </div>
+          <div class="ai-model-card">
+            <div class="am-icon">🎭</div>
+            <div>
+              <div class="am-name">Claude Sonnet</div>
+              <div class="am-desc">تحليل معمّق وكتابة احترافية</div>
+            </div>
+          </div>
+          <div class="ai-model-card">
+            <div class="am-icon">⚡</div>
+            <div>
+              <div class="am-name">Claude Haiku</div>
+              <div class="am-desc">سريع واقتصادي للمهام البسيطة</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PLATFORMS ══════════ -->
+<section class="section" id="platforms" style="padding-top:60px;padding-bottom:80px">
+  <div class="section-inner">
+    <div class="section-head fade-in">
+      <div class="section-tag">🔌 قنوات التوزيع</div>
+      <h2 class="section-title">وصّل روبوتاتك لكل <span class="hls">قنوات عملك</span></h2>
+    </div>
+    <div class="platforms-bar">
+      <div class="plat-item fade-in"><span class="plat-icon">🌐</span> موقع الويب</div>
+      <div class="plat-item fade-in" style="transition-delay:.08s"><span class="plat-icon">📱</span> واتساب</div>
+      <div class="plat-item fade-in" style="transition-delay:.16s"><span class="plat-icon">✈️</span> تيليجرام</div>
+      <div class="plat-item fade-in" style="transition-delay:.24s"><span class="plat-icon">💬</span> ماسنجر</div>
+      <div class="plat-item fade-in" style="transition-delay:.32s"><span class="plat-icon">🔌</span> REST API</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="cta-section">
+  <div class="cta-blob cta-blob-1"></div>
+  <div class="cta-blob cta-blob-2"></div>
+  <div class="cta-inner fade-in">
+    <div class="cta-tag">🚀 ابدأ الآن</div>
+    <h2 class="cta-title">
+      ابدأ <span class="hl">التحول الرقمي</span><br>لشركتك اليوم
+    </h2>
+    <p class="cta-desc">
+      انضم إلى الشركات التي تستخدم الذكاء الاصطناعي لتحسين عملياتها.<br>
+      إعداد سهل في دقائق، ودعم كامل على مدار الساعة.
+    </p>
+    <div class="cta-btns">
+      <button class="cta-btn-main" onclick="openModal('register')">
+        إنشاء حساب مجاني — ابدأ الآن
+      </button>
+      <button class="cta-btn-sec" onclick="openModal('login')">
+        لدي حساب — تسجيل الدخول
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand fade-in">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div class="nb-icon">🤖</div>
+        <span class="nb-brand">AI <span>Platform</span></span>
+      </div>
+      <p class="footer-desc">
+        منصة متقدمة للذكاء الاصطناعي والأتمتة الرقمية، تقدم حلولاً تقنية ذكية مصممة لرفع كفاءة الأعمال وتسريع التحول الرقمي.
+      </p>
+    </div>
+    <div class="footer-col fade-in">
+      <h4>المنصة</h4>
+      <a href="#services">الخدمات</a>
+      <a href="#features">المميزات</a>
+      <a href="#how">كيف تعمل</a>
+      <a href="#ai-tech">التقنية</a>
+    </div>
+    <div class="footer-col fade-in">
+      <h4>الأدوات</h4>
+      <a href="#" onclick="openModal('register');return false">روبوتات المحادثة</a>
+      <a href="#" onclick="openModal('register');return false">الأتمتة</a>
+      <a href="#" onclick="openModal('register');return false">قاعدة المعرفة</a>
+      <a href="#" onclick="openModal('register');return false">مراقبة الشبكة</a>
+    </div>
+    <div class="footer-col fade-in">
+      <h4>للمطورين</h4>
+      <a href="/docs" target="_blank">API Docs</a>
+      <a href="/redoc" target="_blank">ReDoc</a>
+      <a href="/health" target="_blank">System Status</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 AI Platform — جميع الحقوق محفوظة</div>
+    <div class="footer-tech">
+      <span class="tech-pill">FastAPI</span>
+      <span class="tech-pill">Gemini AI</span>
+      <span class="tech-pill">Python 3.12</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════ TOAST ══════════ -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ══════════════════════════════════════
+     MODAL: LOGIN
+══════════════════════════════════════ -->
+<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeModal('login')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-logo">
+        <div class="nb-icon">🤖</div>
+        <div>
+          <div class="modal-logo-text">AI Platform</div>
+          <div class="modal-logo-sub">مرحباً بعودتك</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('login')">✕</button>
+      <div style="width:100%;margin-top:0">
+        <div class="modal-title">تسجيل الدخول</div>
+        <div class="modal-sub">أدخل بياناتك للوصول إلى منصتك</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form id="li-form" onsubmit="handleLogin(event)" novalidate>
+        <div class="form-field">
+          <label>البريد الإلكتروني</label>
+          <div class="input-wrap">
+            <span class="input-icon">📧</span>
+            <input class="fi" id="li-email" type="email" placeholder="email@company.com" required autocomplete="email">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>كلمة المرور</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input class="fi" id="li-pass" type="password" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="show-pw" onclick="tp('li-pass')" title="إظهار/إخفاء">👁</button>
+          </div>
+          <a class="forgot-link" onclick="openModal('forgot')">نسيت كلمة المرور؟</a>
+        </div>
+
+        <div class="err-msg" id="li-err"></div>
+
+        <button class="submit-btn" id="li-btn" type="submit">
+          <span id="li-txt">تسجيل الدخول</span>
+          <span class="spinner" id="li-spn"></span>
+        </button>
+      </form>
+      <div class="modal-switch">
+        ليس لديك حساب؟ <a onclick="closeModal('login');openModal('register')">إنشاء حساب مجاني</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL: REGISTER
+══════════════════════════════════════ -->
+<div class="overlay" id="registerOverlay" onclick="if(event.target===this)closeModal('register')">
+  <div class="modal-box" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-logo">
+        <div class="nb-icon">🤖</div>
+        <div>
+          <div class="modal-logo-text">AI Platform</div>
+          <div class="modal-logo-sub">ابدأ مجاناً اليوم</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('register')">✕</button>
+      <div style="width:100%;margin-top:0">
+        <div class="modal-title">إنشاء حساب</div>
+        <div class="modal-sub">أنشئ منظمتك وابدأ رحلتك الرقمية</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form id="rg-form" onsubmit="handleRegister(event)" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <label>الاسم الكامل</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input class="fi" id="rg-name" type="text" placeholder="محمد أحمد" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>البريد الإلكتروني</label>
+            <div class="input-wrap">
+              <span class="input-icon">📧</span>
+              <input class="fi" id="rg-email" type="email" placeholder="email@company.com" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>اسم المنظمة</label>
+            <div class="input-wrap">
+              <span class="input-icon">🏢</span>
+              <input class="fi" id="rg-org" type="text" placeholder="شركة التقنية" required oninput="autoSlug()">
+            </div>
+          </div>
+          <div class="form-field">
+            <label>المعرف الفريد</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔗</span>
+              <input class="fi" id="rg-slug" type="text" placeholder="tech-company" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>كلمة المرور</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input class="fi" id="rg-pass" type="password" placeholder="8+ أحرف" required oninput="pwCheck()">
+              <button type="button" class="show-pw" onclick="tp('rg-pass')">👁</button>
+            </div>
+            <div class="pw-strength" id="pw-bar">
+              <div class="pw-bar" style="background:#e2e8f0;border-radius:2px;height:4px">
+                <div id="pw-fill" class="pw-fill" style="height:100%;border-radius:2px;width:0;transition:.3s"></div>
+              </div>
+              <div id="pw-lbl" class="pw-lbl"></div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>تأكيد كلمة المرور</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔑</span>
+              <input class="fi" id="rg-pass2" type="password" placeholder="أعد الإدخال" required>
+              <button type="button" class="show-pw" onclick="tp('rg-pass2')">👁</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="err-msg" id="rg-err"></div>
+
+        <button class="submit-btn" id="rg-btn" type="submit">
+          <span id="rg-txt">🚀 إنشاء حساب مجاني</span>
+          <span class="spinner" id="rg-spn"></span>
+        </button>
+      </form>
+      <div class="modal-switch">
+        لديك حساب بالفعل؟ <a onclick="closeModal('register');openModal('login')">تسجيل الدخول</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL: FORGOT PASSWORD
+══════════════════════════════════════ -->
+<div class="overlay" id="forgotOverlay" onclick="if(event.target===this)closeModal('forgot')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-logo">
+        <div class="nb-icon">🤖</div>
+        <div>
+          <div class="modal-logo-text">AI Platform</div>
+          <div class="modal-logo-sub">استعادة الحساب</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('forgot')">✕</button>
+      <div style="width:100%;margin-top:0">
+        <div class="modal-title">نسيت كلمة المرور؟</div>
+        <div class="modal-sub">أدخل بريدك وسنرسل لك رابط التغيير</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form id="fg-form" onsubmit="handleForgot(event)" novalidate>
+        <div class="form-field">
+          <label>البريد الإلكتروني</label>
+          <div class="input-wrap">
+            <span class="input-icon">📧</span>
+            <input class="fi" id="fg-email" type="email" placeholder="email@company.com" required>
+          </div>
+        </div>
+        <div class="err-msg" id="fg-err"></div>
+        <button class="submit-btn" id="fg-btn" type="submit">
+          <span id="fg-txt">إرسال رابط التغيير</span>
+          <span class="spinner" id="fg-spn"></span>
+        </button>
+      </form>
+      <div class="success-box" id="fg-ok">
+        <div class="success-icon">✉️</div>
+        <div class="success-title">تم الإرسال!</div>
+        <p class="success-desc">تحقق من بريدك الإلكتروني واتبع التعليمات لإعادة تعيين كلمة المرور.</p>
+      </div>
+      <div class="modal-switch">
+        <a onclick="closeModal('forgot');openModal('login')">← العودة لتسجيل الدخول</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Config ─────────────────────────────────────────── */
+const API = '';
+
+/* ── Navbar scroll ──────────────────────────────────── */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('solid', window.scrollY > 40);
+}, { passive: true });
+
+/* ── Modal helpers ──────────────────────────────────── */
+function openModal(name) {
+  document.getElementById(name + 'Overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(name) {
+  document.getElementById(name + 'Overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['login','register','forgot'].forEach(closeModal);
+    document.body.style.overflow = '';
+  }
+});
+
+/* ── Toast ──────────────────────────────────────────── */
+function toast(msg, type = 'ok') {
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+/* ── Intersection Observer (animations) ─────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in, .fade-in-left').forEach(el => observer.observe(el));
+
+/* ── Counter animation ──────────────────────────────── */
+const counters = [
+  { id: 'c1', target: 150, duration: 1800 },
+  { id: 'c2', target: 50,  duration: 1600 },
+  { id: 'c3', target: 99,  duration: 2000 },
+  { id: 'c4', target: 3,   duration: 1400 },
+];
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    counterObserver.unobserve(entry.target);
+
+    counters.forEach(({ id, target, duration }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.floor(current);
+        if (current >= target) clearInterval(timer);
+      }, 16);
+    });
+  });
+}, { threshold: 0.3 });
+
+const statsBar = document.querySelector('.stats-bar');
+if (statsBar) counterObserver.observe(statsBar);
+
+/* ── Show/hide password ─────────────────────────────── */
+function tp(id) {
+  const i = document.getElementById(id);
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+
+/* ── Auto slug ──────────────────────────────────────── */
+function autoSlug() {
+  const v = document.getElementById('rg-org').value;
+  document.getElementById('rg-slug').value = v.toLowerCase()
+    .replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/, '');
+}
+
+/* ── Password strength ──────────────────────────────── */
+function pwCheck() {
+  const p = document.getElementById('rg-pass').value;
+  const bar  = document.getElementById('pw-bar');
+  const fill = document.getElementById('pw-fill');
+  const lbl  = document.getElementById('pw-lbl');
+  if (!p) { bar.style.display = 'none'; return; }
+  bar.style.display = 'block';
+  const score = (p.length >= 8 ? 1 : 0) + (p.length >= 12 ? 1 : 0)
+    + (/[A-Z]/.test(p) ? 1 : 0) + (/[0-9]/.test(p) ? 1 : 0)
+    + (/[^A-Za-z0-9]/.test(p) ? 1 : 0);
+  const pcts   = ['0%','20%','40%','60%','80%','100%'];
+  const colors = ['#ef4444','#f97316','#eab308','#3b82f6','#10b981'];
+  const labels = ['ضعيفة جداً','ضعيفة','متوسطة','جيدة','قوية'];
+  fill.style.width      = pcts[score];
+  fill.style.background = colors[score - 1] || '#ef4444';
+  lbl.textContent       = labels[score - 1] || 'ضعيفة جداً';
+  lbl.style.color       = colors[score - 1] || '#ef4444';
+}
+
+/* ── Error helpers ──────────────────────────────────── */
+function setLoad(p, on) {
+  document.getElementById(p + '-txt').style.display = on ? 'none' : '';
+  document.getElementById(p + '-spn').style.display = on ? '' : 'none';
+  document.getElementById(p + '-btn').disabled = on;
+}
+function showErr(id, msg) {
+  const e = document.getElementById(id + '-err');
+  e.textContent = msg; e.style.display = 'block';
+}
+function hideErr(id) {
+  const e = document.getElementById(id + '-err');
+  if (e) e.style.display = 'none';
+}
+
+/* ── LOGIN ──────────────────────────────────────────── */
+async function handleLogin(e) {
+  e.preventDefault(); hideErr('li'); setLoad('li', true);
+  try {
+    const r = await fetch(`${API}/api/v1/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        email:    document.getElementById('li-email').value.trim(),
+        password: document.getElementById('li-pass').value,
+      }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || d.error?.message || 'خطأ في تسجيل الدخول');
+    localStorage.setItem('access_token', d.data.access_token);
+    localStorage.setItem('user_name',    d.data.user.name);
+    toast('مرحباً بعودتك! ' + d.data.user.name);
+    closeModal('login');
+    setTimeout(() => window.location.href = '/dashboard', 1200);
+  } catch (err) { showErr('li', err.message); }
+  finally { setLoad('li', false); }
+}
+
+/* ── REGISTER ───────────────────────────────────────── */
+async function handleRegister(e) {
+  e.preventDefault(); hideErr('rg');
+  const p  = document.getElementById('rg-pass').value;
+  const p2 = document.getElementById('rg-pass2').value;
+  if (p !== p2)      { showErr('rg', 'كلمتا المرور غير متطابقتين'); return; }
+  if (!/[A-Z]/.test(p)) { showErr('rg', 'كلمة المرور يجب أن تحتوي على حرف كبير'); return; }
+  if (!/[0-9]/.test(p)) { showErr('rg', 'كلمة المرور يجب أن تحتوي على رقم'); return; }
+  setLoad('rg', true);
+  try {
+    const r = await fetch(`${API}/api/v1/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        name:     document.getElementById('rg-name').value.trim(),
+        email:    document.getElementById('rg-email').value.trim(),
+        password: p,
+        org_name: document.getElementById('rg-org').value.trim(),
+        org_slug: document.getElementById('rg-slug').value.trim(),
+      }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || d.error?.message || 'خطأ في إنشاء الحساب');
+    localStorage.setItem('access_token', d.data.access_token);
+    localStorage.setItem('user_name',    d.data.user.name);
+    toast('🎉 مرحباً ' + d.data.user.name + '! تم إنشاء حسابك بنجاح');
+    closeModal('register');
+    setTimeout(() => window.location.href = '/dashboard', 1500);
+  } catch (err) { showErr('rg', err.message); }
+  finally { setLoad('rg', false); }
+}
+
+/* ── FORGOT ─────────────────────────────────────────── */
+async function handleForgot(e) {
+  e.preventDefault(); hideErr('fg'); setLoad('fg', true);
+  try {
+    await fetch(`${API}/api/v1/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: document.getElementById('fg-email').value.trim() }),
+    });
+    document.getElementById('fg-form').style.display = 'none';
+    document.getElementById('fg-ok').style.display   = 'block';
+  } catch { showErr('fg', 'حدث خطأ، حاول مرة أخرى'); }
+  finally { setLoad('fg', false); }
+}
+
+/* ── Redirect if already logged in ─────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  const t = localStorage.getItem('access_token');
+  if (t) {
+    try {
+      const p = JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+      if (p.exp && p.exp * 1000 > Date.now()) {
+        window.location.href = '/dashboard';
+      }
+    } catch {}
+  }
+});
+</script>
+</body>
+</html>

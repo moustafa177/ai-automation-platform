@@ -1,0 +1,53 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "FastAPI Backend (uvicorn dev)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "C:\\Users\\huawei\\OneDrive\\Desktop\\myproject\\start_server.bat"],
+      "port": 8000
+    },
+    {
+      "name": "Full Stack (Docker Compose)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "--build"],
+      "port": 80
+    },
+    {
+      "name": "API Only (Docker)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "api", "postgres", "redis"],
+      "port": 8000
+    },
+    {
+      "name": "n8n Workflow Builder",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "n8n", "postgres"],
+      "port": 5678
+    },
+    {
+      "name": "Grafana Dashboards",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "grafana", "prometheus"],
+      "port": 3001
+    },
+    {
+      "name": "MinIO File Storage",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "minio"],
+      "port": 9001
+    },
+    {
+      "name": "InfluxDB (Network Metrics)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "influxdb"],
+      "port": 8086
+    },
+    {
+      "name": "Prometheus (Metrics Collector)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "prometheus"],
+      "port": 9090
+    }
+  ]
+}

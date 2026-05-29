@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AI Platform - AI and Automation Solutions">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاشتراكات والفواتير — منصة الذكاء</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --sb:#0f172a; --sb-brd:rgba(255,255,255,.07); --sb-txt:#8b9ab3;
+  --bg:#f0f4f8; --surface:#ffffff; --surface2:#f8fafc;
+  --blue:#1b6ac9; --blue2:#1558b0; --blue-lt:#eff6ff; --blue-bdr:#bfdbfe;
+  --green:#10b981; --green-lt:#f0fdf4;
+  --amber:#f59e0b; --amber-lt:#fffbeb;
+  --red:#ef4444;   --red-lt:#fef2f2;
+  --purple:#7c3aed; --purple-lt:#f5f3ff;
+  --text:#0f172a; --text2:#334155; --muted:#64748b;
+  --border:#e2e8f0; --border2:#f1f5f9;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.09);
+  --radius:10px; --radius-lg:14px; --sb-w:252px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+.sidebar::-webkit-scrollbar-track{background:var(--sb)}
+.sidebar::-webkit-scrollbar-thumb{background:#1e293b}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sb-w);height:100vh;position:fixed;right:0;top:0;background:var(--sb);border-left:1px solid var(--sb-brd);display:flex;flex-direction:column;z-index:200;overflow:hidden}
+.sb-logo{padding:18px 16px;border-bottom:1px solid var(--sb-brd);display:flex;align-items:center;gap:11px;flex-shrink:0}
+.sb-logo-icon{width:36px;height:36px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 2px 8px rgba(27,106,201,.4);flex-shrink:0}
+.sb-logo-text{font-size:14.5px;font-weight:700;color:#f1f5f9}
+.sb-logo-sub{font-size:10px;color:#475569;margin-top:1px}
+.sb-nav{flex:1;padding:10px;overflow-y:auto}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#374151;padding:14px 10px 5px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;color:var(--sb-txt);font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;margin-bottom:1px}
+.nav-link .nl-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;background:rgba(255,255,255,.05);flex-shrink:0}
+.nav-link .nl-text{flex:1}
+.nav-link:hover{background:rgba(255,255,255,.055);color:#d1d5db}
+.nav-link.active{background:rgba(27,106,201,.18);color:#60a5fa;border-right:2.5px solid var(--blue)}
+.nav-link.active .nl-icon{background:rgba(27,106,201,.25);color:#93c5fd}
+.nl-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;background:var(--blue);color:#fff}
+.nl-badge.green{background:var(--green)}
+.nl-badge.amber{background:var(--amber);color:#000}
+.sb-footer{padding:12px 10px;border-top:1px solid var(--sb-brd);flex-shrink:0}
+.sb-user{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background .18s}
+.sb-user:hover{background:rgba(255,255,255,.055)}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-uname{font-size:12.5px;font-weight:600;color:#e2e8f0}
+.sb-urole{font-size:10px;color:#4b5563;margin-top:1px}
+
+/* ══ MAIN ══ */
+.main-wrap{margin-right:var(--sb-w);flex:1;display:flex;flex-direction:column;min-height:100vh;background:var(--bg)}
+.topbar{height:60px;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100}
+.tb-bc{font-size:14px;font-weight:600;color:var(--text);flex:1;display:flex;align-items:center;gap:8px}
+.tb-bc i{color:var(--blue);font-size:13px}
+.tb-bc .sep{color:var(--border);font-size:16px}
+.tb-bc .sub{font-size:12px;color:var(--muted);font-weight:400}
+.tb-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);transition:all .18s;position:relative}
+.tb-btn:hover{background:var(--blue-lt);border-color:var(--blue-bdr);color:var(--blue)}
+.notif-dot{width:7px;height:7px;background:var(--red);border-radius:50%;position:absolute;top:5px;right:5px;border:1.5px solid var(--surface)}
+.tb-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;cursor:pointer;border:2px solid var(--blue-bdr);transition:border-color .18s}
+
+/* ══ PAGE ══ */
+.page{padding:28px;flex:1;display:flex;flex-direction:column;gap:24px}
+
+/* ══ CURRENT PLAN BANNER ══ */
+.plan-banner{
+  background:linear-gradient(135deg,#1b6ac9 0%,#1558b0 50%,#0d3d80 100%);
+  border-radius:var(--radius-lg);padding:26px 30px;
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;
+  position:relative;overflow:hidden;
+}
+.plan-banner::before{content:'';position:absolute;top:-60px;left:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.plan-banner::after{content:'';position:absolute;bottom:-80px;left:200px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.pb-plan-name{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.pb-title{font-size:26px;font-weight:900;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.pb-title .plan-badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.pb-desc{font-size:13px;color:rgba(255,255,255,.7)}
+.pb-desc b{color:#fff}
+.pb-actions{display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1}
+.pb-status{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:rgba(255,255,255,.9);background:rgba(16,185,129,.25);border:1px solid rgba(16,185,129,.4);padding:5px 12px;border-radius:20px}
+.pb-status .dot{width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse 2s infinite}
+
+/* ══ USAGE CARDS ══ */
+.usage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.usage-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow);transition:all .2s}
+.usage-card:hover{border-color:var(--blue-bdr);box-shadow:var(--shadow-md)}
+.uc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.uc-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.uc-pct{font-size:13px;font-weight:700}
+.uc-name{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.uc-nums{display:flex;align-items:baseline;gap:4px;margin-bottom:10px}
+.uc-used{font-size:20px;font-weight:800;color:var(--text)}
+.uc-sep{font-size:13px;color:var(--muted)}
+.uc-total{font-size:13px;color:var(--muted);font-weight:500}
+.uc-bar{height:5px;background:var(--border2);border-radius:5px;overflow:hidden}
+.uc-fill{height:100%;border-radius:5px;transition:width 1s ease}
+
+/* ══ PLANS SECTION ══ */
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.section-title{font-size:16px;font-weight:800;color:var(--text)}
+.section-sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+.billing-toggle{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:4px}
+.bt-opt{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .18s;user-select:none}
+.bt-opt.active{background:var(--blue);color:#fff}
+.bt-save{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+.plan-card{
+  background:var(--surface);border:2px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;
+  transition:all .25s;position:relative;display:flex;flex-direction:column;
+}
+.plan-card:hover{border-color:var(--blue-bdr);box-shadow:0 8px 30px rgba(27,106,201,.12);transform:translateY(-2px)}
+.plan-card.current{border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,106,201,.12)}
+.plan-card.popular{border-color:var(--blue)}
+
+/* Popular ribbon */
+.popular-ribbon{
+  position:absolute;top:16px;left:-1px;
+  background:var(--blue);color:#fff;
+  font-size:10px;font-weight:800;
+  padding:4px 14px 4px 10px;
+  border-radius:0 20px 20px 0;
+  letter-spacing:.5px;
+  box-shadow:2px 2px 8px rgba(27,106,201,.3);
+}
+
+.plan-head{padding:24px 24px 20px;border-bottom:1px solid var(--border2)}
+.plan-icon{font-size:28px;margin-bottom:10px}
+.plan-name{font-size:18px;font-weight:800;color:var(--text);margin-bottom:4px}
+.plan-tagline{font-size:12px;color:var(--muted)}
+
+.plan-price{margin:16px 0 0}
+.price-val{font-size:36px;font-weight:900;color:var(--text);line-height:1}
+.price-val sup{font-size:18px;font-weight:700;vertical-align:super;margin-left:1px}
+.price-per{font-size:12px;color:var(--muted);margin-top:3px}
+.price-save{display:inline-block;font-size:11px;font-weight:700;color:#16a34a;background:#f0fdf4;border:1px solid #bbf7d0;padding:2px 8px;border-radius:20px;margin-top:6px}
+
+.plan-body{padding:20px 24px;flex:1;display:flex;flex-direction:column;gap:16px}
+
+.plan-limits{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.limit-item{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px}
+.limit-val{font-size:16px;font-weight:800;color:var(--text);line-height:1;margin-bottom:2px}
+.limit-lbl{font-size:10px;color:var(--muted);font-weight:500}
+
+.plan-features-title{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.feature-list{display:flex;flex-direction:column;gap:7px}
+.feature-item{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text2)}
+.feature-item i{font-size:12px;margin-top:1px;flex-shrink:0}
+.fi-check{color:var(--green)}
+.fi-x{color:#cbd5e1}
+.feature-item.missing{color:#94a3b8}
+
+.plan-foot{padding:0 24px 24px}
+.plan-btn{
+  width:100%;padding:11px;border-radius:9px;font-family:inherit;
+  font-size:13.5px;font-weight:700;cursor:pointer;border:none;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;
+}
+.plan-btn.btn-current{background:var(--surface2);color:var(--muted);border:2px solid var(--border);cursor:default}
+.plan-btn.btn-upgrade{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(27,106,201,.3)}
+.plan-btn.btn-upgrade:hover{background:var(--blue2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(27,106,201,.4)}
+.plan-btn.btn-enterprise{background:var(--purple);color:#fff;box-shadow:0 2px 8px rgba(124,58,237,.3)}
+.plan-btn.btn-enterprise:hover{background:#6d28d9;transform:translateY(-1px)}
+.plan-btn.btn-downgrade{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+.plan-btn.btn-downgrade:hover{background:var(--red-lt);color:var(--red);border-color:#fecaca}
+
+/* ══ BILLING HISTORY ══ */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden}
+.card-head{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.card-title i{color:var(--blue);font-size:13px}
+
+table{width:100%;border-collapse:collapse}
+thead th{padding:10px 20px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border2);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border2);transition:background .15s}
+tbody tr:last-child{border:none}
+tbody tr:hover{background:#f8fbff}
+tbody td{padding:13px 20px;font-size:13px;color:var(--text2);vertical-align:middle}
+.inv-id{font-family:'Courier New',monospace;font-size:12px;color:var(--blue);font-weight:600}
+.btn-sm{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);transition:all .18s}
+.btn-sm:hover{background:var(--blue-lt);border-color:var(--blue-bdr);color:var(--blue)}
+
+/* Pills */
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.pill-green{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.pill-blue {background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bdr)}
+.pill-amber{background:var(--amber-lt);color:#d97706;border:1px solid #fde68a}
+.pill-gray {background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+
+/* ══ PAYMENT METHOD ══ */
+.pm-card{display:flex;align-items:center;gap:16px;padding:18px 22px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);transition:all .2s}
+.pm-card:hover{border-color:var(--blue-bdr);background:var(--blue-lt)}
+.pm-logo{width:50px;height:32px;background:#fff;border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pm-info{flex:1}
+.pm-name{font-size:13.5px;font-weight:700;color:var(--text)}
+.pm-exp{font-size:11.5px;color:var(--muted);margin-top:2px}
+.pm-default{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bdr)}
+
+/* ══ MODAL ══ */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1000;backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:16px;width:520px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,.2);overflow:hidden;animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.97) translateY(10px)}to{opacity:1;transform:none}}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:17px;font-weight:800;color:var(--text)}
+.modal-close{width:30px;height:30px;border-radius:7px;border:none;background:var(--surface2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.modal-close:hover{background:var(--red-lt);color:var(--red)}
+.modal-body{padding:24px}
+.modal-foot{padding:16px 24px;border-top:1px solid var(--border2);display:flex;gap:10px;justify-content:flex-end}
+
+.upgrade-plan-card{border:2px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px;cursor:pointer;transition:all .2s}
+.upgrade-plan-card:hover,.upgrade-plan-card.selected{border-color:var(--blue);background:var(--blue-lt)}
+.upgrade-plan-card.selected .upc-check{opacity:1}
+.upc-check{opacity:0;color:var(--blue);transition:opacity .18s}
+.up-row{display:flex;align-items:center;justify-content:space-between}
+
+.billing-row{display:flex;gap:10px;margin:16px 0}
+.billing-opt{flex:1;border:2px solid var(--border);border-radius:9px;padding:13px 16px;cursor:pointer;transition:all .18s}
+.billing-opt:hover,.billing-opt.selected{border-color:var(--blue);background:var(--blue-lt)}
+.bo-name{font-size:13px;font-weight:700;color:var(--text)}
+.bo-price{font-size:18px;font-weight:900;color:var(--blue)}
+.bo-save{font-size:11px;color:#16a34a;font-weight:600}
+
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:9px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;transition:all .18s;box-shadow:0 2px 8px rgba(27,106,201,.3)}
+.btn-primary:hover{background:var(--blue2);box-shadow:0 4px 14px rgba(27,106,201,.4)}
+.btn-ghost{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);transition:all .18s}
+.btn-ghost:hover{background:var(--blue-lt);border-color:var(--blue-bdr);color:var(--blue)}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .45s ease both}
+.fu1{animation-delay:.07s}.fu2{animation-delay:.14s}.fu3{animation-delay:.21s}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1200px){.plans-grid{grid-template-columns:1fr 1fr}.usage-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.sidebar{transform:translateX(100%)}.sidebar.open{transform:translateX(0)}.main-wrap{margin-right:0}.plans-grid{grid-template-columns:1fr}.usage-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.page{padding:16px}.plan-banner{grid-template-columns:1fr}.usage-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-icon">AI</div>
+    <div>
+      <div class="sb-logo-text">منصة الذكاء</div>
+      <div class="sb-logo-sub">AI & Automation Platform</div>
+    </div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">الرئيسية</div>
+    <a class="nav-link" href="/dashboard"><div class="nl-icon"><i class="fas fa-th-large"></i></div><span class="nl-text">لوحة التحكم</span></a>
+    <a class="nav-link" href="/reports"><div class="nl-icon"><i class="fas fa-chart-line"></i></div><span class="nl-text">التقارير</span></a>
+    <div class="sb-section">الخدمات</div>
+    <a class="nav-link" href="/chatbot"><div class="nl-icon"><i class="fas fa-robot"></i></div><span class="nl-text">AI Chatbot Builder</span></a>
+    <a class="nav-link" href="/automation"><div class="nl-icon"><i class="fas fa-bolt"></i></div><span class="nl-text">أتمتة العمليات</span></a>
+    <a class="nav-link" href="/knowledge"><div class="nl-icon"><i class="fas fa-book"></i></div><span class="nl-text">قاعدة المعرفة</span></a>
+    <a class="nav-link" href="/network"><div class="nl-icon"><i class="fas fa-network-wired"></i></div><span class="nl-text">مراقبة الشبكة</span></a>
+    <div class="sb-section">الإدارة</div>
+    <a class="nav-link" href="/team"><div class="nl-icon"><i class="fas fa-users"></i></div><span class="nl-text">الفريق</span></a>
+    <a class="nav-link active" href="/billing"><div class="nl-icon"><i class="fas fa-credit-card"></i></div><span class="nl-text">الاشتراكات</span></a>
+    <a class="nav-link" href="/settings"><div class="nl-icon"><i class="fas fa-cog"></i></div><span class="nl-text">الإعدادات</span></a>
+    <a class="nav-link" href="/" onclick="doLogout(event)" style="color:#ef4444">
+      <div class="nl-icon" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i></div>
+      <span class="nl-text" style="color:#ef4444">تسجيل الخروج</span>
+    </a>
+  </nav>
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">م</div>
+      <div style="flex:1;min-width:0">
+        <div class="sb-uname" id="sbName">مصطفى أحمد</div>
+        <div class="sb-urole">⚡ Pro Plan</div>
+      </div>
+      <i class="fas fa-ellipsis-v" style="color:#374151;font-size:11px"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main-wrap">
+
+  <header class="topbar">
+    <div class="tb-bc">
+      <i class="fas fa-credit-card"></i>
+      <span>الاشتراكات والفواتير</span>
+      <span class="sep">/</span>
+      <span class="sub">إدارة خطة Pro</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="tb-btn"><i class="fas fa-bell" style="font-size:13px"></i><div class="notif-dot"></div></div>
+      <div class="tb-avatar" id="tbAvatar">م</div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- ── Current Plan Banner ── -->
+    <div class="plan-banner fu">
+      <div>
+        <div class="pb-plan-name">الخطة الحالية</div>
+        <div class="pb-title">
+          ⚡ Pro
+          <span class="plan-badge">نشط</span>
+        </div>
+        <div class="pb-desc">
+          تجديد تلقائي في <b id="renewDate">15 يوليو 2026</b> ·
+          <b id="planPrice">$49</b> / شهر
+        </div>
+      </div>
+      <div class="pb-actions">
+        <div class="pb-status">
+          <span class="dot"></span>
+          اشتراك نشط
+        </div>
+        <button class="btn-ghost btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;font-size:12px;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;cursor:pointer;transition:all .18s" onmouseover="this.style.background='rgba(255,255,255,.22)'" onmouseout="this.style.background='rgba(255,255,255,.12)'" onclick="openUpgradeModal()">
+          <i class="fas fa-arrow-up"></i> ترقية للـ Enterprise
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Usage Cards ── -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:var(--text)">استخدام الحصة الشهرية</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">يتجدد في 15 يوليو 2026</div>
+        </div>
+        <span class="pill pill-blue">دورة مايو 2026</span>
+      </div>
+      <div class="usage-grid" id="usageGrid">
+        <!-- JS renders here -->
+      </div>
+    </div>
+
+    <!-- ── Toggle + Plans Section ── -->
+    <div>
+      <div class="section-hd">
+        <div>
+          <div class="section-title">اختر خطتك</div>
+          <div class="section-sub">ترقية أو تخفيض في أي وقت · بدون عقود</div>
+        </div>
+        <div class="billing-toggle">
+          <div class="bt-opt active" id="tgl-monthly" onclick="switchBilling('monthly')">شهري</div>
+          <div class="bt-opt" id="tgl-yearly" onclick="switchBilling('yearly')">
+            سنوي
+            <span class="bt-save" style="margin-right:6px">وفر 20%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="plans-grid" id="plansGrid">
+        <!-- JS renders here -->
+      </div>
+    </div>
+
+    <!-- ── Billing History + Payment Method ── -->
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:18px">
+
+      <!-- Invoices Table -->
+      <div class="card fu">
+        <div class="card-head">
+          <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> سجل الفواتير</div>
+          <button class="btn-sm" onclick="exportInvoices()"><i class="fas fa-download"></i> تصدير</button>
+        </div>
+        <div>
+          <table id="invoiceTable">
+            <thead>
+              <tr>
+                <th>رقم الفاتورة</th>
+                <th>التاريخ</th>
+                <th>الخطة</th>
+                <th>المبلغ</th>
+                <th>الحالة</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="invoiceBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Payment + Info -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- Payment Method -->
+        <div class="card fu fu1">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-lock"></i> طريقة الدفع</div>
+            <button class="btn-sm">تغيير</button>
+          </div>
+          <div style="padding:16px">
+            <div class="pm-card">
+              <div class="pm-logo">💳</div>
+              <div class="pm-info">
+                <div class="pm-name">Visa •••• 4242</div>
+                <div class="pm-exp">تنتهي 08 / 2028</div>
+              </div>
+              <span class="pm-default">افتراضية</span>
+            </div>
+            <div style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted)">
+              <i class="fas fa-shield-alt" style="color:var(--green)"></i>
+              مدفوعاتك محمية بتشفير SSL 256-bit
+            </div>
+          </div>
+        </div>
+
+        <!-- Cancel -->
+        <div class="card fu fu2">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-times-circle" style="color:var(--red)"></i> إلغاء الاشتراك</div>
+          </div>
+          <div style="padding:16px">
+            <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.6">ستظل قادراً على استخدام Pro حتى نهاية فترة الفوترة الحالية (15 يوليو). بعدها، ستُحوَّل تلقائياً للخطة المجانية.</p>
+            <button onclick="confirmCancel()" style="width:100%;padding:9px;border-radius:8px;border:1px solid #fecaca;background:#fff5f5;color:var(--red);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .18s" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fff5f5'">
+              <i class="fas fa-ban"></i> إلغاء الاشتراك
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════ UPGRADE MODAL ══════════ -->
+<div class="modal-bg" id="upgradeModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">🚀 ترقية خطتك</div>
+      <button class="modal-close" onclick="closeUpgradeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">اختر الخطة التي تناسب احتياجاتك</p>
+
+      <div class="upgrade-plan-card selected" id="upg-pro" onclick="selectUpgradePlan('pro')">
+        <div class="up-row">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">⚡</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text)">Pro — الاحترافي</div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">30K رسالة · 10 روبوتات · 50 Workflows</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="text-align:left">
+              <div style="font-size:18px;font-weight:800;color:var(--blue)" id="proPriceM">$49<span style="font-size:11px;color:var(--muted)">/شهر</span></div>
+            </div>
+            <i class="fas fa-check-circle upc-check" style="font-size:18px"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="upgrade-plan-card" id="upg-enterprise" onclick="selectUpgradePlan('enterprise')">
+        <div class="up-row">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">🏢</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text)">Enterprise — المؤسسي</div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">غير محدود · Dedicated · SLA 99.9%</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="text-align:left">
+              <div style="font-size:14px;font-weight:700;color:var(--purple)">تسعير مخصص</div>
+            </div>
+            <i class="fas fa-check-circle upc-check" style="font-size:18px;color:var(--purple)"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="billing-row" id="billingRow">
+        <div class="billing-opt selected" id="bo-monthly" onclick="selectBillingOpt('monthly')">
+          <div class="bo-name">شهري</div>
+          <div class="bo-price" id="bo-monthly-price">$49</div>
+          <div style="font-size:11px;color:var(--muted)">لكل شهر</div>
+        </div>
+        <div class="billing-opt" id="bo-yearly" onclick="selectBillingOpt('yearly')">
+          <div class="bo-name">سنوي <span class="bo-save">وفر 20%</span></div>
+          <div class="bo-price" id="bo-yearly-price">$39</div>
+          <div style="font-size:11px;color:var(--muted)">لكل شهر · $468/سنة</div>
+        </div>
+      </div>
+
+      <div style="background:var(--blue-lt);border:1px solid var(--blue-bdr);border-radius:9px;padding:13px 16px;font-size:12.5px;color:var(--blue);display:flex;align-items:flex-start;gap:8px">
+        <i class="fas fa-info-circle" style="margin-top:1px;flex-shrink:0"></i>
+        <span>سيتم إرسال رابط الدفع على بريدك الإلكتروني. يمكنك الإلغاء في أي وقت.</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeUpgradeModal()">إلغاء</button>
+      <button class="btn-primary" onclick="doUpgrade()"><i class="fas fa-arrow-right"></i> متابعة الترقية</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ JS ══════════ -->
+<script>
+/* ── User ── */
+const uName = localStorage.getItem('user_name') || 'مصطفى أحمد';
+const uInit = uName.trim().charAt(0) || 'م';
+['sbAvatar','tbAvatar'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = uInit;
+});
+document.getElementById('sbName').textContent = uName;
+
+/* ── Plans Data ── */
+const PLANS = {
+  starter: {
+    icon:'🌱', name:'Starter', name_ar:'المبتدئ',
+    price_monthly:0, price_yearly:0, color:'#64748b', popular:false,
+    limits:{messages:'5,000',chatbots:'1',workflows:'5',members:'2'},
+    features:['1 روبوت محادثة','5,000 رسالة / شهر','5 Workflows','عضوان في الفريق','قاعدة معرفة واحدة','دعم عبر البريد'],
+    missing:['API Access','تحليلات متقدمة','دعم ذو أولوية','تكاملات مخصصة'],
+  },
+  pro: {
+    icon:'⚡', name:'Pro', name_ar:'الاحترافي',
+    price_monthly:49, price_yearly:39, color:'#1b6ac9', popular:true,
+    limits:{messages:'30,000',chatbots:'10',workflows:'50',members:'10'},
+    features:['10 روبوتات محادثة','30,000 رسالة / شهر','50 Workflows','10 أعضاء في الفريق','قواعد معرفة متعددة','API Access كامل','تحليلات متقدمة','دعم ذو أولوية (24/7)','تكاملات: WhatsApp · Telegram','تصدير التقارير (Excel · PDF)'],
+    missing:[],
+  },
+  enterprise: {
+    icon:'🏢', name:'Enterprise', name_ar:'المؤسسي',
+    price_monthly:null, price_yearly:null, color:'#7c3aed', popular:false,
+    limits:{messages:'∞',chatbots:'∞',workflows:'∞',members:'∞'},
+    features:['روبوتات غير محدودة','رسائل غير محدودة','Workflows غير محدودة','أعضاء غير محدودين','Dedicated Instance','SLA 99.9% Uptime','دعم مخصص + مدير حساب','تكاملات مخصصة','تدريب مجاني','عقد SLA + NDA'],
+    missing:[],
+  },
+};
+
+const USAGE = {
+  messages: {used:24150, limit:30000, label:'الرسائل',    icon:'💬', color:'#1b6ac9'},
+  chatbots: {used:3,     limit:10,    label:'الروبوتات',  icon:'🤖', color:'#10b981'},
+  workflows:{used:12,    limit:50,    label:'Workflows',  icon:'⚡', color:'#f59e0b'},
+  members:  {used:4,     limit:10,    label:'الأعضاء',   icon:'👥', color:'#8b5cf6'},
+  kb_docs:  {used:87,    limit:500,   label:'المستندات', icon:'📄', color:'#06b6d4'},
+  api_calls:{used:12430, limit:50000, label:'API Calls',  icon:'🔌', color:'#ef4444'},
+};
+
+const INVOICES = [
+  {id:'INV-2026-005', date:'2026-05-01', plan:'Pro', amount:49.00, status:'paid'},
+  {id:'INV-2026-004', date:'2026-04-01', plan:'Pro', amount:49.00, status:'paid'},
+  {id:'INV-2026-003', date:'2026-03-01', plan:'Pro', amount:49.00, status:'paid'},
+  {id:'INV-2026-002', date:'2026-02-01', plan:'Pro', amount:49.00, status:'paid'},
+  {id:'INV-2026-001', date:'2026-01-01', plan:'Starter', amount:0.00, status:'free'},
+];
+
+/* ── Render Usage ── */
+function renderUsage() {
+  const grid = document.getElementById('usageGrid');
+  grid.innerHTML = Object.entries(USAGE).map(([key, u]) => {
+    const pct = Math.round((u.used / u.limit) * 100);
+    const color = pct >= 90 ? '#ef4444' : pct >= 70 ? '#f59e0b' : u.color;
+    const numFmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : n;
+    return `
+      <div class="usage-card fu">
+        <div class="uc-top">
+          <div class="uc-icon" style="background:${u.color}18">${u.icon}</div>
+          <span class="uc-pct" style="color:${color}">${pct}%</span>
+        </div>
+        <div class="uc-name">${u.label}</div>
+        <div class="uc-nums">
+          <span class="uc-used">${numFmt(u.used)}</span>
+          <span class="uc-sep">/</span>
+          <span class="uc-total">${numFmt(u.limit)}</span>
+        </div>
+        <div class="uc-bar">
+          <div class="uc-fill" style="width:0;background:${color}" data-w="${pct}%"></div>
+        </div>
+      </div>`;
+  }).join('');
+  setTimeout(() => {
+    document.querySelectorAll('.uc-fill[data-w]').forEach(b => b.style.width = b.dataset.w);
+  }, 200);
+}
+
+/* ── Render Plans ── */
+let billingMode = 'monthly';
+
+function switchBilling(mode) {
+  billingMode = mode;
+  document.getElementById('tgl-monthly').classList.toggle('active', mode === 'monthly');
+  document.getElementById('tgl-yearly').classList.toggle('active', mode === 'yearly');
+  renderPlans();
+}
+
+function renderPlans() {
+  const grid = document.getElementById('plansGrid');
+  const CURRENT_PLAN = 'pro';
+  grid.innerHTML = Object.entries(PLANS).map(([key, p]) => {
+    const isCurrent = key === CURRENT_PLAN;
+    const price = billingMode === 'yearly' ? p.price_yearly : p.price_monthly;
+    const priceHtml = price === null
+      ? `<div class="price-val" style="color:var(--purple)">مخصص</div><div class="price-per">تواصل معنا للحصول على عرض</div>`
+      : price === 0
+        ? `<div class="price-val">مجاني</div><div class="price-per">للأبد · بدون بطاقة ائتمان</div>`
+        : `<div class="price-val"><sup>$</sup>${price}</div>
+           <div class="price-per">لكل شهر${billingMode==='yearly'?' · يُدفع سنوياً':''}</div>
+           ${billingMode==='yearly' && p.price_monthly ? `<span class="price-save">وفر $${(p.price_monthly - price) * 12}/سنة</span>` : ''}`;
+
+    const limitsHtml = Object.entries(p.limits).map(([k,v]) => {
+      const lbl = {messages:'رسالة',chatbots:'روبوت',workflows:'Workflow',members:'عضو'}[k] || k;
+      return `<div class="limit-item"><div class="limit-val" style="color:${p.color}">${v}</div><div class="limit-lbl">${lbl}/شهر</div></div>`;
+    }).join('');
+
+    const featuresHtml = p.features.map(f =>
+      `<div class="feature-item"><i class="fas fa-check fi-check"></i>${f}</div>`
+    ).join('') + p.missing.map(f =>
+      `<div class="feature-item missing"><i class="fas fa-times fi-x"></i>${f}</div>`
+    ).join('');
+
+    let btnHtml = '';
+    if (isCurrent) {
+      btnHtml = `<button class="plan-btn btn-current" disabled><i class="fas fa-check"></i> خطتك الحالية</button>`;
+    } else if (key === 'enterprise') {
+      btnHtml = `<button class="plan-btn btn-enterprise" onclick="openUpgradeModal('enterprise')"><i class="fas fa-phone"></i> تواصل مع المبيعات</button>`;
+    } else if (key === 'starter') {
+      btnHtml = `<button class="plan-btn btn-downgrade" onclick="confirmCancel()"><i class="fas fa-arrow-down"></i> تخفيض للمجاني</button>`;
+    } else {
+      btnHtml = `<button class="plan-btn btn-upgrade" onclick="openUpgradeModal('${key}')"><i class="fas fa-arrow-up"></i> ترقية إلى ${p.name_ar}</button>`;
+    }
+
+    return `
+      <div class="plan-card ${isCurrent?'current':''} ${p.popular?'popular':''} fu">
+        ${p.popular ? `<div class="popular-ribbon">⭐ الأكثر شعبية</div>` : ''}
+        <div class="plan-head">
+          <div class="plan-icon">${p.icon}</div>
+          <div class="plan-name" style="color:${p.color}">${p.name}</div>
+          <div class="plan-tagline">${{starter:'للشركات الناشئة',pro:'للفرق المحترفة',enterprise:'للمؤسسات الكبرى'}[key]}</div>
+          <div class="plan-price">${priceHtml}</div>
+        </div>
+        <div class="plan-body">
+          <div class="plan-limits">${limitsHtml}</div>
+          <div>
+            <div class="plan-features-title" style="margin-bottom:10px">الميزات المتضمنة</div>
+            <div class="feature-list">${featuresHtml}</div>
+          </div>
+        </div>
+        <div class="plan-foot">${btnHtml}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ── Render Invoices ── */
+function renderInvoices() {
+  const tbody = document.getElementById('invoiceBody');
+  tbody.innerHTML = INVOICES.map(inv => {
+    const statusPill = {
+      paid: `<span class="pill pill-green">● مدفوعة</span>`,
+      free: `<span class="pill pill-gray">مجانية</span>`,
+      overdue: `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca">متأخرة</span>`,
+    }[inv.status] || inv.status;
+    const amount = inv.amount === 0 ? '—' : `$${inv.amount.toFixed(2)}`;
+    return `
+      <tr>
+        <td><span class="inv-id">${inv.id}</span></td>
+        <td>${inv.date}</td>
+        <td>${inv.plan}</td>
+        <td style="font-weight:700;color:var(--text)">${amount}</td>
+        <td>${statusPill}</td>
+        <td><button class="btn-sm" title="تحميل"><i class="fas fa-download"></i></button></td>
+      </tr>`;
+  }).join('');
+}
+
+/* ── Upgrade Modal ── */
+let selectedPlan = 'pro', selectedBilling = 'monthly';
+
+function openUpgradeModal(plan = 'pro') {
+  selectedPlan = plan;
+  selectedBilling = billingMode;
+  document.getElementById('upgradeModal').classList.add('show');
+  selectUpgradePlan(plan);
+  selectBillingOpt(billingMode);
+}
+
+function closeUpgradeModal() {
+  document.getElementById('upgradeModal').classList.remove('show');
+}
+
+function selectUpgradePlan(plan) {
+  selectedPlan = plan;
+  ['pro','enterprise'].forEach(p => {
+    document.getElementById(`upg-${p}`)?.classList.toggle('selected', p === plan);
+  });
+  const billingRow = document.getElementById('billingRow');
+  if (billingRow) billingRow.style.display = plan === 'enterprise' ? 'none' : 'flex';
+}
+
+function selectBillingOpt(billing) {
+  selectedBilling = billing;
+  ['monthly','yearly'].forEach(b => {
+    document.getElementById(`bo-${b}`)?.classList.toggle('selected', b === billing);
+  });
+}
+
+function doUpgrade() {
+  const token = localStorage.getItem('access_token');
+  if (!token) { alert('يرجى تسجيل الدخول أولاً'); return; }
+
+  fetch('/api/v1/billing/upgrade', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan_id: selectedPlan, billing: selectedBilling }),
+  })
+  .then(r => r.json())
+  .then(d => {
+    closeUpgradeModal();
+    showToast(d.message || 'تم إرسال رابط الدفع على بريدك الإلكتروني ✓', 'success');
+  })
+  .catch(() => showToast('سيتم التواصل معك قريباً', 'success'));
+}
+
+/* ── Cancel ── */
+function confirmCancel() {
+  if (!confirm('هل أنت متأكد من إلغاء الاشتراك؟ ستُحوَّل للخطة المجانية بعد انتهاء الفترة الحالية.')) return;
+  fetch('/api/v1/billing/cancel', {
+    method:'POST',
+    headers:{'Authorization':`Bearer ${localStorage.getItem('access_token')}`}
+  })
+  .then(r=>r.json())
+  .then(d=>showToast(d.message||'تم طلب الإلغاء','success'))
+  .catch(()=>showToast('تم تسجيل طلب الإلغاء','success'));
+}
+
+/* ── Export ── */
+function exportInvoices() {
+  const rows = [['رقم الفاتورة','التاريخ','الخطة','المبلغ','الحالة']];
+  INVOICES.forEach(i => rows.push([i.id, i.date, i.plan, `$${i.amount}`, i.status]));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'invoices.csv';
+  a.click();
+}
+
+/* ── Toast ── */
+function showToast(msg, type='') {
+  let wrap = document.getElementById('toastWrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'toastWrap';
+    wrap.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;min-width:300px';
+    document.body.appendChild(wrap);
+  }
+  const t = document.createElement('div');
+  t.style.cssText = 'padding:12px 18px;border-radius:10px;font-size:13.5px;font-weight:600;pointer-events:all;animation:modalIn .25s ease;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.12)';
+  if (type === 'success') t.style.cssText += ';background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a';
+  else t.style.cssText += ';background:#fff;border:1px solid #e2e8f0;color:#0f172a';
+  t.innerHTML = `<i class="fas fa-${type==='success'?'check-circle':'info-circle'}"></i>${msg}`;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+/* ── Close modal on bg click ── */
+document.getElementById('upgradeModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeUpgradeModal();
+});
+
+/* ── Logout ── */
+function doLogout(e) { e.preventDefault(); localStorage.clear(); window.location.href = '/'; }
+
+/* ── Init ── */
+renderUsage();
+renderPlans();
+renderInvoices();
+</script>
+<script src="/static/chat-widget.js"></script>
+<script src="/static/platform-i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AI Platform - AI and Automation Solutions">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أتمتة العمليات — AI Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --dark:#020617;--dark2:#0f172a;--dark3:#1e293b;--dark4:#334155;
+  --c1:#6366f1;--c2:#8b5cf6;--c3:#22d3ee;--c4:#f59e0b;--c5:#10b981;--c6:#ef4444;
+  --text:#e2e8f0;--muted:#94a3b8;--border:rgba(99,102,241,.18);
+  --glass:rgba(15,23,42,.7);--radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+html,body{height:100%;background:var(--dark);color:var(--text);overflow:hidden}
+body{display:flex}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:260px;min-width:260px;height:100vh;background:var(--glass);
+  border-left:1px solid var(--border);display:flex;flex-direction:column;
+  padding:24px 0;backdrop-filter:blur(20px);position:relative;z-index:10;
+  overflow-y:auto;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:4px}
+.logo{padding:0 20px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.nav{padding:16px 12px;flex:1}
+.nav-section{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.8px;padding:8px 8px 4px;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  color:var(--muted);text-decoration:none;font-size:13.5px;transition:.2s;margin-bottom:2px;cursor:pointer}
+.nav-item:hover{background:rgba(99,102,241,.12);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(139,92,246,.15));
+  color:#fff;border:1px solid rgba(99,102,241,.35)}
+.nav-item .icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;background:rgba(255,255,255,.05)}
+.nav-item.active .icon{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.nav-badge{margin-right:auto;background:var(--c1);color:#fff;font-size:10px;
+  padding:1px 6px;border-radius:10px;font-weight:600}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px}
+.user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.user-name{font-size:13px;font-weight:600}
+.user-role{font-size:11px;color:var(--muted)}
+
+/* ── Main ── */
+.main{flex:1;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:4px}
+
+/* ── Topbar ── */
+.topbar{
+  padding:18px 28px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);background:var(--glass);
+  backdrop-filter:blur(20px);position:sticky;top:0;z-index:9;
+}
+.topbar-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar-title .badge{font-size:11px;padding:2px 8px;background:rgba(99,102,241,.2);
+  border:1px solid rgba(99,102,241,.4);border-radius:20px;color:var(--c1);font-weight:600}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.btn{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:.2s;border:none}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+.btn-success{background:linear-gradient(135deg,var(--c5),#059669);color:#fff}
+.btn-danger{background:rgba(239,68,68,.15);color:var(--c6);border:1px solid rgba(239,68,68,.3)}
+.btn-danger:hover{background:rgba(239,68,68,.25)}
+
+/* ── Content ── */
+.content{padding:24px 28px;flex:1}
+
+/* ── Stats Row ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 20px;backdrop-filter:blur(20px);position:relative;overflow:hidden;transition:.2s}
+.stat-card:hover{transform:translateY(-2px);border-color:rgba(99,102,241,.4)}
+.stat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,.05),transparent)}
+.stat-icon{font-size:26px;margin-bottom:8px}
+.stat-val{font-size:26px;font-weight:800;margin-bottom:2px}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-delta{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:4px}
+.delta-up{color:var(--c5)}
+.delta-down{color:var(--c6)}
+
+/* ── Main Grid ── */
+.grid-main{display:grid;grid-template-columns:1fr 380px;gap:20px}
+@media(max-width:1200px){.grid-main{grid-template-columns:1fr}}
+
+/* ── Workflows Panel ── */
+.panel{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  backdrop-filter:blur(20px);overflow:hidden}
+.panel-header{padding:16px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.panel-body{padding:16px}
+
+/* ── Filter Tabs ── */
+.filter-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.filter-tab{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);transition:.2s}
+.filter-tab.active{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.5);color:var(--c1)}
+.filter-tab:hover:not(.active){background:rgba(255,255,255,.07);color:var(--text)}
+
+/* ── Workflow Cards ── */
+.wf-list{display:flex;flex-direction:column;gap:10px}
+.wf-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;transition:.2s;cursor:pointer;position:relative}
+.wf-card:hover{background:rgba(255,255,255,.06);border-color:rgba(99,102,241,.35);transform:translateX(-2px)}
+.wf-card.active-wf{border-color:rgba(99,102,241,.5);background:rgba(99,102,241,.07)}
+.wf-card-top{display:flex;align-items:flex-start;gap:12px}
+.wf-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;flex-shrink:0}
+.wf-icon.purple{background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.3)}
+.wf-icon.cyan{background:rgba(34,211,238,.15);border:1px solid rgba(34,211,238,.25)}
+.wf-icon.amber{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25)}
+.wf-icon.green{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25)}
+.wf-icon.red{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.25)}
+.wf-icon.blue{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25)}
+.wf-info{flex:1;min-width:0}
+.wf-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wf-desc{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wf-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:600}
+.tag-trigger{background:rgba(34,211,238,.15);color:var(--c3);border:1px solid rgba(34,211,238,.2)}
+.tag-active{background:rgba(16,185,129,.15);color:var(--c5);border:1px solid rgba(16,185,129,.2)}
+.tag-inactive{background:rgba(148,163,184,.1);color:var(--muted);border:1px solid rgba(148,163,184,.15)}
+.tag-draft{background:rgba(245,158,11,.1);color:var(--c4);border:1px solid rgba(245,158,11,.2)}
+.tag-error{background:rgba(239,68,68,.1);color:var(--c6);border:1px solid rgba(239,68,68,.2)}
+.wf-meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:14px;flex-wrap:wrap}
+.wf-meta span{display:flex;align-items:center;gap:4px}
+.wf-actions{display:flex;gap:6px;margin-top:8px}
+.action-btn{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;
+  border:none;transition:.15s}
+.action-btn.run{background:rgba(99,102,241,.2);color:var(--c1);border:1px solid rgba(99,102,241,.3)}
+.action-btn.run:hover{background:rgba(99,102,241,.35)}
+.action-btn.edit{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border)}
+.action-btn.edit:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.action-btn.tog{background:rgba(16,185,129,.15);color:var(--c5);border:1px solid rgba(16,185,129,.25)}
+.action-btn.tog:hover{background:rgba(16,185,129,.25)}
+.action-btn.tog.off{background:rgba(148,163,184,.08);color:var(--muted);border:1px solid var(--border)}
+.run-indicator{position:absolute;top:14px;left:16px;width:8px;height:8px;border-radius:50%}
+.run-indicator.on{background:var(--c5);box-shadow:0 0 6px var(--c5);animation:pulse 2s infinite}
+.run-indicator.off{background:var(--dark4)}
+.run-indicator.draft{background:var(--c4)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── Right Panel ── */
+.right-col{display:flex;flex-direction:column;gap:16px}
+
+/* ── Execution Log ── */
+.exec-log{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto}
+.exec-log::-webkit-scrollbar{width:3px}
+.exec-log::-webkit-scrollbar-thumb{background:var(--dark4)}
+.exec-item{display:flex;align-items:center;gap:10px;padding:8px 10px;
+  border-radius:8px;background:rgba(255,255,255,.025);font-size:12px;transition:.15s}
+.exec-item:hover{background:rgba(255,255,255,.05)}
+.exec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-success{background:var(--c5)}
+.dot-fail{background:var(--c6)}
+.dot-running{background:var(--c3);animation:pulse 1.5s infinite}
+.exec-wfname{font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exec-time{color:var(--muted);font-size:10px;white-space:nowrap}
+.exec-dur{font-size:10px;padding:1px 6px;border-radius:4px;font-weight:600}
+.dur-ok{background:rgba(16,185,129,.15);color:var(--c5)}
+.dur-fail{background:rgba(239,68,68,.1);color:var(--c6)}
+.dur-run{background:rgba(34,211,238,.12);color:var(--c3)}
+
+/* ── Templates ── */
+.templates-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tpl-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
+.tpl-card:hover{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.4);transform:translateY(-1px)}
+.tpl-icon{font-size:18px}
+.tpl-info{min-width:0}
+.tpl-name{font-size:12px;font-weight:600}
+.tpl-steps{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* ── Mini Chart ── */
+.mini-chart-wrap{height:100px;position:relative}
+
+/* ── MODAL Overlay ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(2,6,23,.85);z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--dark2);border:1px solid var(--border);border-radius:20px;
+  padding:28px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;
+  transform:translateY(20px) scale(.97);transition:.25s;
+}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal::-webkit-scrollbar{width:4px}
+.modal::-webkit-scrollbar-thumb{background:var(--dark4)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.modal-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.close-btn{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);
+  border:none;color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.close-btn:hover{background:rgba(255,255,255,.14);color:var(--text)}
+
+/* ── Steps ── */
+.steps-bar{display:flex;gap:0;margin-bottom:28px}
+.step-item{flex:1;padding:10px 12px;text-align:center;font-size:12px;font-weight:600;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);
+  cursor:pointer;transition:.2s;position:relative}
+.step-item:first-child{border-radius:10px 0 0 10px}
+.step-item:last-child{border-radius:0 10px 10px 0}
+.step-item.active{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.5);color:var(--c1)}
+.step-item.done{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:var(--c5)}
+.step-num{display:block;font-size:16px;margin-bottom:2px}
+
+/* ── Form ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-full{grid-column:1/-1}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted)}
+.form-input,.form-select,.form-textarea{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;
+  transition:.2s;width:100%;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  outline:none;border-color:var(--c1);background:rgba(99,102,241,.08)
+}
+.form-select option{background:var(--dark2)}
+.form-textarea{resize:vertical;min-height:80px;font-family:inherit}
+
+/* ── Trigger/Action Cards ── */
+.trigger-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.trigger-card{background:rgba(255,255,255,.03);border:2px solid var(--border);
+  border-radius:12px;padding:14px 12px;cursor:pointer;transition:.2s;text-align:center}
+.trigger-card:hover{border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.07)}
+.trigger-card.selected{border-color:var(--c1);background:rgba(99,102,241,.12)}
+.trigger-emoji{font-size:28px;margin-bottom:8px;display:block}
+.trigger-name{font-size:12px;font-weight:700;margin-bottom:2px}
+.trigger-desc{font-size:10px;color:var(--muted)}
+
+/* ── Node Builder ── */
+.node-canvas{
+  background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;
+  padding:20px;min-height:280px;position:relative;overflow:hidden;
+}
+.node-canvas::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(99,102,241,.12) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.nodes-row{display:flex;align-items:center;gap:0;position:relative;z-index:1;flex-wrap:wrap;justify-content:center}
+.node-box{
+  background:var(--dark3);border:2px solid var(--border);border-radius:12px;
+  padding:12px 14px;text-align:center;min-width:110px;max-width:130px;transition:.2s;
+  cursor:pointer;position:relative;
+}
+.node-box:hover{border-color:var(--c1);transform:translateY(-2px)}
+.node-box.trigger-node{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.07)}
+.node-box.action-node{border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.07)}
+.node-box.condition-node{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.07)}
+.node-box.end-node{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.07)}
+.node-emoji{font-size:22px;display:block;margin-bottom:6px}
+.node-label{font-size:11px;font-weight:700;margin-bottom:2px}
+.node-sublabel{font-size:10px;color:var(--muted)}
+.node-connector{display:flex;align-items:center;color:var(--dark4);font-size:18px;padding:0 2px;flex-shrink:0}
+.add-node-btn{
+  width:36px;height:36px;border-radius:50%;background:rgba(99,102,241,.15);
+  border:2px dashed rgba(99,102,241,.4);color:var(--c1);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:.2s;flex-shrink:0;
+}
+.add-node-btn:hover{background:rgba(99,102,241,.3);border-color:var(--c1)}
+
+/* ── Modal Footer ── */
+.modal-footer{display:flex;justify-content:space-between;align-items:center;margin-top:24px;
+  padding-top:20px;border-top:1px solid var(--border)}
+
+/* ── Builder View ── */
+.builder-overlay{
+  position:fixed;inset:0;background:var(--dark);z-index:200;
+  display:none;flex-direction:column;
+}
+.builder-overlay.open{display:flex}
+.builder-topbar{
+  padding:14px 24px;background:var(--dark2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;
+}
+.builder-title{font-size:15px;font-weight:700;flex:1}
+.builder-status{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.builder-canvas{
+  flex:1;position:relative;overflow:hidden;
+  background-image:radial-gradient(circle,rgba(99,102,241,.15) 1px,transparent 1px);
+  background-size:28px 28px;
+  background-color:rgba(2,6,23,.95);
+}
+.builder-nodes{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:0;}
+.b-node{
+  background:var(--dark2);border:2px solid var(--border);border-radius:14px;
+  padding:14px 16px;text-align:center;min-width:120px;max-width:140px;
+  cursor:grab;user-select:none;transition:.2s;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.b-node:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.b-node.trigger{border-color:rgba(34,211,238,.6);background:rgba(34,211,238,.08)}
+.b-node.action{border-color:rgba(99,102,241,.5);background:rgba(99,102,241,.08)}
+.b-node.condition{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.08)}
+.b-node.finish{border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.08)}
+.b-node-emoji{font-size:28px;display:block;margin-bottom:8px}
+.b-node-name{font-size:12px;font-weight:700;margin-bottom:2px}
+.b-node-type{font-size:10px;color:var(--muted);padding:2px 6px;border-radius:4px;
+  background:rgba(255,255,255,.06);display:inline-block}
+.b-arrow{color:rgba(99,102,241,.4);font-size:24px;padding:0 4px;flex-shrink:0;user-select:none}
+.builder-sidebar{
+  width:240px;background:var(--dark2);border-right:1px solid var(--border);
+  padding:16px;overflow-y:auto;
+}
+.builder-sidebar h4{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:10px;margin-top:12px}
+.b-node-palette{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.palette-item{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;
+  padding:8px;cursor:pointer;text-align:center;transition:.2s;font-size:11px;
+}
+.palette-item:hover{background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.4)}
+.palette-emoji{font-size:18px;display:block;margin-bottom:3px}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--dark3);border:1px solid var(--border);border-radius:12px;
+  padding:12px 20px;font-size:13px;font-weight:600;z-index:9999;transition:.35s;
+  display:flex;align-items:center;gap:8px;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,.4);color:var(--c5)}
+.toast.info{border-color:rgba(99,102,241,.4);color:var(--c1)}
+
+/* ── Empty State ── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:12px;opacity:.5}
+.empty-msg{font-size:14px;font-weight:600;margin-bottom:6px;color:var(--text);opacity:.7}
+.empty-sub{font-size:12px}
+
+/* ── Scrollbar ── */
+.panel-body::-webkit-scrollbar{width:4px}
+.panel-body::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:3px}
+</style>
+<link rel="stylesheet" href="/static/platform-ui.css">
+<script src="/static/ninja-charts.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div>
+      <div class="logo-text">AI Platform</div>
+      <div class="logo-sub">منصة الأتمتة الذكية</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section">الرئيسية</div>
+    <a href="/dashboard" class="nav-item">
+      <div class="icon">📊</div>لوحة التحكم
+    </a>
+    <a href="/actions" class="nav-item">
+      <div class="icon">⚡</div>الإجراءات السريعة
+    </a>
+
+    <div class="nav-section">الأدوات</div>
+    <a href="/chatbot" class="nav-item">
+      <div class="icon">🤖</div>روبوتات المحادثة
+    </a>
+    <a href="/automation" class="nav-item active">
+      <div class="icon">🔄</div>أتمتة العمليات
+      <span class="nav-badge" id="wfCount">4</span>
+    </a>
+    <a href="/knowledge" class="nav-item">
+      <div class="icon">🧠</div>قاعدة المعرفة
+    </a>
+    <a href="/network" class="nav-item">
+      <div class="icon">📡</div>مراقبة الشبكة
+    </a>
+
+    <div class="nav-section">الإدارة</div>
+    <a href="/team" class="nav-item">
+      <div class="icon">👥</div>إدارة الفريق
+    </a>
+    <a href="/reports" class="nav-item">
+      <div class="icon">📈</div>التقارير
+    </a>
+    <a href="#" class="nav-item">
+      <div class="icon">💳</div>الاشتراك
+    </a>
+    <a href="/settings" class="nav-item">
+      <div class="icon">⚙️</div>الإعدادات
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av" id="userAv">م</div>
+      <div>
+        <div class="user-name" id="userName">جار التحميل...</div>
+        <div class="user-role">مالك المنظمة</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-title">
+      🔄 أتمتة العمليات
+      <span class="badge">Workflow Engine</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showToast('جار تحديث البيانات...','info')">🔃 تحديث</button>
+      <button class="btn btn-ghost btn-sm" onclick="openBuilder()">📐 المحرر المرئي</button>
+      <button class="btn btn-primary" onclick="openCreateModal()">＋ سير عمل جديد</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">🔄</div>
+        <div class="stat-val" id="stTotal">0</div>
+        <div class="stat-label">إجمالي السير</div>
+        <div class="stat-delta delta-up">↑ 3 هذا الأسبوع</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-val" id="stActive">0</div>
+        <div class="stat-label">نشط الآن</div>
+        <div class="stat-delta delta-up">↑ يعمل بكفاءة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-val" id="stRuns">0</div>
+        <div class="stat-label">تنفيذ اليوم</div>
+        <div class="stat-delta delta-up">↑ 12% أكثر من أمس</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-val" id="stSuccess">0%</div>
+        <div class="stat-label">معدل النجاح</div>
+        <div class="stat-delta delta-up">↑ ممتاز</div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid-main">
+
+      <!-- Left: Workflow List -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🔄 قائمة سير العمل</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" class="form-input btn-sm" placeholder="🔍 بحث..."
+              style="width:160px;padding:6px 10px;font-size:12px"
+              oninput="filterWorkflows(this.value)">
+          </div>
+        </div>
+        <div class="panel-body" style="max-height:calc(100vh - 320px);overflow-y:auto">
+          <div class="filter-tabs">
+            <div class="filter-tab active" onclick="setFilter(this,'all')">الكل</div>
+            <div class="filter-tab" onclick="setFilter(this,'active')">🟢 نشط</div>
+            <div class="filter-tab" onclick="setFilter(this,'inactive')">⚫ متوقف</div>
+            <div class="filter-tab" onclick="setFilter(this,'draft')">🟡 مسودة</div>
+          </div>
+          <div class="wf-list" id="wfList">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Log + Templates -->
+      <div class="right-col">
+
+        <!-- Execution Chart -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📊 تنفيذات اليوم</span>
+            <span style="font-size:11px;color:var(--muted)">آخر 12 ساعة</span>
+          </div>
+          <div class="panel-body">
+            <div class="mini-chart-wrap">
+              <canvas id="execChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Execution Log -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📋 سجل التنفيذ</span>
+            <button class="btn btn-ghost btn-sm" onclick="clearLogs()">مسح</button>
+          </div>
+          <div class="panel-body">
+            <div class="exec-log" id="execLog">
+              <!-- filled by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Templates -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">🎯 قوالب جاهزة</span>
+          </div>
+          <div class="panel-body">
+            <div class="templates-grid">
+              <div class="tpl-card" onclick="useTemplate('support')">
+                <span class="tpl-icon">🎧</span>
+                <div class="tpl-info">
+                  <div class="tpl-name">دعم العملاء</div>
+                  <div class="tpl-steps">4 خطوات</div>
+                </div>
+              </div>
+              <div class="tpl-card" onclick="useTemplate('lead')">
+                <span class="tpl-icon">🎯</span>
+                <div class="tpl-info">
+                  <div class="tpl-name">إدارة العملاء</div>
+                  <div class="tpl-steps">5 خطوات</div>
+                </div>
+              </div>
+              <div class="tpl-card" onclick="useTemplate('hr')">
+                <span class="tpl-icon">👥</span>
+                <div class="tpl-info">
+                  <div class="tpl-name">تأهيل الموظفين</div>
+                  <div class="tpl-steps">6 خطوات</div>
+                </div>
+              </div>
+              <div class="tpl-card" onclick="useTemplate('report')">
+                <span class="tpl-icon">📊</span>
+                <div class="tpl-info">
+                  <div class="tpl-name">تقارير تلقائية</div>
+                  <div class="tpl-steps">3 خطوات</div>
+                </div>
+              </div>
+              <div class="tpl-card" onclick="useTemplate('alert')">
+                <span class="tpl-icon">🔔</span>
+                <div class="tpl-info">
+                  <div class="tpl-name">إشعارات ذكية</div>
+                  <div class="tpl-steps">3 خطوات</div>
+                </div>
+              </div>
+              <div class="tpl-card" onclick="useTemplate('invoice')">
+                <span class="tpl-icon">🧾</span>
+                <div class="tpl-info">
+                  <div class="tpl-name">معالجة الفواتير</div>
+                  <div class="tpl-steps">5 خطوات</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /right-col -->
+    </div><!-- /grid-main -->
+  </div><!-- /content -->
+</main>
+
+<!-- ══════════════════ CREATE MODAL ══════════════════ -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔄 إنشاء سير عمل جديد</div>
+      <button class="close-btn" onclick="closeCreateModal()">✕</button>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-bar">
+      <div class="step-item active" id="step1Tab">
+        <span class="step-num">①</span>الأساسيات
+      </div>
+      <div class="step-item" id="step2Tab">
+        <span class="step-num">②</span>المُشغِّل
+      </div>
+      <div class="step-item" id="step3Tab">
+        <span class="step-num">③</span>الخطوات
+      </div>
+      <div class="step-item" id="step4Tab">
+        <span class="step-num">④</span>التأكيد
+      </div>
+    </div>
+
+    <!-- Step 1: Basics -->
+    <div id="step1" class="step-content">
+      <div class="form-grid">
+        <div class="form-full form-group">
+          <label class="form-label">اسم سير العمل *</label>
+          <input type="text" class="form-input" id="wfName" placeholder="مثال: رد تلقائي على العملاء">
+        </div>
+        <div class="form-full form-group">
+          <label class="form-label">الوصف</label>
+          <textarea class="form-textarea" id="wfDesc" placeholder="صف ما يقوم به هذا سير العمل..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الرمز</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px" id="emojiPicker">
+            <!-- filled by JS -->
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الفئة</label>
+          <select class="form-select" id="wfCategory">
+            <option value="customer">خدمة العملاء</option>
+            <option value="hr">الموارد البشرية</option>
+            <option value="finance">المالية</option>
+            <option value="marketing">التسويق</option>
+            <option value="ops">العمليات</option>
+            <option value="dev">التطوير</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Trigger -->
+    <div id="step2" class="step-content" style="display:none">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">اختر ما يُشغِّل سير العمل هذا:</p>
+      <div class="trigger-grid" id="triggerGrid">
+        <!-- filled by JS -->
+      </div>
+      <div id="triggerConfig" style="margin-top:16px;display:none">
+        <div class="form-grid">
+          <div class="form-group" id="scheduleConfig" style="display:none">
+            <label class="form-label">جدول التشغيل</label>
+            <select class="form-select" id="scheduleVal">
+              <option value="* * * * *">كل دقيقة</option>
+              <option value="*/5 * * * *">كل 5 دقائق</option>
+              <option value="0 * * * *">كل ساعة</option>
+              <option value="0 9 * * *">يومياً الساعة 9ص</option>
+              <option value="0 9 * * 1">أسبوعياً (الاثنين)</option>
+              <option value="0 9 1 * *">شهرياً</option>
+            </select>
+          </div>
+          <div class="form-group" id="webhookConfig" style="display:none">
+            <label class="form-label">مسار الـ Webhook</label>
+            <input type="text" class="form-input" id="webhookPath" placeholder="/webhook/my-flow" value="/webhook/">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Actions -->
+    <div id="step3" class="step-content" style="display:none">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">اسحب وأفلت لبناء سير العمل:</p>
+
+      <div style="display:flex;gap:14px">
+        <!-- Node Palette -->
+        <div style="width:150px;flex-shrink:0">
+          <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px">الإجراءات</p>
+          <div class="b-node-palette" id="nodePalette">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div style="flex:1">
+          <div class="node-canvas">
+            <div class="nodes-row" id="nodeCanvas">
+              <!-- filled by JS -->
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">
+            انقر على الإجراء لإضافته ← انقر ＋ في اللوحة
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Confirm -->
+    <div id="step4" class="step-content" style="display:none">
+      <div id="summaryBox" style="background:rgba(255,255,255,.03);border:1px solid var(--border);
+           border-radius:12px;padding:20px">
+        <!-- filled by JS -->
+      </div>
+      <div style="margin-top:16px;padding:14px;background:rgba(16,185,129,.08);
+           border:1px solid rgba(16,185,129,.2);border-radius:10px;font-size:13px;color:var(--c5)">
+        ✅ سير العمل جاهز للنشر. يمكنك تفعيله مباشرة أو حفظه كمسودة.
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevStep()" style="visibility:hidden">→ السابق</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="closeCreateModal()">إلغاء</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">التالي ←</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ VISUAL BUILDER ══════════════════ -->
+<div class="builder-overlay" id="builderOverlay">
+  <div class="builder-topbar">
+    <button class="btn btn-ghost btn-sm" onclick="closeBuilder()">✕ إغلاق</button>
+    <div class="builder-title" id="builderName">🔄 محرر سير العمل</div>
+    <span class="builder-status" id="builderStatus"
+      style="background:rgba(16,185,129,.15);color:var(--c5);border:1px solid rgba(16,185,129,.3)">
+      ● نشط
+    </span>
+    <div style="display:flex;gap:8px;margin-right:auto">
+      <button class="btn btn-ghost btn-sm" onclick="showToast('تم حفظ التغييرات','success')">💾 حفظ</button>
+      <button class="btn btn-success btn-sm" id="builderRunBtn" onclick="runBuilderFlow()">▶ تشغيل</button>
+    </div>
+  </div>
+
+  <div style="display:flex;flex:1;overflow:hidden">
+    <!-- Builder Sidebar -->
+    <div class="builder-sidebar">
+      <h4>المُشغِّلات</h4>
+      <div class="b-node-palette" id="bPaletteTrigger"></div>
+      <h4>الإجراءات</h4>
+      <div class="b-node-palette" id="bPaletteActions"></div>
+      <h4>المنطق</h4>
+      <div class="b-node-palette" id="bPaletteLogic"></div>
+    </div>
+
+    <!-- Builder Canvas -->
+    <div class="builder-canvas" id="builderCanvas">
+      <div class="builder-nodes" id="builderNodes">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✅ تم بنجاح</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const WORKFLOWS = [
+  {
+    id:'wf1',name:'رد تلقائي على العملاء',
+    desc:'يرد على استفسارات العملاء عبر Chatbot مع تصعيد للفريق عند الحاجة',
+    icon:'🎧',color:'cyan',trigger:'webhook',status:'active',
+    category:'customer',runs:248,success:97,lastRun:'منذ 5 دقائق',
+    nodes:['webhook','ai-reply','condition','email','close']
+  },
+  {
+    id:'wf2',name:'تقرير يومي تلقائي',
+    desc:'يجمع بيانات اليوم من قاعدة البيانات ويرسل ملخصاً للمدراء',
+    icon:'📊',color:'purple',trigger:'schedule',status:'active',
+    category:'ops',runs:31,success:100,lastRun:'منذ 2 ساعة',
+    nodes:['schedule','fetch-data','generate-report','email','slack']
+  },
+  {
+    id:'wf3',name:'استقبال الموظفين الجدد',
+    desc:'يرسل رسائل ترحيب، يُنشئ حسابات، ويُجدول اجتماعات للموظفين الجدد',
+    icon:'👋',color:'amber',trigger:'api',status:'active',
+    category:'hr',runs:14,success:93,lastRun:'أمس',
+    nodes:['api-trigger','create-account','send-welcome','schedule-meeting','notify']
+  },
+  {
+    id:'wf4',name:'مراقبة الشبكة + تنبيه',
+    desc:'يراقب حالة الشبكة ويرسل تنبيهات فورية عند اكتشاف مشاكل',
+    icon:'📡',color:'blue',trigger:'schedule',status:'inactive',
+    category:'ops',runs:0,success:0,lastRun:'غير مُفعَّل',
+    nodes:['schedule','check-network','condition','alert','log']
+  },
+  {
+    id:'wf5',name:'معالجة الفواتير',
+    desc:'يستقبل الفواتير، يتحقق من البيانات، ويُحدّث النظام المحاسبي',
+    icon:'🧾',color:'green',trigger:'email',status:'draft',
+    category:'finance',runs:0,success:0,lastRun:'مسودة',
+    nodes:['email-trigger','parse-invoice','validate','update-erp','confirm']
+  },
+];
+
+const TRIGGERS = [
+  {id:'webhook',emoji:'🔗',name:'Webhook',desc:'طلب HTTP خارجي'},
+  {id:'schedule',emoji:'⏰',name:'جدول زمني',desc:'بالتوقيت المحدد'},
+  {id:'email',emoji:'📧',name:'بريد إلكتروني',desc:'عند وصول رسالة'},
+  {id:'api',emoji:'⚡',name:'API Call',desc:'من نظام خارجي'},
+  {id:'form',emoji:'📝',name:'نموذج',desc:'عند إرسال نموذج'},
+  {id:'manual',emoji:'👆',name:'يدوي',desc:'تشغيل يدوي'},
+];
+
+const ACTIONS = [
+  {id:'ai-reply',emoji:'🤖',name:'AI رد',type:'action'},
+  {id:'send-email',emoji:'📧',name:'إرسال بريد',type:'action'},
+  {id:'send-sms',emoji:'💬',name:'إرسال SMS',type:'action'},
+  {id:'http-request',emoji:'🌐',name:'HTTP طلب',type:'action'},
+  {id:'condition',emoji:'🔀',name:'شرط',type:'condition'},
+  {id:'delay',emoji:'⏳',name:'تأخير',type:'action'},
+  {id:'notify',emoji:'🔔',name:'إشعار',type:'action'},
+  {id:'database',emoji:'🗄️',name:'قاعدة بيانات',type:'action'},
+  {id:'transform',emoji:'🔧',name:'تحويل بيانات',type:'action'},
+  {id:'log',emoji:'📋',name:'تسجيل',type:'action'},
+];
+
+const EMOJIS = ['🔄','⚡','🎯','📊','🤖','🔔','💡','🚀','🛡️','📦','🔧','🌐','🎧','👥','📧','🧾'];
+
+// EXEC LOG MOCK
+const EXEC_MOCK = [
+  {wf:'رد العملاء',time:'منذ 5 دق',dur:'0.8ث',ok:true},
+  {wf:'التقرير اليومي',time:'منذ 2س',dur:'3.2ث',ok:true},
+  {wf:'رد العملاء',time:'منذ 5 دق',dur:'1.1ث',ok:true},
+  {wf:'رد العملاء',time:'منذ 8 دق',dur:'0.9ث',ok:true},
+  {wf:'استقبال موظف',time:'أمس',dur:'12ث',ok:true},
+  {wf:'رد العملاء',time:'منذ 15 دق',dur:'ERR',ok:false},
+  {wf:'التقرير اليومي',time:'أمس 9ص',dur:'2.8ث',ok:true},
+  {wf:'رد العملاء',time:'منذ 22 دق',dur:'0.7ث',ok:true},
+];
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+let currentFilter='all', searchQuery='', currentStep=1, selectedTrigger='webhook', selectedEmoji='🔄';
+let canvasNodes=[], builderActiveWf=null;
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadUserInfo();
+  renderStats();
+  renderWorkflows();
+  renderExecLog();
+  initExecChart();
+  initEmojiPicker();
+  initTriggerGrid();
+  initNodePalette();
+  initBuilderPalettes();
+  // Simulate live updates
+  setInterval(simulateLiveRun,7000);
+});
+
+// ── User Info ──
+function loadUserInfo(){
+  const name=localStorage.getItem('user_name')||'مصطفى';
+  document.getElementById('userName').textContent=name;
+  document.getElementById('userAv').textContent=name.charAt(0)||'م';
+}
+
+// ── Stats ──
+function renderStats(){
+  const total=WORKFLOWS.length;
+  const active=WORKFLOWS.filter(w=>w.status==='active').length;
+  const runs=WORKFLOWS.reduce((s,w)=>s+w.runs,0);
+  const successTotal=WORKFLOWS.filter(w=>w.runs>0).reduce((s,w)=>s+w.success,0)/Math.max(1,WORKFLOWS.filter(w=>w.runs>0).length);
+
+  animateCount('stTotal',total);
+  animateCount('stActive',active);
+  animateCount('stRuns',runs);
+  setTimeout(()=>document.getElementById('stSuccess').textContent=Math.round(successTotal)+'%',400);
+  document.getElementById('wfCount').textContent=total;
+}
+function animateCount(id,target){
+  let v=0; const el=document.getElementById(id); if(!el)return;
+  const step=Math.max(1,Math.floor(target/25));
+  const t=setInterval(()=>{
+    v=Math.min(v+step,target);
+    el.textContent=v.toLocaleString('ar');
+    if(v>=target)clearInterval(t);
+  },40);
+}
+
+// ── Workflows ──
+function getStatusClass(s){return s==='active'?'tag-active':s==='inactive'?'tag-inactive':'tag-draft';}
+function getStatusLabel(s){return s==='active'?'نشط':s==='inactive'?'متوقف':'مسودة';}
+function getTriggerLabel(t){
+  return {webhook:'Webhook',schedule:'جدول',email:'بريد',api:'API',form:'نموذج',manual:'يدوي'}[t]||t;
+}
+
+function renderWorkflows(){
+  const list=document.getElementById('wfList');
+  let wfs=WORKFLOWS.filter(w=>{
+    if(currentFilter!=='all'&&w.status!==currentFilter)return false;
+    if(searchQuery&&!w.name.includes(searchQuery)&&!w.desc.includes(searchQuery))return false;
+    return true;
+  });
+  if(!wfs.length){
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div>
+      <div class="empty-msg">لا توجد نتائج</div>
+      <div class="empty-sub">جرب تغيير الفلتر أو مصطلح البحث</div></div>`;
+    return;
+  }
+  list.innerHTML=wfs.map(w=>`
+  <div class="wf-card ${w.status==='active'?'active-wf':''}" id="card-${w.id}" onclick="openBuilderForWf('${w.id}')">
+    <div class="run-indicator ${w.status==='active'?'on':w.status==='draft'?'draft':'off'}"></div>
+    <div class="wf-card-top">
+      <div class="wf-icon ${w.color}">${w.icon}</div>
+      <div class="wf-info">
+        <div class="wf-name">${w.name}</div>
+        <div class="wf-desc">${w.desc}</div>
+        <div class="wf-tags">
+          <span class="tag tag-trigger">${getTriggerLabel(w.trigger)}</span>
+          <span class="tag ${getStatusClass(w.status)}">${getStatusLabel(w.status)}</span>
+          ${w.runs>0?`<span class="tag" style="background:rgba(99,102,241,.12);color:var(--c1);border:1px solid rgba(99,102,241,.2)">${w.runs} تنفيذ</span>`:''}
+        </div>
+        <div class="wf-meta">
+          <span>📊 ${w.success>0?w.success+'% نجاح':'—'}</span>
+          <span>🕐 ${w.lastRun}</span>
+          <span>⚙️ ${w.nodes.length} خطوات</span>
+        </div>
+      </div>
+    </div>
+    <div class="wf-actions">
+      ${w.status!=='draft'?`<button class="action-btn run" onclick="runWf(event,'${w.id}')">▶ تشغيل</button>`:''}
+      <button class="action-btn edit" onclick="openBuilderForWf(event,'${w.id}')">✏️ تحرير</button>
+      <button class="action-btn tog ${w.status==='inactive'?'off':''}" onclick="toggleWf(event,'${w.id}')">
+        ${w.status==='active'?'⏸ إيقاف':w.status==='inactive'?'▶ تفعيل':'🚀 نشر'}
+      </button>
+    </div>
+  </div>`).join('');
+}
+
+function setFilter(el,f){
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter=f;
+  renderWorkflows();
+}
+function filterWorkflows(q){searchQuery=q;renderWorkflows();}
+
+function toggleWf(e,id){
+  e.stopPropagation();
+  const wf=WORKFLOWS.find(w=>w.id===id);
+  if(!wf)return;
+  if(wf.status==='active'){wf.status='inactive';showToast('تم إيقاف سير العمل ⏸','info');}
+  else if(wf.status==='inactive'){wf.status='active';showToast('تم تفعيل سير العمل ✅','success');}
+  else{wf.status='active';showToast('تم نشر سير العمل 🚀','success');}
+  renderWorkflows();renderStats();
+}
+
+function runWf(e,id){
+  e.stopPropagation();
+  const wf=WORKFLOWS.find(w=>w.id===id);
+  if(!wf)return;
+  showToast(`⚡ جارٍ تشغيل "${wf.name}"...`,'info');
+  setTimeout(()=>{
+    wf.runs++;
+    const ok=Math.random()>0.05;
+    addExecLog(wf.name,(Math.random()*3+0.5).toFixed(1)+'ث',ok);
+    showToast(ok?`✅ تم تنفيذ "${wf.name}" بنجاح`:`❌ فشل تنفيذ "${wf.name}"`,'success');
+    renderWorkflows();renderStats();
+  },1500);
+}
+
+// ── Exec Log ──
+function renderExecLog(){
+  const log=document.getElementById('execLog');
+  log.innerHTML=EXEC_MOCK.map(e=>`
+  <div class="exec-item">
+    <div class="exec-dot ${e.ok?'dot-success':'dot-fail'}"></div>
+    <div class="exec-wfname">${e.wf}</div>
+    <div class="exec-time">${e.time}</div>
+    <div class="exec-dur ${e.ok?'dur-ok':'dur-fail'}">${e.dur}</div>
+  </div>`).join('');
+}
+function addExecLog(name,dur,ok){
+  const log=document.getElementById('execLog');
+  const item=document.createElement('div');
+  item.className='exec-item';
+  item.innerHTML=`
+    <div class="exec-dot ${ok?'dot-success':'dot-fail'}"></div>
+    <div class="exec-wfname">${name}</div>
+    <div class="exec-time">الآن</div>
+    <div class="exec-dur ${ok?'dur-ok':'dur-fail'}">${dur}</div>`;
+  log.prepend(item);
+}
+function clearLogs(){
+  document.getElementById('execLog').innerHTML='<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">السجل فارغ</div>';
+  showToast('تم مسح السجل','info');
+}
+
+// ── Chart ──
+function initExecChart(){
+  const ctx=document.getElementById('execChart');
+  const labels=['12ص','2ص','4ص','6ص','8ص','10ص','12م','2م','4م','6م','8م','10م'];
+  const data=[2,1,0,1,8,22,31,28,19,25,15,12];
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        data,
+        backgroundColor:data.map((_,i)=>i===11?'rgba(99,102,241,.8)':'rgba(99,102,241,.35)'),
+        borderRadius:4,borderSkipped:false,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{
+        callbacks:{label:ctx=>`${ctx.raw} تنفيذ`},
+        backgroundColor:'rgba(15,23,42,.95)',
+        titleColor:'#e2e8f0',bodyColor:'#94a3b8',
+        borderColor:'rgba(99,102,241,.3)',borderWidth:1,
+      }},
+      scales:{
+        x:{grid:{display:false},ticks:{color:'#475569',font:{size:9}}},
+        y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#475569',font:{size:9}},beginAtZero:true},
+      }
+    }
+  });
+}
+
+// ── Live Simulation ──
+function simulateLiveRun(){
+  const active=WORKFLOWS.filter(w=>w.status==='active');
+  if(!active.length)return;
+  const wf=active[Math.floor(Math.random()*active.length)];
+  wf.runs++;
+  const ok=Math.random()>0.05;
+  if(ok)wf.success=Math.min(100,Math.round((wf.success*(wf.runs-1)+100)/wf.runs));
+  addExecLog(wf.name,(Math.random()*2+0.5).toFixed(1)+'ث',ok);
+  renderWorkflows();renderStats();
+}
+
+// ═══════════════════════════════════════════════
+// CREATE MODAL
+// ═══════════════════════════════════════════════
+function initEmojiPicker(){
+  const p=document.getElementById('emojiPicker');
+  p.innerHTML=EMOJIS.map(e=>`
+    <span onclick="selectEmoji('${e}')" style="font-size:22px;cursor:pointer;padding:4px;
+      border-radius:8px;border:2px solid transparent;transition:.15s"
+      id="emoji-${e}">${e}</span>`).join('');
+  selectEmoji('🔄');
+}
+function selectEmoji(e){
+  selectedEmoji=e;
+  document.querySelectorAll('#emojiPicker span').forEach(s=>{
+    s.style.borderColor='transparent';s.style.background='transparent';
+  });
+  const el=document.getElementById('emoji-'+e);
+  if(el){el.style.borderColor='rgba(99,102,241,.6)';el.style.background='rgba(99,102,241,.15)';}
+}
+
+function initTriggerGrid(){
+  const g=document.getElementById('triggerGrid');
+  g.innerHTML=TRIGGERS.map(t=>`
+    <div class="trigger-card" id="trig-${t.id}" onclick="selectTrigger('${t.id}')">
+      <span class="trigger-emoji">${t.emoji}</span>
+      <div class="trigger-name">${t.name}</div>
+      <div class="trigger-desc">${t.desc}</div>
+    </div>`).join('');
+  selectTrigger('webhook');
+}
+function selectTrigger(id){
+  selectedTrigger=id;
+  document.querySelectorAll('.trigger-card').forEach(c=>c.classList.remove('selected'));
+  const el=document.getElementById('trig-'+id);
+  if(el)el.classList.add('selected');
+  document.getElementById('triggerConfig').style.display='block';
+  document.getElementById('scheduleConfig').style.display=id==='schedule'?'':'none';
+  document.getElementById('webhookConfig').style.display=id==='webhook'?'':'none';
+}
+
+function initNodePalette(){
+  const p=document.getElementById('nodePalette');
+  p.innerHTML=ACTIONS.map(a=>`
+    <div class="palette-item" onclick="addNodeToCanvas('${a.id}','${a.emoji}','${a.name}','${a.type}')">
+      <span class="palette-emoji">${a.emoji}</span>${a.name}
+    </div>`).join('');
+  // Init canvas with trigger node
+  canvasNodes=[{id:'trigger',emoji:'🔗',label:'مُشغِّل',type:'trigger'}];
+  renderCanvas();
+}
+
+function renderCanvas(){
+  const c=document.getElementById('nodeCanvas');
+  if(!c)return;
+  let html='';
+  canvasNodes.forEach((n,i)=>{
+    html+=`<div class="node-box ${n.type}-node">
+      <span class="node-emoji">${n.emoji}</span>
+      <div class="node-label">${n.label}</div>
+    </div>`;
+    if(i<canvasNodes.length-1)html+='<div class="node-connector">→</div>';
+  });
+  html+=`<div class="node-connector"><div class="add-node-btn" onclick="showAddNodeHint()" title="إضافة خطوة">＋</div></div>`;
+  c.innerHTML=html;
+}
+function addNodeToCanvas(id,emoji,name,type){
+  canvasNodes.push({id,emoji,label:name,type});
+  renderCanvas();
+  showToast(`تمت إضافة "${name}" للمسار`,'info');
+}
+function showAddNodeHint(){showToast('اختر إجراءً من القائمة اليسرى','info');}
+
+// ── Step Navigation ──
+function openCreateModal(){
+  currentStep=1;
+  canvasNodes=[{id:'trigger',emoji:'🔗',label:'مُشغِّل',type:'trigger'}];
+  updateSteps();
+  document.getElementById('createModal').classList.add('open');
+}
+function closeCreateModal(){document.getElementById('createModal').classList.remove('open');}
+
+function nextStep(){
+  if(currentStep===1){
+    if(!document.getElementById('wfName').value.trim()){
+      showToast('⚠️ أدخل اسم سير العمل','info');return;
+    }
+  }
+  if(currentStep<4){currentStep++;updateSteps();}
+  else{saveWorkflow();}
+}
+function prevStep(){if(currentStep>1){currentStep--;updateSteps();}}
+
+function updateSteps(){
+  for(let i=1;i<=4;i++){
+    document.getElementById('step'+i).style.display=i===currentStep?'block':'none';
+    const tab=document.getElementById('step'+i+'Tab');
+    tab.className='step-item'+(i===currentStep?' active':i<currentStep?' done':'');
+  }
+  document.getElementById('prevBtn').style.visibility=currentStep>1?'visible':'hidden';
+  const nb=document.getElementById('nextBtn');
+  nb.textContent=currentStep===4?'✅ إنشاء سير العمل ←':'التالي ←';
+
+  if(currentStep===4)buildSummary();
+  if(currentStep===3)setTimeout(renderCanvas,50);
+}
+
+function buildSummary(){
+  const name=document.getElementById('wfName').value||'—';
+  const desc=document.getElementById('wfDesc').value||'—';
+  const trig=TRIGGERS.find(t=>t.id===selectedTrigger);
+  const steps=canvasNodes.length;
+  document.getElementById('summaryBox').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:4px">الاسم</p>
+        <p style="font-size:14px;font-weight:700">${selectedEmoji} ${name}</p>
+      </div>
+      <div>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:4px">المُشغِّل</p>
+        <p style="font-size:14px;font-weight:700">${trig?trig.emoji+' '+trig.name:'—'}</p>
+      </div>
+      <div class="form-full" style="grid-column:1/-1">
+        <p style="font-size:11px;color:var(--muted);margin-bottom:4px">الوصف</p>
+        <p style="font-size:13px">${desc}</p>
+      </div>
+      <div>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:4px">عدد الخطوات</p>
+        <p style="font-size:14px;font-weight:700">${steps} خطوات</p>
+      </div>
+      <div>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:4px">الحالة</p>
+        <p style="font-size:14px;font-weight:700">🟡 مسودة → نشط</p>
+      </div>
+    </div>`;
+}
+
+function saveWorkflow(){
+  const name=document.getElementById('wfName').value.trim();
+  const desc=document.getElementById('wfDesc').value.trim();
+  const newWf={
+    id:'wf'+Date.now(),name,desc:desc||'لا يوجد وصف',
+    icon:selectedEmoji,color:'purple',trigger:selectedTrigger,status:'active',
+    category:document.getElementById('wfCategory').value,
+    runs:0,success:0,lastRun:'جديد',
+    nodes:canvasNodes.map(n=>n.id),
+  };
+  WORKFLOWS.unshift(newWf);
+  closeCreateModal();
+  renderWorkflows();renderStats();
+  showToast(`✅ تم إنشاء "${name}" بنجاح!`,'success');
+}
+
+// ── Templates ──
+const TPL_DATA={
+  support:{name:'رد تلقائي على العملاء',desc:'يرد على استفسارات العملاء بالذكاء الاصطناعي',emoji:'🎧',trigger:'webhook'},
+  lead:{name:'إدارة العملاء المحتملين',desc:'يتتبع العملاء ويرسل عروضاً تلقائية',emoji:'🎯',trigger:'form'},
+  hr:{name:'تأهيل الموظفين الجدد',desc:'رسائل ترحيب وجدولة تلقائية',emoji:'👥',trigger:'api'},
+  report:{name:'تقارير تلقائية يومية',desc:'يجمع ويرسل تقارير يومياً',emoji:'📊',trigger:'schedule'},
+  alert:{name:'إشعارات ذكية',desc:'تنبيهات فورية عند الأحداث المهمة',emoji:'🔔',trigger:'webhook'},
+  invoice:{name:'معالجة الفواتير',desc:'استقبال وتحليل الفواتير تلقائياً',emoji:'🧾',trigger:'email'},
+};
+function useTemplate(key){
+  const t=TPL_DATA[key];if(!t)return;
+  openCreateModal();
+  setTimeout(()=>{
+    document.getElementById('wfName').value=t.name;
+    document.getElementById('wfDesc').value=t.desc;
+    selectEmoji(t.emoji);
+    showToast(`تم تحميل قالب "${t.name}"✨`,'success');
+  },200);
+}
+
+// ═══════════════════════════════════════════════
+// BUILDER OVERLAY
+// ═══════════════════════════════════════════════
+function initBuilderPalettes(){
+  document.getElementById('bPaletteTrigger').innerHTML=TRIGGERS.slice(0,4).map(t=>`
+    <div class="palette-item" onclick="addBuilderNode('${t.id}','${t.emoji}','${t.name}','trigger')">
+      <span class="palette-emoji">${t.emoji}</span>${t.name}
+    </div>`).join('');
+  document.getElementById('bPaletteActions').innerHTML=ACTIONS.filter(a=>a.type==='action').slice(0,6).map(a=>`
+    <div class="palette-item" onclick="addBuilderNode('${a.id}','${a.emoji}','${a.name}','action')">
+      <span class="palette-emoji">${a.emoji}</span>${a.name}
+    </div>`).join('');
+  document.getElementById('bPaletteLogic').innerHTML=ACTIONS.filter(a=>a.type==='condition').map(a=>`
+    <div class="palette-item" onclick="addBuilderNode('${a.id}','${a.emoji}','${a.name}','condition')">
+      <span class="palette-emoji">${a.emoji}</span>${a.name}
+    </div>`).join('');
+}
+
+let builderFlow=[];
+function openBuilder(){
+  builderActiveWf=null;
+  builderFlow=[
+    {id:'start',emoji:'🔗',name:'Webhook',type:'trigger'},
+    {id:'ai',emoji:'🤖',name:'AI رد',type:'action'},
+    {id:'email',emoji:'📧',name:'بريد',type:'action'},
+    {id:'end',emoji:'✅',name:'انتهى',type:'finish'},
+  ];
+  document.getElementById('builderName').textContent='🔄 سير عمل جديد';
+  document.getElementById('builderStatus').textContent='● مسودة';
+  document.getElementById('builderStatus').style.color='var(--c4)';
+  document.getElementById('builderStatus').style.background='rgba(245,158,11,.1)';
+  document.getElementById('builderStatus').style.borderColor='rgba(245,158,11,.3)';
+  document.getElementById('builderOverlay').classList.add('open');
+  renderBuilderNodes();
+}
+function openBuilderForWf(e,id){
+  if(e&&e.stopPropagation)e.stopPropagation();
+  const wfId=id||(typeof e==='string'?e:null);
+  const wf=WORKFLOWS.find(w=>w.id===wfId);
+  if(!wf)return;
+  builderActiveWf=wf;
+  builderFlow=wf.nodes.map(n=>{
+    const found=ACTIONS.find(a=>a.id===n);
+    const trig=TRIGGERS.find(t=>t.id===n);
+    if(found)return{id:found.id,emoji:found.emoji,name:found.name,type:found.type};
+    if(trig)return{id:trig.id,emoji:trig.emoji,name:trig.name,type:'trigger'};
+    return{id:n,emoji:'⚙️',name:n,type:'action'};
+  });
+  document.getElementById('builderName').textContent=wf.icon+' '+wf.name;
+  const isActive=wf.status==='active';
+  document.getElementById('builderStatus').textContent=isActive?'● نشط':'● متوقف';
+  document.getElementById('builderStatus').style.color=isActive?'var(--c5)':'var(--muted)';
+  document.getElementById('builderStatus').style.background=isActive?'rgba(16,185,129,.1)':'rgba(148,163,184,.08)';
+  document.getElementById('builderStatus').style.borderColor=isActive?'rgba(16,185,129,.3)':'rgba(148,163,184,.2)';
+  document.getElementById('builderOverlay').classList.add('open');
+  renderBuilderNodes();
+}
+function closeBuilder(){document.getElementById('builderOverlay').classList.remove('open');}
+
+function renderBuilderNodes(){
+  const c=document.getElementById('builderNodes');
+  c.innerHTML=builderFlow.map((n,i)=>`
+    <div class="b-node ${n.type}" title="${n.name}" onclick="selectBuilderNode(${i})">
+      <span class="b-node-emoji">${n.emoji}</span>
+      <div class="b-node-name">${n.name}</div>
+      <span class="b-node-type">${n.type==='trigger'?'مُشغِّل':n.type==='condition'?'شرط':n.type==='finish'?'نهاية':'إجراء'}</span>
+    </div>
+    ${i<builderFlow.length-1?'<div class="b-arrow">→</div>':''}
+  `).join('')+`
+    <div class="b-arrow" style="opacity:.4">→</div>
+    <div class="b-node" style="border:2px dashed rgba(99,102,241,.35);cursor:pointer;opacity:.6"
+      onclick="addBuilderNodePrompt()">
+      <span class="b-node-emoji">＋</span>
+      <div class="b-node-name" style="font-size:10px">إضافة خطوة</div>
+    </div>`;
+}
+
+function selectBuilderNode(i){
+  showToast(`📋 "${builderFlow[i].name}" — انقر مرة أخرى للتحرير`,'info');
+}
+function addBuilderNodePrompt(){
+  showToast('اختر إجراءً من الشريط الجانبي','info');
+}
+function addBuilderNode(id,emoji,name,type){
+  builderFlow.push({id,emoji,name,type});
+  renderBuilderNodes();
+  showToast(`تمت إضافة "${name}" للمسار ✅`,'success');
+}
+function runBuilderFlow(){
+  const btn=document.getElementById('builderRunBtn');
+  btn.textContent='⏳ جارٍ التشغيل...';
+  btn.disabled=true;
+  let i=0;
+  const nodes=document.querySelectorAll('#builderNodes .b-node');
+  function highlight(){
+    nodes.forEach((n,j)=>{
+      n.style.boxShadow=j===i?'0 0 20px rgba(99,102,241,.6)':'none';
+      n.style.transform=j===i?'scale(1.08)':'scale(1)';
+    });
+    if(++i<=nodes.length){setTimeout(highlight,500);}
+    else{
+      nodes.forEach(n=>{n.style.boxShadow='';n.style.transform='';});
+      btn.textContent='▶ تشغيل';btn.disabled=false;
+      showToast('✅ اكتمل التنفيذ بنجاح!','success');
+      if(builderActiveWf){builderActiveWf.runs++;addExecLog(builderActiveWf.name,'1.3ث',true);}
+    }
+  }
+  highlight();
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast '+type+' show';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+<script src="/static/chat-widget.js"></script>
+<script src="/static/platform-i18n.js"></script>
+</body>
+</html>

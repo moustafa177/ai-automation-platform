@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="منصة الذكاء — حلول AI وأتمتة متقدمة للشركات">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="shortcut icon" href="/static/favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — منصة الذكاء</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════════ */
+:root {
+  --sb:       #0f172a;
+  --sb2:      #1e293b;
+  --sb-hover: rgba(255,255,255,.055);
+  --sb-act:   rgba(27,106,201,.18);
+  --sb-brd:   rgba(255,255,255,.07);
+  --sb-txt:   #8b9ab3;
+  --sb-ttl:   #f1f5f9;
+  --sb-w:     252px;
+
+  --bg:       #f0f4f8;
+  --surface:  #ffffff;
+  --surface2: #f8fafc;
+
+  --blue:     #1b6ac9;
+  --blue2:    #1558b0;
+  --blue-lt:  #eff6ff;
+  --blue-bdr: #bfdbfe;
+
+  --green:    #10b981;
+  --green-lt: #f0fdf4;
+  --amber:    #f59e0b;
+  --amber-lt: #fffbeb;
+  --red:      #ef4444;
+  --red-lt:   #fef2f2;
+  --purple:   #8b5cf6;
+  --purple-lt:#f5f3ff;
+  --cyan:     #06b6d4;
+  --cyan-lt:  #ecfeff;
+
+  --text:     #0f172a;
+  --text2:    #334155;
+  --muted:    #64748b;
+  --border:   #e2e8f0;
+  --border2:  #f1f5f9;
+
+  --radius:   10px;
+  --radius-lg:14px;
+  --shadow:   0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.09);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; }
+
+/* ═══════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius:10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.sidebar::-webkit-scrollbar-track { background: var(--sb); }
+.sidebar::-webkit-scrollbar-thumb { background: #1e293b; }
+
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════ */
+.sidebar {
+  width: var(--sb-w);
+  height: 100vh;
+  position: fixed;
+  right: 0; top: 0;
+  background: var(--sb);
+  border-left: 1px solid var(--sb-brd);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  transition: transform .28s ease;
+  overflow: hidden;
+}
+
+/* Logo */
+.sb-logo {
+  padding: 18px 16px;
+  border-bottom: 1px solid var(--sb-brd);
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+}
+.sb-logo-icon {
+  width: 36px; height: 36px;
+  background: var(--blue);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #fff;
+  letter-spacing: -.5px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(27,106,201,.4);
+}
+.sb-logo-text { font-size: 14.5px; font-weight: 700; color: #f1f5f9; line-height:1.2 }
+.sb-logo-sub  { font-size: 10px; color: #475569; margin-top:1px; font-weight:400 }
+
+/* Nav */
+.sb-nav { flex:1; padding:10px 10px; overflow-y:auto; }
+
+.sb-section {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.4px;
+  text-transform: uppercase; color: #374151;
+  padding: 14px 10px 5px;
+  margin-top: 2px;
+}
+
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  color: var(--sb-txt);
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  transition: all .18s;
+  margin-bottom: 1px;
+  position: relative;
+}
+.nav-link .nl-icon {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  background: rgba(255,255,255,.05);
+  flex-shrink: 0;
+  transition: all .18s;
+}
+.nav-link .nl-text { flex: 1; }
+.nav-link .nl-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 6px; border-radius: 20px;
+  background: var(--blue); color: #fff;
+}
+.nl-badge.green  { background: var(--green) }
+.nl-badge.amber  { background: var(--amber); color:#000 }
+.nl-badge.red    { background: var(--red) }
+
+.nav-link:hover {
+  background: var(--sb-hover);
+  color: #d1d5db;
+}
+.nav-link:hover .nl-icon { background: rgba(255,255,255,.09) }
+
+.nav-link.active {
+  background: var(--sb-act);
+  color: #60a5fa;
+  border-right: 2.5px solid var(--blue);
+}
+.nav-link.active .nl-icon {
+  background: rgba(27,106,201,.25);
+  color: #93c5fd;
+}
+
+/* Footer */
+.sb-footer {
+  padding: 12px 10px;
+  border-top: 1px solid var(--sb-brd);
+  flex-shrink: 0;
+}
+.sb-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .18s;
+}
+.sb-user:hover { background: rgba(255,255,255,.055) }
+.sb-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+}
+.sb-uname { font-size: 12.5px; font-weight: 600; color: #e2e8f0 }
+.sb-urole { font-size: 10px; color: #4b5563; margin-top:1px }
+
+/* ═══════════════════════════════════════════════════════
+   MAIN WRAP
+═══════════════════════════════════════════════════════ */
+.main-wrap {
+  margin-right: var(--sb-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ═══════════════════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════════════════ */
+.topbar {
+  height: 60px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 12px;
+  position: sticky; top: 0; z-index: 100;
+  flex-shrink: 0;
+}
+
+.tb-menu {
+  display: none; width: 36px; height: 36px;
+  border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface2);
+  align-items: center; justify-content: center;
+  cursor: pointer; color: var(--muted);
+  transition: all .18s;
+}
+.tb-menu:hover { background: var(--blue-lt); color: var(--blue) }
+
+.tb-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  flex: 1;
+}
+.tb-breadcrumb .sep { color: var(--border); font-size: 16px; margin: 0 2px }
+.tb-breadcrumb .sub { font-size: 12px; color: var(--muted); font-weight: 400 }
+.tb-breadcrumb i    { font-size: 13px; color: var(--blue) }
+
+.tb-search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px; width: 220px;
+  transition: all .2s;
+}
+.tb-search:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(27,106,201,.1);
+  background: var(--surface);
+}
+.tb-search i { color: var(--muted); font-size: 11px; flex-shrink:0 }
+.tb-search input {
+  background: none; border: none; outline: none;
+  font-family: inherit; font-size: 12.5px;
+  color: var(--text); width: 100%;
+}
+.tb-search input::placeholder { color: var(--muted) }
+
+.tb-right { display: flex; align-items: center; gap: 6px }
+
+.tb-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--muted);
+  transition: all .18s;
+  position: relative;
+}
+.tb-btn:hover { background: var(--blue-lt); border-color: var(--blue-bdr); color: var(--blue) }
+
+.tb-notif-dot {
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  position: absolute; top: 5px; right: 5px;
+  border: 1.5px solid var(--surface);
+}
+
+.tb-user-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+  cursor: pointer;
+  border: 2px solid var(--blue-bdr);
+  transition: border-color .18s;
+}
+.tb-user-avatar:hover { border-color: var(--blue) }
+
+/* ═══════════════════════════════════════════════════════
+   PAGE CONTENT
+═══════════════════════════════════════════════════════ */
+.page {
+  padding: 24px;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+.page.active { display: flex }
+
+/* ═══════════════════════════════════════════════════════
+   WELCOME BANNER
+═══════════════════════════════════════════════════════ */
+.welcome-banner {
+  background: var(--blue);
+  background: linear-gradient(135deg, #1b6ac9 0%, #1558b0 50%, #0c3d7e 100%);
+  border-radius: var(--radius-lg);
+  padding: 22px 26px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.welcome-banner::before {
+  content: '';
+  position: absolute; top: -40px; left: -40px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  pointer-events: none;
+}
+.welcome-banner::after {
+  content: '';
+  position: absolute; bottom: -50px; left: 160px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.05);
+  pointer-events: none;
+}
+.wb-text h2 { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 5px }
+.wb-text p  { font-size: 13px; color: rgba(255,255,255,.75) }
+.wb-text p b{ color: rgba(255,255,255,.95) }
+.wb-actions { display: flex; gap: 10px; flex-shrink: 0; z-index: 1 }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; transition: all .18s;
+}
+.btn-white {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: none;
+}
+.btn-white:hover { background: rgba(255,255,255,.25) }
+
+.btn-primary {
+  background: var(--blue); color: #fff;
+  box-shadow: 0 2px 8px rgba(27,106,201,.35);
+}
+.btn-primary:hover { background: var(--blue2); box-shadow: 0 4px 16px rgba(27,106,201,.4) }
+
+.btn-ghost {
+  background: var(--surface2); color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--blue-lt); border-color: var(--blue-bdr); color: var(--blue) }
+
+.btn-sm { padding: 6px 13px; font-size: 12px }
+.btn-xs { padding: 4px 10px; font-size: 11px }
+
+.btn-danger { background: var(--red-lt); color: var(--red); border: 1px solid #fecaca }
+.btn-danger:hover { background: #fee2e2 }
+
+/* ═══════════════════════════════════════════════════════
+   KPI CARDS
+═══════════════════════════════════════════════════════ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card:hover {
+  border-color: var(--blue-bdr);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 60px; height: 60px;
+  border-radius: 0 var(--radius-lg) 0 60px;
+  opacity: .07;
+}
+.kpi-card.kc-blue::before   { background: var(--blue) }
+.kpi-card.kc-green::before  { background: var(--green) }
+.kpi-card.kc-amber::before  { background: var(--amber) }
+.kpi-card.kc-purple::before { background: var(--purple) }
+
+.kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px }
+.kpi-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.ki-blue   { background: var(--blue-lt);   color: var(--blue) }
+.ki-green  { background: var(--green-lt);  color: var(--green) }
+.ki-amber  { background: var(--amber-lt);  color: var(--amber) }
+.ki-purple { background: var(--purple-lt); color: var(--purple) }
+.ki-red    { background: var(--red-lt);    color: var(--red) }
+.ki-cyan   { background: var(--cyan-lt);   color: var(--cyan) }
+
+.kpi-trend {
+  display: flex; align-items: center; gap: 3px;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 20px;
+}
+.kt-up   { color: var(--green); background: var(--green-lt) }
+.kt-dn   { color: var(--red);   background: var(--red-lt) }
+.kt-neu  { color: var(--muted); background: var(--surface2) }
+
+.kpi-val {
+  font-size: 28px; font-weight: 800;
+  color: var(--text); line-height: 1;
+  margin-bottom: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-lbl { font-size: 12px; color: var(--muted); font-weight: 500 }
+
+.kpi-bar {
+  height: 3px; background: var(--border2);
+  border-radius: 3px; margin-top: 14px; overflow: hidden;
+}
+.kb-fill { height: 100%; border-radius: 3px; transition: width 1.2s ease }
+.kf-blue   { background: linear-gradient(90deg, var(--blue), #60a5fa) }
+.kf-green  { background: linear-gradient(90deg, var(--green), #34d399) }
+.kf-amber  { background: linear-gradient(90deg, var(--amber), #fcd34d) }
+.kf-purple { background: linear-gradient(90deg, var(--purple), #c4b5fd) }
+
+/* ═══════════════════════════════════════════════════════
+   GRID LAYOUTS
+═══════════════════════════════════════════════════════ */
+.grid-70-30 { display: grid; grid-template-columns: 1fr 290px; gap: 18px }
+.grid-2eq   { display: grid; grid-template-columns: 1fr 1fr;    gap: 18px }
+.flex-col    { display: flex; flex-direction: column; gap: 18px }
+
+/* ═══════════════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title {
+  font-size: 13.5px; font-weight: 700;
+  color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title i { font-size: 12px; color: var(--blue) }
+
+.card-body { padding: 18px }
+.card-body-sm { padding: 14px 18px }
+
+/* Tab pills */
+.tab-pills { display: flex; gap: 4px }
+.tab-pill {
+  padding: 4px 12px; border-radius: 6px;
+  font-size: 11.5px; font-weight: 600;
+  font-family: inherit; cursor: pointer; border: none;
+  background: var(--surface2); color: var(--muted);
+  transition: all .18s;
+}
+.tab-pill:hover { background: var(--blue-lt); color: var(--blue) }
+.tab-pill.active { background: var(--blue); color: #fff }
+
+/* ═══════════════════════════════════════════════════════
+   SERVICES GRID
+═══════════════════════════════════════════════════════ */
+.svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+
+.svc-item {
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 15px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all .2s;
+}
+.svc-item:hover {
+  background: var(--blue-lt);
+  border-color: var(--blue-bdr);
+  transform: translateY(-1px);
+}
+.svc-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.svc-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px }
+.svc-meta { font-size: 11px; color: var(--muted) }
+
+/* Pills / Tags */
+.pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700;
+  padding: 3px 9px; border-radius: 20px;
+  white-space: nowrap;
+}
+.pill-green  { background: var(--green-lt); color: #15803d; border: 1px solid #bbf7d0 }
+.pill-red    { background: var(--red-lt);   color: #dc2626; border: 1px solid #fecaca }
+.pill-amber  { background: var(--amber-lt); color: #d97706; border: 1px solid #fde68a }
+.pill-blue   { background: var(--blue-lt);  color: var(--blue); border: 1px solid var(--blue-bdr) }
+.pill-purple { background: var(--purple-lt);color: #7c3aed; border: 1px solid #ddd6fe }
+
+/* ═══════════════════════════════════════════════════════
+   ACTIVITY FEED
+═══════════════════════════════════════════════════════ */
+.act-list { display: flex; flex-direction: column }
+
+.act-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border2);
+}
+.act-row:last-child { border-bottom: none }
+
+.act-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.act-body { flex: 1 }
+.act-title { font-size: 12.5px; font-weight: 500; color: var(--text2); margin-bottom: 3px }
+.act-title strong { color: var(--blue); font-weight: 700 }
+.act-time  { font-size: 11px; color: var(--muted) }
+.act-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+  white-space: nowrap; flex-shrink: 0; align-self: center;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BOTS LIST
+═══════════════════════════════════════════════════════ */
+.bot-list { display: flex; flex-direction: column }
+.bot-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border2);
+}
+.bot-row:last-child { border-bottom: none }
+
+.bot-av {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.bot-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px }
+.bot-meta { font-size: 11px; color: var(--muted) }
+.bot-stat { text-align: left; flex-shrink: 0 }
+.bot-num  { font-size: 15px; font-weight: 800; color: var(--blue) }
+.bot-lbl  { font-size: 10px; color: var(--muted) }
+
+/* ═══════════════════════════════════════════════════════
+   QUICK ACTIONS
+═══════════════════════════════════════════════════════ */
+.qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
+.qa-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 7px; padding: 14px 8px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  cursor: pointer; transition: all .18s;
+}
+.qa-item:hover {
+  background: var(--blue-lt);
+  border-color: var(--blue-bdr);
+}
+.qa-item i   { font-size: 20px }
+.qa-item span { font-size: 11px; font-weight: 600; color: var(--muted) }
+.qa-item:hover span { color: var(--blue) }
+
+/* ═══════════════════════════════════════════════════════
+   SUBSCRIPTION CARD
+═══════════════════════════════════════════════════════ */
+.sub-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin-bottom: 3px }
+.sub-val { color: var(--text2); font-weight: 600 }
+.sub-bar { height: 4px; background: var(--border2); border-radius: 4px; margin-bottom: 12px; overflow: hidden }
+.sub-fill { height: 100%; border-radius: 4px }
+.sf-blue   { background: linear-gradient(90deg, var(--blue), #60a5fa) }
+.sf-green  { background: linear-gradient(90deg, var(--green), #34d399) }
+.sf-purple { background: linear-gradient(90deg, var(--purple), #c4b5fd) }
+
+/* ═══════════════════════════════════════════════════════
+   NETWORK MINI CARDS
+═══════════════════════════════════════════════════════ */
+.net-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px }
+.net-mini {
+  background: var(--surface2); border-radius: 9px;
+  padding: 10px 12px; text-align: center;
+  border: 1px solid var(--border2);
+}
+.net-mini .nv { font-size: 16px; font-weight: 800; margin-bottom: 2px }
+.net-mini .nl { font-size: 10px; color: var(--muted) }
+
+/* Status dot */
+.status-dot {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600;
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  display: inline-block;
+}
+.dot-green  { background: var(--green) }
+.dot-red    { background: var(--red) }
+.dot-amber  { background: var(--amber) }
+.dot-blue   { background: var(--blue) }
+
+/* ═══════════════════════════════════════════════════════
+   OVERLAY & MOBILE TOGGLE
+═══════════════════════════════════════════════════════ */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,23,42,.5);
+  z-index: 150;
+}
+.overlay.show { display: block }
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════════ */
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:translateY(0) } }
+.fu  { animation: fadeUp .45s ease both }
+.fu1 { animation-delay: .07s }
+.fu2 { animation-delay: .14s }
+.fu3 { animation-delay: .21s }
+.fu4 { animation-delay: .28s }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media (max-width: 1280px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr) }
+  .grid-70-30 { grid-template-columns: 1fr }
+}
+@media (max-width: 960px) {
+  .sidebar { transform: translateX(100%) }
+  .sidebar.open { transform: translateX(0) }
+  .main-wrap { margin-right: 0 }
+  .grid-2eq { grid-template-columns: 1fr }
+  .tb-menu { display: flex }
+}
+@media (max-width: 640px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr }
+  .svc-grid { grid-template-columns: 1fr }
+  .welcome-banner { flex-direction: column; gap: 14px; align-items: flex-start }
+  .page { padding: 16px }
+}
+</style>
+</head>
+<body>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="sb-logo">
+    <div class="sb-logo-icon">AI</div>
+    <div>
+      <div class="sb-logo-text">منصة الذكاء</div>
+      <div class="sb-logo-sub">AI & Automation Platform</div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+
+    <div class="sb-section">الرئيسية</div>
+
+    <a class="nav-link active" href="#" data-page="overview">
+      <div class="nl-icon"><i class="fas fa-th-large"></i></div>
+      <span class="nl-text">نظرة عامة</span>
+    </a>
+    <a class="nav-link" href="/reports">
+      <div class="nl-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nl-text">التقارير</span>
+      <span class="nl-badge green">جديد</span>
+    </a>
+
+    <div class="sb-section">الخدمات</div>
+
+    <a class="nav-link" href="/chatbot">
+      <div class="nl-icon"><i class="fas fa-robot"></i></div>
+      <span class="nl-text">AI Chatbot Builder</span>
+      <span class="nl-badge">3</span>
+    </a>
+    <a class="nav-link" href="/automation">
+      <div class="nl-icon"><i class="fas fa-bolt"></i></div>
+      <span class="nl-text">أتمتة العمليات</span>
+      <span class="nl-badge green">12</span>
+    </a>
+    <a class="nav-link" href="/knowledge">
+      <div class="nl-icon"><i class="fas fa-book"></i></div>
+      <span class="nl-text">قاعدة المعرفة</span>
+    </a>
+    <a class="nav-link" href="/network">
+      <div class="nl-icon"><i class="fas fa-network-wired"></i></div>
+      <span class="nl-text">مراقبة الشبكة</span>
+      <span class="nl-badge amber">1</span>
+    </a>
+    <a class="nav-link" href="/actions">
+      <div class="nl-icon"><i class="fas fa-flash"></i></div>
+      <span class="nl-text">الإجراءات السريعة</span>
+    </a>
+
+    <div class="sb-section">الإدارة</div>
+
+    <a class="nav-link" href="/team">
+      <div class="nl-icon"><i class="fas fa-users"></i></div>
+      <span class="nl-text">الفريق</span>
+    </a>
+    <a class="nav-link" href="/billing"><div class="nl-icon"><i class="fas fa-credit-card"></i></div><span class="nl-text">الاشتراكات</span></a>
+    <a class="nav-link" href="/settings">
+      <div class="nl-icon"><i class="fas fa-cog"></i></div>
+      <span class="nl-text">الإعدادات</span>
+    </a>
+    <a class="nav-link" href="/" onclick="doLogout(event)" style="color:#ef4444">
+      <div class="nl-icon" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i></div>
+      <span class="nl-text" style="color:#ef4444">تسجيل الخروج</span>
+    </a>
+
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">م</div>
+      <div style="flex:1;min-width:0">
+        <div class="sb-uname" id="sbName">مصطفى أحمد</div>
+        <div class="sb-urole">⚡ Pro Plan</div>
+      </div>
+      <i class="fas fa-ellipsis-v" style="color:#374151;font-size:11px"></i>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="tb-menu" id="menuBtn" onclick="toggleSidebar()">
+      <i class="fas fa-bars" style="font-size:13px"></i>
+    </button>
+
+    <div class="tb-breadcrumb" id="breadcrumb">
+      <i class="fas fa-th-large"></i>
+      <span>لوحة التحكم</span>
+      <span class="sep">/</span>
+      <span class="sub" id="pageSubtitle">نظرة عامة</span>
+    </div>
+
+    <div class="tb-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="ابحث في المنصة...">
+    </div>
+
+    <div class="tb-right">
+      <div class="tb-btn" title="الإشعارات">
+        <i class="fas fa-bell" style="font-size:13px"></i>
+        <div class="tb-notif-dot"></div>
+      </div>
+      <div class="tb-btn" title="المساعدة">
+        <i class="fas fa-question-circle" style="font-size:13px"></i>
+      </div>
+      <div class="tb-user-avatar" id="tbAvatar" title="حسابي">م</div>
+    </div>
+  </header>
+
+  <!-- ══ PAGE: OVERVIEW ══ -->
+  <main class="page active" id="page-overview">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner fu">
+      <div class="wb-text">
+        <h2>مرحباً، <span id="wName">مصطفى</span> 👋</h2>
+        <p>لديك <b>3 روبوتات نشطة</b> و <b>12 workflow</b> يعملان الآن. كل شيء يسير بشكل ممتاز.</p>
+      </div>
+      <div class="wb-actions">
+        <button class="btn btn-white btn-sm"><i class="fas fa-plus"></i> خدمة جديدة</button>
+        <button class="btn btn-white btn-sm" style="background:rgba(255,255,255,.95);color:var(--blue)"><i class="fas fa-rocket"></i> ابدأ مشروعاً</button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card kc-blue fu fu1">
+        <div class="kpi-top">
+          <div class="kpi-icon ki-blue"><i class="fas fa-comment-dots"></i></div>
+          <span class="kpi-trend kt-up"><i class="fas fa-arrow-up"></i> 12%</span>
+        </div>
+        <div class="kpi-val" data-to="48291">0</div>
+        <div class="kpi-lbl">رسالة AI هذا الشهر</div>
+        <div class="kpi-bar"><div class="kb-fill kf-blue" style="width:0" data-w="72%"></div></div>
+      </div>
+
+      <div class="kpi-card kc-green fu fu2">
+        <div class="kpi-top">
+          <div class="kpi-icon ki-green"><i class="fas fa-robot"></i></div>
+          <span class="kpi-trend kt-up"><i class="fas fa-arrow-up"></i> +1</span>
+        </div>
+        <div class="kpi-val" data-to="3">0</div>
+        <div class="kpi-lbl">روبوتات نشطة</div>
+        <div class="kpi-bar"><div class="kb-fill kf-green" style="width:0" data-w="60%"></div></div>
+      </div>
+
+      <div class="kpi-card kc-amber fu fu3">
+        <div class="kpi-top">
+          <div class="kpi-icon ki-amber"><i class="fas fa-bolt"></i></div>
+          <span class="kpi-trend kt-up"><i class="fas fa-arrow-up"></i> 8%</span>
+        </div>
+        <div class="kpi-val" data-to="12">0</div>
+        <div class="kpi-lbl">Workflows نشطة الآن</div>
+        <div class="kpi-bar"><div class="kb-fill kf-amber" style="width:0" data-w="48%"></div></div>
+      </div>
+
+      <div class="kpi-card kc-purple fu fu4">
+        <div class="kpi-top">
+          <div class="kpi-icon ki-purple"><i class="fas fa-network-wired"></i></div>
+          <span class="kpi-trend kt-dn"><i class="fas fa-arrow-down"></i> 1</span>
+        </div>
+        <div class="kpi-val" data-to="47">0</div>
+        <div class="kpi-lbl">جهاز شبكي مراقَب</div>
+        <div class="kpi-bar"><div class="kb-fill kf-purple" style="width:0" data-w="94%"></div></div>
+      </div>
+    </div>
+
+    <!-- Chart + Side -->
+    <div class="grid-70-30">
+
+      <!-- Activity Chart -->
+      <div class="card fu">
+        <div class="card-head">
+          <div class="card-title"><i class="fas fa-chart-area"></i> نشاط الرسائل</div>
+          <div class="tab-pills">
+            <button class="tab-pill active" onclick="switchChart(this,'7d')">7 أيام</button>
+            <button class="tab-pill" onclick="switchChart(this,'30d')">30 يوم</button>
+            <button class="tab-pill" onclick="switchChart(this,'90d')">3 أشهر</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <canvas id="actChart" height="220"></canvas>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="flex-col">
+
+        <!-- Quick Actions -->
+        <div class="card fu fu1">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-grip-horizontal"></i> إجراءات سريعة</div>
+          </div>
+          <div class="card-body-sm">
+            <div class="qa-grid">
+              <div class="qa-item"><i class="fas fa-robot" style="color:var(--blue)"></i><span>روبوت جديد</span></div>
+              <div class="qa-item"><i class="fas fa-sitemap" style="color:var(--green)"></i><span>Workflow</span></div>
+              <div class="qa-item"><i class="fas fa-file-export" style="color:var(--cyan)"></i><span>تصدير تقرير</span></div>
+              <div class="qa-item"><i class="fas fa-user-plus" style="color:var(--amber)"></i><span>دعوة عضو</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscription -->
+        <div class="card fu fu2">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-crown" style="color:var(--amber)"></i> اشتراكك</div>
+            <span class="pill pill-green">● نشط</span>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:16px">
+              <span style="font-size:24px;font-weight:900;color:var(--blue)">Pro</span>
+              <span style="font-size:11px;color:var(--muted)">· ينتهي 15 يوليو 2026</span>
+            </div>
+
+            <div class="sub-row"><span>الرسائل</span><span class="sub-val">24,150 / 30,000</span></div>
+            <div class="sub-bar"><div class="sub-fill sf-blue" style="width:80%"></div></div>
+
+            <div class="sub-row"><span>الروبوتات</span><span class="sub-val">3 / 10</span></div>
+            <div class="sub-bar"><div class="sub-fill sf-green" style="width:30%"></div></div>
+
+            <div class="sub-row"><span>Workflows</span><span class="sub-val">12 / 50</span></div>
+            <div class="sub-bar"><div class="sub-fill sf-purple" style="width:24%"></div></div>
+
+            <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px">
+              <i class="fas fa-arrow-circle-up"></i> ترقية للـ Enterprise
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Services Status -->
+    <div class="card fu">
+      <div class="card-head">
+        <div class="card-title"><i class="fas fa-th"></i> حالة الخدمات</div>
+        <button class="btn btn-ghost btn-sm"><i class="fas fa-plus"></i> تفعيل خدمة</button>
+      </div>
+      <div class="card-body">
+        <div class="svc-grid">
+          <div class="svc-item" onclick="location.href='/chatbot'">
+            <div class="svc-icon" style="background:#eff6ff">🤖</div>
+            <div style="flex:1">
+              <div class="svc-name">AI Chatbot Builder</div>
+              <div class="svc-meta">3 روبوتات · 48K رسالة / شهر</div>
+            </div>
+            <span class="pill pill-green">نشط</span>
+          </div>
+          <div class="svc-item" onclick="location.href='/automation'">
+            <div class="svc-icon" style="background:#f0fdf4">⚡</div>
+            <div style="flex:1">
+              <div class="svc-name">أتمتة العمليات</div>
+              <div class="svc-meta">12 Workflow · n8n مدمج</div>
+            </div>
+            <span class="pill pill-green">نشط</span>
+          </div>
+          <div class="svc-item">
+            <div class="svc-icon" style="background:#ecfeff">📊</div>
+            <div style="flex:1">
+              <div class="svc-name">Analytics Dashboard</div>
+              <div class="svc-meta">تحليلات متقدمة مع Grafana</div>
+            </div>
+            <span class="pill pill-amber">قريباً</span>
+          </div>
+          <div class="svc-item" onclick="location.href='/network'">
+            <div class="svc-icon" style="background:#fffbeb">🔗</div>
+            <div style="flex:1">
+              <div class="svc-name">Network Intelligence</div>
+              <div class="svc-meta">47 جهاز · 1 تنبيه نشط</div>
+            </div>
+            <span class="pill pill-green">نشط</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Grid -->
+    <div class="grid-2eq">
+
+      <!-- Recent Activity -->
+      <div class="card fu">
+        <div class="card-head">
+          <div class="card-title"><i class="fas fa-history"></i> آخر النشاطات</div>
+          <button class="btn btn-ghost btn-xs">عرض الكل</button>
+        </div>
+        <div class="card-body">
+          <div class="act-list">
+            <div class="act-row">
+              <div class="act-icon ki-blue">🤖</div>
+              <div class="act-body">
+                <div class="act-title"><strong>روبوت الدعم</strong> أجاب على 42 رسالة</div>
+                <div class="act-time">منذ 3 دقائق</div>
+              </div>
+              <span class="act-badge pill pill-blue">Chatbot</span>
+            </div>
+            <div class="act-row">
+              <div class="act-icon ki-green">⚡</div>
+              <div class="act-body">
+                <div class="act-title"><strong>Workflow</strong> إرسال تقارير يومية اكتمل</div>
+                <div class="act-time">منذ 18 دقيقة</div>
+              </div>
+              <span class="act-badge pill pill-green">Auto</span>
+            </div>
+            <div class="act-row">
+              <div class="act-icon ki-amber">⚠️</div>
+              <div class="act-body">
+                <div class="act-title"><strong>SW-Core-01</strong> انقطع الاتصال</div>
+                <div class="act-time">منذ 45 دقيقة</div>
+              </div>
+              <span class="act-badge pill pill-amber">Network</span>
+            </div>
+            <div class="act-row">
+              <div class="act-icon" style="background:var(--cyan-lt)">👤</div>
+              <div class="act-body">
+                <div class="act-title"><strong>علي محمد</strong> انضم إلى الفريق</div>
+                <div class="act-time">منذ ساعة</div>
+              </div>
+              <span class="act-badge pill pill-blue">فريق</span>
+            </div>
+            <div class="act-row">
+              <div class="act-icon ki-purple">🔄</div>
+              <div class="act-body">
+                <div class="act-title"><strong>Workflow</strong> مزامنة CRM تم تفعيله</div>
+                <div class="act-time">منذ 3 ساعات</div>
+              </div>
+              <span class="act-badge pill pill-purple">Auto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right col: Bots + Network -->
+      <div class="flex-col">
+
+        <!-- Active Bots -->
+        <div class="card fu fu1">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-robot"></i> الروبوتات النشطة</div>
+            <button class="btn btn-primary btn-xs" onclick="location.href='/chatbot'">
+              <i class="fas fa-plus"></i> جديد
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="bot-list">
+              <div class="bot-row">
+                <div class="bot-av" style="background:var(--blue-lt)">🤖</div>
+                <div style="flex:1">
+                  <div class="bot-name">روبوت الدعم الفني</div>
+                  <div class="bot-meta">موقع الويب · Claude AI</div>
+                </div>
+                <div class="bot-stat">
+                  <div class="bot-num">1,842</div>
+                  <div class="bot-lbl">رسالة / اليوم</div>
+                </div>
+              </div>
+              <div class="bot-row">
+                <div class="bot-av" style="background:var(--green-lt)">💬</div>
+                <div style="flex:1">
+                  <div class="bot-name">روبوت المبيعات</div>
+                  <div class="bot-meta">واتساب · Claude AI</div>
+                </div>
+                <div class="bot-stat">
+                  <div class="bot-num">937</div>
+                  <div class="bot-lbl">رسالة / اليوم</div>
+                </div>
+              </div>
+              <div class="bot-row">
+                <div class="bot-av" style="background:var(--cyan-lt)">📋</div>
+                <div style="flex:1">
+                  <div class="bot-name">روبوت HR الداخلي</div>
+                  <div class="bot-meta">تيليغرام · Claude AI</div>
+                </div>
+                <div class="bot-stat">
+                  <div class="bot-num">214</div>
+                  <div class="bot-lbl">رسالة / اليوم</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Network -->
+        <div class="card fu fu2">
+          <div class="card-head">
+            <div class="card-title"><i class="fas fa-wifi"></i> الشبكة</div>
+            <span class="status-dot">
+              <span class="dot dot-green" style="animation:pulse 2s infinite"></span>
+              <span style="color:var(--green);font-size:11px;font-weight:600">متصل</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <canvas id="netChart" height="80"></canvas>
+            <div class="net-grid">
+              <div class="net-mini">
+                <div class="nv" style="color:var(--green)">46/47</div>
+                <div class="nl">أجهزة متصلة</div>
+              </div>
+              <div class="net-mini">
+                <div class="nv" style="color:var(--blue)">2.4ms</div>
+                <div class="nl">Avg Latency</div>
+              </div>
+              <div class="net-mini">
+                <div class="nv" style="color:var(--cyan)">99.9%</div>
+                <div class="nl">Uptime</div>
+              </div>
+              <div class="net-mini">
+                <div class="nv" style="color:var(--amber)">1</div>
+                <div class="nl">تنبيه نشط</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ══════════════ JS ══════════════ -->
+<script>
+/* ── User Info ─────────────────── */
+const uName = localStorage.getItem('user_name') || 'مصطفى أحمد';
+const uInit = uName.trim().charAt(0) || 'م';
+document.getElementById('wName').textContent    = uName.split(' ')[0];
+document.getElementById('sbName').textContent   = uName;
+document.getElementById('sbAvatar').textContent = uInit;
+document.getElementById('tbAvatar').textContent = uInit;
+
+/* ── Counter Animation ────────── */
+document.querySelectorAll('[data-to]').forEach(el => {
+  const io = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) return;
+    io.disconnect();
+    const target = +el.dataset.to, dur = 1200;
+    const step = target / (dur / 16);
+    let cur = 0;
+    const t = setInterval(() => {
+      cur += step;
+      if (cur >= target) { cur = target; clearInterval(t) }
+      el.textContent = Math.floor(cur).toLocaleString('ar-SA');
+    }, 16);
+  });
+  io.observe(el);
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.kb-fill[data-w]').forEach(b => b.style.width = b.dataset.w);
+}, 300);
+
+/* ── Charts Setup ─────────────── */
+// Light theme defaults
+Chart.defaults.color          = '#64748b';
+Chart.defaults.borderColor    = '#e8ecf0';
+Chart.defaults.font.family    = 'Cairo, Inter, sans-serif';
+Chart.defaults.plugins.tooltip.backgroundColor  = '#0f172a';
+Chart.defaults.plugins.tooltip.titleColor       = '#f1f5f9';
+Chart.defaults.plugins.tooltip.bodyColor        = '#94a3b8';
+Chart.defaults.plugins.tooltip.padding          = 10;
+Chart.defaults.plugins.tooltip.cornerRadius     = 8;
+Chart.defaults.plugins.tooltip.displayColors    = true;
+
+/* ── Activity Chart ───────────── */
+const CDATA = {
+  '7d': {
+    labels: ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
+    d1: [1200,1900,1500,2800,2200,3100,2600],
+    d2: [800,1100,900,1600,1300,1800,1500],
+  },
+  '30d': {
+    labels: Array.from({length:30},(_,i)=>`${i+1}`),
+    d1: [1800,2100,1600,2400,2700,2200,3100,2900,3400,2800,3200,3600,3100,2700,3400,3800,3300,2900,3500,4100,3700,3200,3900,4300,3800,3400,4100,4500,4200,3900],
+    d2: [900,1100,850,1300,1500,1200,1700,1600,1900,1500,1800,2000,1700,1500,1900,2100,1800,1600,1900,2300,2100,1800,2200,2400,2100,1900,2300,2500,2300,2100],
+  },
+  '90d': {
+    labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+    d1:[18000,22000,19000,28000,33000,29000,38000,35000,42000,45000,39000,50000],
+    d2:[10000,13000,11000,17000,20000,16000,23000,21000,26000,28000,24000,31000],
+  }
+};
+
+const actCtx = document.getElementById('actChart').getContext('2d');
+const g1 = actCtx.createLinearGradient(0,0,0,220);
+g1.addColorStop(0,'rgba(27,106,201,.18)'); g1.addColorStop(1,'rgba(27,106,201,0)');
+const g2 = actCtx.createLinearGradient(0,0,0,220);
+g2.addColorStop(0,'rgba(16,185,129,.15)'); g2.addColorStop(1,'rgba(16,185,129,0)');
+
+const actChart = new Chart(actCtx, {
+  type:'line',
+  data:{
+    labels: CDATA['7d'].labels,
+    datasets:[
+      {
+        label:'الرسائل الكلية',
+        data: CDATA['7d'].d1,
+        borderColor:'#1b6ac9', backgroundColor:g1,
+        borderWidth:2.5, fill:true, tension:.4,
+        pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#1b6ac9',
+        pointBorderColor:'#fff', pointBorderWidth:2,
+      },
+      {
+        label:'المستخدمون الفريدون',
+        data: CDATA['7d'].d2,
+        borderColor:'#10b981', backgroundColor:g2,
+        borderWidth:2, fill:true, tension:.4,
+        pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#10b981',
+        pointBorderColor:'#fff', pointBorderWidth:2,
+      },
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{
+        position:'top',
+        align:'end',
+        labels:{
+          color:'#64748b', font:{family:'Cairo',size:11},
+          boxWidth:8, boxHeight:8, borderRadius:4, padding:16,
+          usePointStyle:true,
+        }
+      },
+    },
+    scales:{
+      x:{
+        grid:{color:'#f1f5f9', lineWidth:1},
+        ticks:{color:'#94a3b8', font:{family:'Cairo',size:11}, maxTicksLimit:7},
+      },
+      y:{
+        grid:{color:'#f1f5f9', lineWidth:1},
+        ticks:{color:'#94a3b8', font:{family:'Cairo',size:11}},
+        beginAtZero:true,
+      }
+    }
+  }
+});
+
+function switchChart(btn, period) {
+  document.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const d = CDATA[period];
+  actChart.data.labels = d.labels;
+  actChart.data.datasets[0].data = d.d1;
+  actChart.data.datasets[1].data = d.d2;
+  actChart.update();
+}
+
+/* ── Network Chart ────────────── */
+const netCtx = document.getElementById('netChart').getContext('2d');
+const gNet = netCtx.createLinearGradient(0,0,0,80);
+gNet.addColorStop(0,'rgba(27,106,201,.2)'); gNet.addColorStop(1,'rgba(27,106,201,0)');
+const latData = Array.from({length:20},()=>+(Math.random()*2.5+0.8).toFixed(1));
+
+const netChart = new Chart(netCtx, {
+  type:'line',
+  data:{
+    labels:latData.map(()=>''),
+    datasets:[{
+      data:latData, borderColor:'#1b6ac9', backgroundColor:gNet,
+      borderWidth:2, fill:true, tension:.4, pointRadius:0,
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, animation:{duration:0},
+    plugins:{legend:{display:false},tooltip:{enabled:false}},
+    scales:{
+      x:{display:false},
+      y:{
+        grid:{color:'#f1f5f9'},
+        ticks:{color:'#94a3b8',font:{size:9}},
+        min:0, max:5,
+      }
+    }
+  }
+});
+
+setInterval(()=>{
+  latData.shift();
+  latData.push(+(Math.random()*2.5+0.8).toFixed(1));
+  netChart.data.datasets[0].data = [...latData];
+  netChart.update('none');
+}, 1500);
+
+/* ── Sidebar Mobile ───────────── */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function checkMobile(){
+  document.getElementById('menuBtn').style.display = window.innerWidth < 960 ? 'flex' : 'none';
+}
+checkMobile();
+window.addEventListener('resize', checkMobile);
+
+/* ── Logout ───────────────────── */
+function doLogout(e){
+  e.preventDefault();
+  localStorage.clear();
+  window.location.href = '/';
+}
+
+/* ── Pulse animation for green dot ── */
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes pulse {
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.6;transform:scale(1.3)}
+  }
+`;
+document.head.appendChild(style);
+</script>
+<script src="/static/chat-widget.js"></script>
+<script src="/static/platform-i18n.js"></script>
+</body>
+</html>

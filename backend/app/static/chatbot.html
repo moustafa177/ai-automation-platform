@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="AI Platform - AI and Automation Solutions">
+<meta name="theme-color" content="#1b6ac9">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Chatbot Builder — منصة الذكاء</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --dark:#020617;--dark2:#0f172a;--dark3:#1e293b;--dark4:#334155;
+  --c1:#6366f1;--c2:#8b5cf6;--c3:#22d3ee;--c4:#f59e0b;--c5:#10b981;--c6:#ef4444;
+  --text:#e2e8f0;--muted:#94a3b8;--border:rgba(99,102,241,.18);
+  --glass:rgba(15,23,42,.7);--radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+html,body{height:100%;background:var(--dark);color:var(--text);overflow:hidden}
+body{display:flex}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:260px;min-width:260px;height:100vh;background:var(--glass);
+  border-left:1px solid var(--border);display:flex;flex-direction:column;
+  padding:24px 0;backdrop-filter:blur(20px);position:relative;z-index:10;overflow-y:auto;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:4px}
+.logo{padding:0 20px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.nav{padding:16px 12px;flex:1}
+.nav-section{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.8px;padding:8px 8px 4px;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  color:var(--muted);text-decoration:none;font-size:13.5px;transition:.2s;margin-bottom:2px}
+.nav-item:hover{background:rgba(99,102,241,.12);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(139,92,246,.15));
+  color:#fff;border:1px solid rgba(99,102,241,.35)}
+.nav-item .icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;background:rgba(255,255,255,.05)}
+.nav-item.active .icon{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.nav-badge{margin-right:auto;background:var(--c1);color:#fff;font-size:10px;
+  padding:1px 6px;border-radius:10px;font-weight:600}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px}
+.user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+
+/* ── Layout ── */
+.main{flex:1;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* ── Topbar ── */
+.topbar{
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);background:var(--glass);
+  backdrop-filter:blur(20px);flex-shrink:0;
+}
+.topbar-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar-title .badge{font-size:11px;padding:2px 8px;background:rgba(99,102,241,.2);
+  border:1px solid rgba(99,102,241,.4);border-radius:20px;color:var(--c1);font-weight:600}
+.topbar-actions{display:flex;gap:8px}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;
+  font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border:none}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(99,102,241,.35)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.btn-success{background:rgba(16,185,129,.12);color:var(--c5);border:1px solid rgba(16,185,129,.25)}
+.btn-success:hover{background:rgba(16,185,129,.22)}
+.btn-danger{background:rgba(239,68,68,.1);color:var(--c6);border:1px solid rgba(239,68,68,.2)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:8px}
+.btn-xs{padding:3px 9px;font-size:11px;border-radius:7px}
+
+/* ── Split layout ── */
+.workspace{flex:1;display:flex;overflow:hidden}
+
+/* ── Bots list panel ── */
+.bots-panel{
+  width:280px;min-width:280px;border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;background:rgba(15,23,42,.4);
+}
+.bots-panel-head{
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.bots-panel-title{font-size:13px;font-weight:700}
+.bots-search{
+  padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.search-box{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:9px;padding:7px 11px;
+}
+.search-box input{background:transparent;border:none;outline:none;color:var(--text);font-size:12.5px;width:100%}
+.search-box input::placeholder{color:var(--muted)}
+.bots-list{flex:1;overflow-y:auto;padding:10px}
+.bots-list::-webkit-scrollbar{width:3px}
+.bots-list::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:3px}
+
+/* ── Bot list item ── */
+.bot-item{
+  padding:12px 13px;border-radius:11px;cursor:pointer;transition:.18s;
+  border:1px solid transparent;margin-bottom:6px;
+}
+.bot-item:hover{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.15)}
+.bot-item.active{background:rgba(99,102,241,.14);border-color:rgba(99,102,241,.35)}
+.bi-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.bi-emoji{width:36px;height:36px;border-radius:9px;background:rgba(99,102,241,.12);
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.bi-name{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi-desc{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi-bottom{display:flex;align-items:center;justify-content:space-between}
+.status-pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;
+  padding:2px 7px;border-radius:20px}
+.sp-active{background:rgba(16,185,129,.12);color:var(--c5);border:1px solid rgba(16,185,129,.2)}
+.sp-inactive{background:rgba(239,68,68,.1);color:var(--c6);border:1px solid rgba(239,68,68,.2)}
+.sp-draft{background:rgba(245,158,11,.1);color:var(--c4);border:1px solid rgba(245,158,11,.2)}
+.bi-stat{font-size:11px;color:var(--muted)}
+
+/* ── Add bot btn ── */
+.add-bot-btn{
+  margin:10px;padding:12px;border-radius:11px;border:2px dashed rgba(99,102,241,.3);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;color:var(--muted);font-size:13px;font-weight:600;transition:.2s;
+}
+.add-bot-btn:hover{border-color:var(--c1);color:var(--c1);background:rgba(99,102,241,.05)}
+
+/* ── Detail area ── */
+.detail-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Empty state ── */
+.empty-state{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;color:var(--muted);
+}
+.empty-icon{font-size:72px;opacity:.3}
+.empty-title{font-size:18px;font-weight:700;color:var(--text)}
+.empty-sub{font-size:13px;text-align:center;max-width:300px;line-height:1.6}
+
+/* ── Bot detail header ── */
+.bot-detail{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.bd-header{
+  padding:16px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+  background:rgba(15,23,42,.3);
+}
+.bd-emoji{width:46px;height:46px;border-radius:12px;background:rgba(99,102,241,.12);
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.bd-title{font-size:17px;font-weight:800}
+.bd-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.bd-actions{margin-right:auto;display:flex;gap:8px;align-items:center}
+
+/* ── Tabs ── */
+.tabs-bar{
+  display:flex;border-bottom:1px solid var(--border);
+  padding:0 22px;gap:2px;flex-shrink:0;background:rgba(15,23,42,.2);
+}
+.tab-btn{
+  padding:12px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+  border:none;background:none;color:var(--muted);
+  border-bottom:2px solid transparent;transition:.2s;
+  display:flex;align-items:center;gap:6px;
+}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--c1);border-bottom-color:var(--c1)}
+
+.tab-pane{display:none;flex:1;overflow-y:auto;padding:22px}
+.tab-pane.active{display:block}
+.tab-pane::-webkit-scrollbar{width:5px}
+.tab-pane::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:3px}
+
+/* ── Forms ── */
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--muted);
+  margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.form-label .req{color:var(--c6)}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;transition:.15s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--c1);background:rgba(99,102,241,.06)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted)}
+.form-textarea{resize:vertical;min-height:120px;line-height:1.6}
+.form-select option{background:var(--dark2)}
+.form-hint{font-size:11px;color:var(--muted);margin-top:5px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.range-wrap{display:flex;align-items:center;gap:12px}
+input[type=range]{flex:1;accent-color:var(--c1);cursor:pointer;height:4px}
+.range-val{font-size:14px;font-weight:700;color:var(--c1);min-width:34px;text-align:center}
+
+/* ── Stats cards (inside tab) ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-mini{background:var(--glass);border:1px solid var(--border);border-radius:12px;
+  padding:14px;text-align:center;backdrop-filter:blur(10px)}
+.sm-val{font-size:24px;font-weight:800}
+.sm-lbl{font-size:11px;color:var(--muted);margin-top:3px}
+.chart-wrap{background:var(--glass);border:1px solid var(--border);border-radius:12px;
+  padding:16px;margin-bottom:16px;backdrop-filter:blur(10px)}
+.chart-title{font-size:13px;font-weight:700;margin-bottom:14px}
+
+/* ── Chat preview ── */
+.chat-wrap{display:flex;flex-direction:column;height:100%}
+.chat-header-bar{
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  background:rgba(15,23,42,.4);
+}
+.ch-emo{width:34px;height:34px;border-radius:9px;background:rgba(99,102,241,.12);
+  display:flex;align-items:center;justify-content:center;font-size:17px}
+.ch-name{font-size:14px;font-weight:700}
+.ch-status{font-size:11px;color:var(--c5);display:flex;align-items:center;gap:4px}
+.online-dot{width:6px;height:6px;background:var(--c5);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.chat-msgs::-webkit-scrollbar{width:4px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:3px}
+
+.msg{max-width:76%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.65;
+  word-break:break-word;animation:msgIn .22s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-bot{background:var(--dark3);border:1px solid var(--border);border-radius:14px 14px 14px 0;
+  align-self:flex-end}
+.msg-user{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
+  border-radius:14px 14px 0 14px;align-self:flex-start}
+.msg-time{font-size:10px;margin-top:4px;opacity:.55;text-align:left}
+
+.typing-ind{display:none;align-self:flex-end;padding:10px 14px;background:var(--dark3);
+  border:1px solid var(--border);border-radius:14px 14px 14px 0}
+.typing-dots{display:flex;gap:4px}
+.typing-dots span{width:7px;height:7px;background:var(--muted);border-radius:50%;
+  animation:bounce .8s ease-in-out infinite}
+.typing-dots span:nth-child(2){animation-delay:.15s}
+.typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+.chat-input-bar{
+  padding:12px 14px;border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:flex-end;flex-shrink:0;
+}
+.chat-input{
+  flex:1;background:var(--dark3);border:1px solid var(--border);border-radius:12px;
+  padding:10px 14px;color:var(--text);font-size:13px;outline:none;resize:none;
+  min-height:42px;max-height:110px;transition:border-color .2s;text-align:right;
+  font-family:inherit;
+}
+.chat-input:focus{border-color:var(--c1)}
+.send-btn{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:14px;transition:.2s;flex-shrink:0;
+}
+.send-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.4);transform:translateY(-1px)}
+.send-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── Integration code block ── */
+.code-block{
+  background:rgba(2,6,23,.8);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;font-family:'Courier New',monospace;font-size:12px;
+  color:#22d3ee;overflow-x:auto;line-height:1.75;white-space:pre;
+}
+.copy-btn{margin-top:8px;display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:8px;color:var(--muted);font-size:12px;cursor:pointer;transition:.15s}
+.copy-btn:hover{color:var(--text);border-color:rgba(99,102,241,.4)}
+
+/* ── Sessions tab ── */
+.session-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  border-radius:10px;border:1px solid var(--border);margin-bottom:8px;
+  cursor:pointer;transition:.15s;background:rgba(255,255,255,.02);
+}
+.session-item:hover{border-color:rgba(99,102,241,.3);background:rgba(99,102,241,.05)}
+.si-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--dark3),var(--dark4));
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:700}
+.si-info{flex:1;min-width:0}
+.si-name{font-size:13px;font-weight:600}
+.si-last{font-size:11.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-meta{text-align:left;flex-shrink:0}
+.si-count{font-size:11px;color:var(--muted)}
+.si-time{font-size:10.5px;color:var(--muted);margin-top:2px}
+
+/* ── Emoji picker ── */
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-bottom:10px}
+.emoji-opt{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:19px;cursor:pointer;border:2px solid transparent;transition:.15s}
+.emoji-opt:hover{background:rgba(99,102,241,.15)}
+.emoji-opt.selected{border-color:var(--c1);background:rgba(99,102,241,.15)}
+
+/* ── Template chips ── */
+.tpl-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tpl-chip{
+  padding:4px 11px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);color:var(--muted);background:transparent;transition:.15s;
+}
+.tpl-chip:hover{border-color:var(--c1);color:var(--c1);background:rgba(99,102,241,.08)}
+
+/* ════════════════ MODAL ════════════════ */
+.overlay{
+  position:fixed;inset:0;background:rgba(2,6,23,.82);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;z-index:100;
+  opacity:0;pointer-events:none;transition:.2s;padding:20px;
+}
+.overlay.show{opacity:1;pointer-events:all}
+.modal{
+  background:var(--dark2);border:1px solid var(--border);border-radius:20px;
+  padding:0;width:520px;max-width:100%;max-height:90vh;overflow-y:auto;
+  transform:translateY(18px) scale(.97);transition:.2s;
+}
+.overlay.show .modal{transform:none}
+.modal-head{
+  padding:22px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;
+}
+.modal-title{font-size:18px;font-weight:800}
+.modal-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.modal-close{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);
+  border:none;cursor:pointer;color:var(--muted);font-size:15px;display:flex;
+  align-items:center;justify-content:center;transition:.15s}
+.modal-close:hover{background:rgba(239,68,68,.12);color:var(--c6)}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:0 24px 22px;display:flex;gap:10px;justify-content:flex-end}
+
+/* ── Wizard steps ── */
+.steps{display:flex;padding:16px 24px 0;gap:0}
+.step-item{flex:1;text-align:center;position:relative}
+.step-item:not(:last-child)::after{
+  content:'';position:absolute;top:13px;right:-50%;width:100%;height:2px;
+  background:var(--dark4);z-index:0;
+}
+.step-item.done:not(:last-child)::after,
+.step-item.active:not(:last-child)::after{background:var(--c1)}
+.step-dot{width:26px;height:26px;border-radius:50%;background:var(--dark4);
+  border:2px solid var(--dark4);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--muted);margin:0 auto 6px;
+  position:relative;z-index:1;transition:.25s}
+.step-item.active .step-dot{background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-color:var(--c1);color:#fff}
+.step-item.done .step-dot{background:var(--c5);border-color:var(--c5);color:#fff}
+.step-lbl{font-size:10px;color:var(--muted);font-weight:600}
+.step-item.active .step-lbl{color:var(--c1)}
+
+/* ── Confirm ── */
+.confirm-icon{font-size:52px;text-align:center;margin-bottom:10px}
+.confirm-title{font-size:17px;font-weight:700;text-align:center;margin-bottom:6px}
+.confirm-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px}
+
+/* ── Toast ── */
+.toast-wrap{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:200;
+  display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--dark3);border:1px solid var(--border);border-radius:12px;
+  padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);min-width:200px;pointer-events:all;
+  animation:tIn .22s ease}
+.toast.success{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.1)}
+.toast.error{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08)}
+.toast.info{border-color:rgba(99,102,241,.3);background:rgba(99,102,241,.1)}
+@keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── Skeleton ── */
+.skel{background:linear-gradient(90deg,var(--dark3) 25%,var(--dark4) 50%,var(--dark3) 75%);
+  background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;height:14px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+<link rel="stylesheet" href="/static/platform-ui.css">
+<script src="/static/ninja-charts.js"></script>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div>
+      <div class="logo-text">AI Platform</div>
+      <div class="logo-sub">Powered by Gemini</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">الرئيسية</div>
+    <a href="/dashboard" class="nav-item"><div class="icon">📊</div>لوحة التحكم</a>
+    <a href="/actions"   class="nav-item"><div class="icon">⚡</div>الإجراءات السريعة</a>
+    <div class="nav-section">الأدوات</div>
+    <a href="/chatbot"    class="nav-item active"><div class="icon">🤖</div>AI Chatbot Builder
+      <span class="nav-badge" id="botCount">—</span>
+    </a>
+    <a href="/automation" class="nav-item"><div class="icon">🔄</div>أتمتة العمليات</a>
+    <a href="/knowledge"  class="nav-item"><div class="icon">🧠</div>قاعدة المعرفة</a>
+    <a href="/network"    class="nav-item"><div class="icon">📡</div>مراقبة الشبكة</a>
+    <div class="nav-section">الإدارة</div>
+    <a href="/team" class="nav-item"><div class="icon">👥</div>إدارة الفريق</a>
+    <a href="/reports" class="nav-item"><div class="icon">📈</div>التقارير</a>
+    <a href="#" class="nav-item"><div class="icon">💳</div>الاشتراك</a>
+    <a href="/settings" class="nav-item"><div class="icon">⚙️</div>الإعدادات</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av" id="userAv">م</div>
+      <div>
+        <div style="font-size:13px;font-weight:600" id="userName">جار التحميل...</div>
+        <div style="font-size:11px;color:var(--muted)" id="userRole">مالك المنظمة</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-title">
+      🤖 AI Chatbot Builder
+      <span class="badge">Gemini Powered</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="loadBots()">🔄 تحديث</button>
+      <button class="btn btn-primary btn-sm" onclick="openCreate()">
+        ✨ روبوت جديد
+      </button>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+
+    <!-- Left: Bots list -->
+    <div class="bots-panel">
+      <div class="bots-panel-head">
+        <span class="bots-panel-title">🤖 الروبوتات</span>
+        <span id="botsMeta" style="font-size:11px;color:var(--muted)">جار التحميل...</span>
+      </div>
+      <div class="bots-search">
+        <div class="search-box">
+          <i class="fas fa-search" style="color:var(--muted);font-size:12px"></i>
+          <input type="text" placeholder="بحث..." id="botSearch" oninput="filterBots()">
+        </div>
+      </div>
+      <div class="bots-list" id="botsList">
+        <div class="skel" style="height:70px;margin-bottom:8px"></div>
+        <div class="skel" style="height:70px;margin-bottom:8px"></div>
+        <div class="skel" style="height:70px"></div>
+      </div>
+      <div class="add-bot-btn" onclick="openCreate()">
+        <i class="fas fa-plus-circle"></i> إنشاء روبوت جديد
+      </div>
+    </div>
+
+    <!-- Right: Detail area -->
+    <div class="detail-area" id="detailArea">
+
+      <!-- Empty state (default) -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🤖</div>
+        <div class="empty-title">اختر روبوتاً للتعديل</div>
+        <div class="empty-sub">اختر أحد الروبوتات من القائمة اليسرى، أو أنشئ روبوتاً جديداً للبدء</div>
+        <button class="btn btn-primary" onclick="openCreate()">
+          ✨ إنشاء روبوت جديد
+        </button>
+      </div>
+
+      <!-- Bot detail (hidden until selected) -->
+      <div class="bot-detail" id="botDetail" style="display:none">
+
+        <!-- Header -->
+        <div class="bd-header">
+          <div class="bd-emoji" id="bdEmoji">🤖</div>
+          <div>
+            <div class="bd-title" id="bdTitle">—</div>
+            <div class="bd-meta" id="bdMeta">—</div>
+          </div>
+          <div class="bd-actions">
+            <span id="bdStatusBadge" class="status-pill sp-draft">مسودة</span>
+            <button class="btn btn-sm" id="bdActivateBtn" onclick="toggleStatus()">تفعيل</button>
+            <button class="btn btn-ghost btn-sm" onclick="openDuplicate()">⧉ نسخ</button>
+            <button class="btn btn-danger btn-sm" onclick="openDeleteBot()">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-bar">
+          <button class="tab-btn active" onclick="switchTab(this,'t-settings')"><i class="fas fa-sliders-h"></i> الإعدادات</button>
+          <button class="tab-btn" onclick="switchTab(this,'t-persona')"><i class="fas fa-brain"></i> الشخصية</button>
+          <button class="tab-btn" onclick="switchTab(this,'t-preview')"><i class="fas fa-comment-dots"></i> المعاينة</button>
+          <button class="tab-btn" onclick="switchTab(this,'t-sessions')"><i class="fas fa-history"></i> المحادثات</button>
+          <button class="tab-btn" onclick="switchTab(this,'t-stats')"><i class="fas fa-chart-bar"></i> الإحصاءات</button>
+          <button class="tab-btn" onclick="switchTab(this,'t-integrate')"><i class="fas fa-code"></i> التكامل</button>
+        </div>
+
+        <!-- ── Tab: Settings ── -->
+        <div class="tab-pane active" id="t-settings">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">اسم الروبوت <span class="req">*</span></label>
+              <input type="text" class="form-input" id="s-name" placeholder="روبوت الدعم الفني">
+            </div>
+            <div class="form-group">
+              <label class="form-label">المنصة</label>
+              <select class="form-select" id="s-platform">
+                <option value="website">🌐 الموقع الإلكتروني</option>
+                <option value="whatsapp">💬 واتساب</option>
+                <option value="telegram">✈️ تيليغرام</option>
+                <option value="messenger">📘 ماسنجر</option>
+                <option value="api">🔌 API مباشر</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">وصف الروبوت</label>
+            <input type="text" class="form-input" id="s-desc" placeholder="وصف مختصر لمهمة الروبوت">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">نموذج الذكاء الاصطناعي</label>
+              <select class="form-select" id="s-model">
+                <optgroup label="🟦 Google Gemini">
+                  <option value="models/gemini-2.5-flash">⚡ Gemini 2.5 Flash (موصى به)</option>
+                  <option value="models/gemini-2.0-flash-lite">🚀 Gemini 2.0 Flash Lite</option>
+                  <option value="models/gemini-flash-latest">🆕 Gemini Flash Latest</option>
+                </optgroup>
+                <optgroup label="🟣 Anthropic Claude">
+                  <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+                  <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">لغة الرد</label>
+              <select class="form-select" id="s-lang">
+                <option value="ar">🇸🇦 العربية</option>
+                <option value="en">🇺🇸 الإنجليزية</option>
+                <option value="ar-en">🌐 عربي + إنجليزي</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">الإبداعية (Temperature)</label>
+              <div class="range-wrap">
+                <input type="range" id="s-temp" min="0" max="1" step="0.05" value="0.7"
+                  oninput="document.getElementById('tempVal').textContent=this.value">
+                <span class="range-val" id="tempVal">0.7</span>
+              </div>
+              <div class="form-hint">0 = حرفي دقيق · 1 = إبداعي ومتنوع</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">أقصى tokens للرد</label>
+              <input type="number" class="form-input" id="s-tokens" min="100" max="8192" value="1024">
+              <div class="form-hint">100 – 8192 token</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ربط قاعدة معرفة (RAG)</label>
+            <select class="form-select" id="s-kb">
+              <option value="">— بدون قاعدة معرفة —</option>
+            </select>
+            <div class="form-hint">ربط الروبوت بقاعدة معرفة يجعله يجيب من محتواك الخاص</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px">
+            <button class="btn btn-ghost btn-sm" onclick="loadBotData()">↺ استعادة</button>
+            <button class="btn btn-primary btn-sm" onclick="saveSettings()">
+              <i class="fas fa-save"></i> حفظ الإعدادات
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Tab: Persona ── -->
+        <div class="tab-pane" id="t-persona">
+          <div class="form-group">
+            <label class="form-label">System Prompt — شخصية الروبوت <span class="req">*</span></label>
+            <div class="tpl-chips" id="tplChips">
+              <button class="tpl-chip" onclick="applyTpl('support')">🎧 دعم عملاء</button>
+              <button class="tpl-chip" onclick="applyTpl('sales')">💼 مبيعات</button>
+              <button class="tpl-chip" onclick="applyTpl('hr')">👥 HR داخلي</button>
+              <button class="tpl-chip" onclick="applyTpl('faq')">❓ أسئلة شائعة</button>
+              <button class="tpl-chip" onclick="applyTpl('education')">📚 تعليمي</button>
+              <button class="tpl-chip" onclick="applyTpl('ecomm')">🛒 تجارة إلكترونية</button>
+            </div>
+            <textarea class="form-textarea" id="p-prompt" style="min-height:160px"
+              placeholder="أنت مساعد ذكي ومفيد تعمل في شركة [اسم الشركة]..."></textarea>
+            <div class="form-hint">هذا النص يُرسل كتعليمات ثابتة في كل محادثة — حدد الشخصية والحدود والتخصص</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">رسالة الترحيب</label>
+              <textarea class="form-textarea" id="p-welcome" style="min-height:80px"
+                placeholder="مرحباً! أنا مساعدك الذكي، كيف يمكنني مساعدتك؟"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">رسالة عدم المعرفة</label>
+              <textarea class="form-textarea" id="p-fallback" style="min-height:80px"
+                placeholder="عذراً، لا أملك معلومات كافية حول هذا الموضوع..."></textarea>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end">
+            <button class="btn btn-primary btn-sm" onclick="savePersona()">
+              <i class="fas fa-brain"></i> حفظ الشخصية
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Tab: Preview ── -->
+        <div class="tab-pane" id="t-preview" style="padding:0;display:flex;flex-direction:column;height:100%">
+          <div class="chat-wrap">
+            <div class="chat-header-bar">
+              <div class="ch-emo" id="prevEmoji">🤖</div>
+              <div>
+                <div class="ch-name" id="prevName">الروبوت</div>
+                <div class="ch-status"><span class="online-dot"></span>متصل — وضع التجربة</div>
+              </div>
+              <div style="margin-right:auto;display:flex;gap:8px">
+                <button class="btn btn-ghost btn-xs" onclick="clearChat()"><i class="fas fa-trash"></i> مسح</button>
+                <button class="btn btn-ghost btn-xs" onclick="exportChat()"><i class="fas fa-download"></i> تصدير</button>
+              </div>
+            </div>
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="typing-ind" id="typingInd">
+              <div class="typing-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="chat-input-bar">
+              <textarea class="chat-input" id="chatInput" rows="1"
+                placeholder="اكتب رسالتك هنا... (Enter للإرسال)"
+                onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+              <button class="send-btn" id="sendBtn" onclick="sendMsg()">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Tab: Sessions ── -->
+        <div class="tab-pane" id="t-sessions">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <span style="font-size:14px;font-weight:700">🗂️ سجل المحادثات</span>
+            <span id="sessCount" style="font-size:12px;color:var(--muted)">—</span>
+          </div>
+          <div id="sessionsList">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <!-- ── Tab: Stats ── -->
+        <div class="tab-pane" id="t-stats">
+          <div class="stat-row">
+            <div class="stat-mini">
+              <div class="sm-val" style="color:var(--c1)" id="st-msgs">0</div>
+              <div class="sm-lbl">إجمالي الرسائل</div>
+            </div>
+            <div class="stat-mini">
+              <div class="sm-val" style="color:var(--c5)" id="st-sess">0</div>
+              <div class="sm-lbl">المحادثات</div>
+            </div>
+            <div class="stat-mini">
+              <div class="sm-val" style="color:var(--c3)" id="st-resp">—</div>
+              <div class="sm-lbl">متوسط الرد (ثانية)</div>
+            </div>
+            <div class="stat-mini">
+              <div class="sm-val" style="color:var(--c4)" id="st-sat">—</div>
+              <div class="sm-lbl">الرضا المقدَّر</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-title">📈 الرسائل خلال آخر 7 أيام</div>
+            <canvas id="msgChart" height="120"></canvas>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="chart-wrap">
+              <div class="chart-title">🌐 توزيع المنصات</div>
+              <canvas id="platformChart" height="160"></canvas>
+            </div>
+            <div class="chart-wrap">
+              <div class="chart-title">🌍 اللغات</div>
+              <canvas id="langChart" height="160"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Tab: Integration ── -->
+        <div class="tab-pane" id="t-integrate">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-key" style="color:var(--c4)"></i> مفتاح API الخاص بالروبوت</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" class="form-input" id="apiKeyDisplay" value="••••••••••••••••••••••••"
+                readonly style="font-family:monospace;letter-spacing:2px">
+              <button class="btn btn-ghost btn-sm" onclick="toggleKey()" id="toggleKeyBtn">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="btn btn-ghost btn-sm" onclick="copyKey()">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-code" style="color:var(--c3)"></i> كود تضمين الويدجت</label>
+            <div class="code-block" id="embedCode">&lt;!-- AI Chatbot Widget --&gt;
+&lt;script
+  src="https://your-domain.com/widget.js"
+  data-bot-id="<span id="codeId">BOT_ID</span>"
+  data-theme="dark"
+  data-lang="ar"
+  data-position="bottom-left"&gt;
+&lt;/script&gt;</div>
+            <button class="copy-btn" onclick="copyEmbed()">
+              <i class="fas fa-copy"></i> نسخ الكود
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-link" style="color:var(--c5)"></i> Webhook URL (اختياري)</label>
+            <input type="url" class="form-input" id="webhookInput" placeholder="https://your-server.com/webhook/chatbot">
+            <div class="form-hint">يُرسل كل رسالة وردها بصيغة JSON إلى هذا العنوان</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-terminal" style="color:var(--c1)"></i> مثال cURL</label>
+            <div class="code-block" id="curlCode">curl -X POST /api/v1/chatbots/<span id="curlId">ID</span>/chat \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "مرحباً، أحتاج مساعدة"}'</div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end">
+            <button class="btn btn-primary btn-sm" onclick="saveWebhook()">
+              <i class="fas fa-save"></i> حفظ Webhook
+            </button>
+          </div>
+        </div>
+
+      </div><!-- end bot-detail -->
+    </div><!-- end detail-area -->
+  </div><!-- end workspace -->
+</div><!-- end main -->
+
+<!-- ════════════ MODAL: Create ════════════ -->
+<div class="overlay" id="createOverlay" onclick="closeOverlay(event,'createOverlay')">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">✨ إنشاء روبوت جديد</div>
+        <div class="modal-sub">3 خطوات سريعة لإطلاق روبوتك الذكي</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('createOverlay')">✕</button>
+    </div>
+    <div class="steps">
+      <div class="step-item active" id="si1"><div class="step-dot">1</div><div class="step-lbl">الأساسيات</div></div>
+      <div class="step-item"        id="si2"><div class="step-dot">2</div><div class="step-lbl">الشخصية</div></div>
+      <div class="step-item"        id="si3"><div class="step-dot">3</div><div class="step-lbl">الإطلاق</div></div>
+    </div>
+    <div class="modal-body">
+      <!-- Step 1 -->
+      <div id="cs1">
+        <div class="form-group">
+          <label class="form-label">اسم الروبوت <span class="req">*</span></label>
+          <input type="text" class="form-input" id="c-name" placeholder="مثال: روبوت الدعم الفني">
+        </div>
+        <div class="form-group">
+          <label class="form-label">اختر رمزاً</label>
+          <div class="emoji-grid" id="emojiGrid"></div>
+          <input type="text" class="form-input" id="c-emoji" value="🤖"
+            style="width:72px;text-align:center;font-size:20px">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">المنصة</label>
+            <select class="form-select" id="c-platform">
+              <option value="website">🌐 الموقع</option>
+              <option value="whatsapp">💬 واتساب</option>
+              <option value="telegram">✈️ تيليغرام</option>
+              <option value="api">🔌 API</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">النموذج</label>
+            <select class="form-select" id="c-model">
+              <option value="models/gemini-2.5-flash">⚡ Gemini 2.5 Flash</option>
+              <option value="models/gemini-2.0-flash-lite">🚀 Gemini 2.0 Lite</option>
+              <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">وصف مختصر</label>
+          <input type="text" class="form-input" id="c-desc" placeholder="ماذا يفعل هذا الروبوت؟">
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div id="cs2" style="display:none">
+        <div class="form-group">
+          <label class="form-label" style="display:flex;justify-content:space-between">
+            System Prompt
+            <span style="font-weight:400;text-transform:none;letter-spacing:0">اختر قالباً:</span>
+          </label>
+          <div class="tpl-chips" style="margin-bottom:8px">
+            <button class="tpl-chip" onclick="applyTplC('support')">🎧 دعم</button>
+            <button class="tpl-chip" onclick="applyTplC('sales')">💼 مبيعات</button>
+            <button class="tpl-chip" onclick="applyTplC('hr')">👥 HR</button>
+            <button class="tpl-chip" onclick="applyTplC('faq')">❓ FAQ</button>
+            <button class="tpl-chip" onclick="applyTplC('education')">📚 تعليمي</button>
+          </div>
+          <textarea class="form-textarea" id="c-prompt" style="min-height:150px"
+            placeholder="أنت مساعد ذكي ومفيد يعمل في..."></textarea>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div id="cs3" style="display:none;text-align:center;padding:8px 0">
+        <div style="font-size:64px;margin-bottom:14px" id="finalEmoji">🤖</div>
+        <div style="font-size:20px;font-weight:800;margin-bottom:6px" id="finalName">—</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px" id="finalDesc">—</div>
+        <div style="display:inline-flex;gap:24px;background:var(--dark3);padding:14px 22px;
+          border-radius:12px;margin-bottom:18px">
+          <div><div style="font-size:20px;font-weight:800;color:var(--c1)" id="finalPlat">🌐</div>
+            <div style="font-size:11px;color:var(--muted)">المنصة</div></div>
+          <div><div style="font-size:14px;font-weight:700;color:var(--c3)" id="finalMdl">—</div>
+            <div style="font-size:11px;color:var(--muted)">النموذج</div></div>
+        </div>
+        <div style="background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);
+          border-radius:12px;padding:13px;font-size:13px;color:var(--c5)">
+          ✅ الروبوت جاهز للإطلاق! يمكنك تخصيصه بشكل كامل بعد الإنشاء.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevStep()" style="display:none">
+        ← السابق
+      </button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+        التالي →
+      </button>
+      <button class="btn btn-primary" id="createBtn" onclick="createBot()" style="display:none">
+        🚀 إنشاء وإطلاق!
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ MODAL: Delete ════════════ -->
+<div class="overlay" id="deleteOverlay" onclick="closeOverlay(event,'deleteOverlay')">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-body" style="padding-top:28px">
+      <div class="confirm-icon">🗑️</div>
+      <div class="confirm-title">حذف الروبوت</div>
+      <div class="confirm-sub" id="deleteMsg">هل تريد حذف هذا الروبوت؟</div>
+    </div>
+    <div class="modal-footer" style="justify-content:center">
+      <button class="btn btn-ghost" onclick="closeModal('deleteOverlay')">إلغاء</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">🗑️ حذف نعم</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   Config & State
+══════════════════════════════════════════ */
+const API = '/api/v1';
+const tok = () => localStorage.getItem('access_token') || '';
+
+let allBots     = [];
+let currentBot  = null;
+let createStep  = 1;
+let selectedEmoji = '🤖';
+let keyVisible  = false;
+let charts      = {};
+
+/* ── Platform / Model maps ── */
+const PLAT = {website:'🌐 الموقع',whatsapp:'💬 واتساب',telegram:'✈️ تيليغرام',messenger:'📘 ماسنجر',api:'🔌 API'};
+const MDL  = {
+  'models/gemini-2.5-flash':'Gemini 2.5 Flash',
+  'models/gemini-2.0-flash-lite':'Gemini 2.0 Lite',
+  'models/gemini-flash-latest':'Gemini Flash',
+  'claude-3-5-sonnet-20241022':'Claude Sonnet 3.5',
+  'claude-3-5-haiku-20241022':'Claude Haiku 3.5',
+};
+
+const EMOJIS = ['🤖','🧠','💬','🎧','💼','🛡️','🚀','⚡','🌐','📊','🔮','🎯','🦾','🤝','🔬','📱','🏪','📞','🌟','🎓'];
+
+/* ── System prompt templates ── */
+const TPLS = {
+  support:   `أنت مساعد دعم عملاء محترف لشركة [اسم الشركة]. مهمتك مساعدة العملاء في حل مشكلاتهم بأسلوب لطيف وسريع. أجب دائماً بالعربية. إذا لم تعرف الإجابة، اعتذر بلطف واقترح التواصل مع فريق الدعم.`,
+  sales:     `أنت مساعد مبيعات ذكي لشركة [اسم الشركة]. ساعد العملاء في اختيار المنتج المناسب لاحتياجاتهم. كن ودوداً ومقنعاً دون ضغط. ركز على إيجاد الحل الأمثل للعميل.`,
+  hr:        `أنت مساعد HR ذكي للموظفين الداخليين. أجب عن أسئلة الموظفين المتعلقة بالإجازات والرواتب والسياسات الداخلية. احرص على الدقة وإحالة الحالات الخاصة لفريق HR.`,
+  faq:       `أنت مساعد ذكي متخصص في الأسئلة الشائعة. أجب بشكل مباشر ومختصر. إذا لم تجد الإجابة، اقترح مصادر أخرى أو التواصل مع الفريق.`,
+  education: `أنت مدرس ذكي ومتحمس. اشرح المفاهيم بأسلوب بسيط مع أمثلة عملية. شجع الطلاب وكن صبوراً. تخصصك هو [المادة الدراسية].`,
+  ecomm:     `أنت مساعد تسوق ذكي لمتجر [اسم المتجر]. ساعد العملاء في البحث عن المنتجات والإجابة عن أسئلتهم حول الشحن والإرجاع والدفع.`,
+};
+
+/* ── Demo bots ── */
+const DEMO_BOTS = [
+  {id:'d1',name:'روبوت الدعم الفني',description:'يساعد في حل المشكلات التقنية',avatar_emoji:'🎧',
+   platform:'website',status:'active',model:'models/gemini-2.5-flash',total_messages:1842,
+   total_sessions:312,api_key:'demo_api_key_001',system_prompt:TPLS.support,
+   temperature:0.7,max_tokens:1024,language:'ar',
+   welcome_message:'مرحباً! أنا روبوت الدعم الفني. كيف يمكنني مساعدتك؟',
+   fallback_message:'عذراً، لا أملك معلومات كافية. يرجى التواصل مع الدعم.',
+   webhook_url:''},
+  {id:'d2',name:'روبوت المبيعات',description:'يرشد العملاء لاختيار المنتج المناسب',avatar_emoji:'💼',
+   platform:'whatsapp',status:'active',model:'models/gemini-2.0-flash-lite',total_messages:937,
+   total_sessions:180,api_key:'demo_api_key_002',system_prompt:TPLS.sales,
+   temperature:0.8,max_tokens:1024,language:'ar',
+   welcome_message:'أهلاً! أنا هنا لمساعدتك في اختيار أفضل منتج.',
+   fallback_message:'سؤال رائع! دعني أتحقق من ذلك.',webhook_url:''},
+  {id:'d3',name:'مساعد HR الداخلي',description:'يجيب على أسئلة الموظفين',avatar_emoji:'👥',
+   platform:'telegram',status:'draft',model:'models/gemini-2.5-flash',total_messages:214,
+   total_sessions:67,api_key:'demo_api_key_003',system_prompt:TPLS.hr,
+   temperature:0.5,max_tokens:1024,language:'ar',
+   welcome_message:'مرحباً! أنا مساعد HR. ما الذي تحتاج مساعدة فيه؟',
+   fallback_message:'سأحيلك إلى فريق HR للإجابة على هذا السؤال.',webhook_url:''},
+];
+
+/* ══════════════════════════════════════════
+   API helpers
+══════════════════════════════════════════ */
+async function apiFetch(method, path, body) {
+  try {
+    const r = await fetch(API + path, {
+      method,
+      headers: {'Content-Type':'application/json',
+        ...(tok() ? {Authorization:'Bearer '+tok()} : {})},
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const j = await r.json();
+    return {ok:r.ok, status:r.status, data:j};
+  } catch {
+    return {ok:false, status:0, data:{}};
+  }
+}
+
+/* ══════════════════════════════════════════
+   Load & render bots
+══════════════════════════════════════════ */
+async function loadBots() {
+  const r = await apiFetch('GET','/chatbots');
+  if (r.ok && r.data.data?.length) {
+    allBots = r.data.data;
+  } else {
+    allBots = DEMO_BOTS;
+  }
+  renderBotsList();
+  document.getElementById('botCount').textContent = allBots.length;
+}
+
+function filterBots() {
+  const q = document.getElementById('botSearch').value.toLowerCase();
+  const filtered = allBots.filter(b =>
+    b.name.toLowerCase().includes(q) || (b.description||'').toLowerCase().includes(q)
+  );
+  renderBotsList(filtered);
+}
+
+function renderBotsList(list) {
+  list = list || allBots;
+  document.getElementById('botsMeta').textContent = `${list.length} روبوت`;
+  const el = document.getElementById('botsList');
+  if (!list.length) {
+    el.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">لا يوجد روبوتات مطابقة</div>';
+    return;
+  }
+  el.innerHTML = list.map(b => `
+    <div class="bot-item ${currentBot?.id===b.id?'active':''}" onclick="selectBot('${b.id}')">
+      <div class="bi-top">
+        <div class="bi-emoji">${b.avatar_emoji}</div>
+        <div style="flex:1;min-width:0">
+          <div class="bi-name">${b.name}</div>
+          <div class="bi-desc">${b.description||'بدون وصف'}</div>
+        </div>
+      </div>
+      <div class="bi-bottom">
+        <span class="status-pill ${b.status==='active'?'sp-active':b.status==='inactive'?'sp-inactive':'sp-draft'}">
+          ${b.status==='active'?'● نشط':b.status==='inactive'?'● متوقف':'◌ مسودة'}
+        </span>
+        <span class="bi-stat">${(b.total_messages||0).toLocaleString('ar-SA')} رسالة</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   Select bot
+══════════════════════════════════════════ */
+function selectBot(id) {
+  currentBot = allBots.find(b => b.id === id);
+  if (!currentBot) return;
+  renderBotsList();
+  loadBotData();
+  document.getElementById('emptyState').style.display  = 'none';
+  document.getElementById('botDetail').style.display   = 'flex';
+  document.getElementById('botDetail').style.flexDirection = 'column';
+  document.getElementById('botDetail').style.overflow  = 'hidden';
+  document.getElementById('botDetail').style.flex      = '1';
+  initPreview();
+  loadStats();
+  renderSessions();
+}
+
+function loadBotData() {
+  if (!currentBot) return;
+  const b = currentBot;
+
+  // Header
+  document.getElementById('bdEmoji').textContent = b.avatar_emoji;
+  document.getElementById('bdTitle').textContent = b.name;
+  document.getElementById('bdMeta').textContent  = `${MDL[b.model]||b.model} · ${PLAT[b.platform]||b.platform}`;
+  document.getElementById('prevEmoji').textContent = b.avatar_emoji;
+  document.getElementById('prevName').textContent  = b.name;
+
+  // Status
+  updateStatusUI(b.status);
+
+  // Settings
+  document.getElementById('s-name').value    = b.name||'';
+  document.getElementById('s-desc').value    = b.description||'';
+  document.getElementById('s-model').value   = b.model||'models/gemini-2.5-flash';
+  document.getElementById('s-lang').value    = b.language||'ar';
+  document.getElementById('s-temp').value    = b.temperature||0.7;
+  document.getElementById('tempVal').textContent = b.temperature||0.7;
+  document.getElementById('s-tokens').value  = b.max_tokens||1024;
+  document.getElementById('s-platform').value = b.platform||'website';
+
+  // Persona
+  document.getElementById('p-prompt').value   = b.system_prompt||'';
+  document.getElementById('p-welcome').value  = b.welcome_message||'مرحباً! كيف يمكنني مساعدتك؟';
+  document.getElementById('p-fallback').value = b.fallback_message||'عذراً، لا أملك معلومات كافية.';
+
+  // Integration
+  updateKeyDisplay();
+  document.getElementById('codeId').textContent   = b.id;
+  document.getElementById('curlId').textContent   = b.id;
+  document.getElementById('webhookInput').value   = b.webhook_url||'';
+
+  // Stats numbers
+  document.getElementById('st-msgs').textContent = (b.total_messages||0).toLocaleString('ar-SA');
+  document.getElementById('st-sess').textContent = (b.total_sessions||0).toLocaleString('ar-SA');
+  document.getElementById('st-resp').textContent = '~' + (1.8 + Math.random()*1.5).toFixed(1) + 's';
+  document.getElementById('st-sat').textContent  = Math.floor(90 + Math.random()*8) + '%';
+}
+
+function updateStatusUI(status) {
+  const badge = document.getElementById('bdStatusBadge');
+  const btn   = document.getElementById('bdActivateBtn');
+  if (status === 'active') {
+    badge.className='status-pill sp-active'; badge.textContent='● نشط';
+    btn.className='btn btn-sm btn-ghost'; btn.textContent='⏸ إيقاف';
+  } else {
+    badge.className='status-pill '+(status==='inactive'?'sp-inactive':'sp-draft');
+    badge.textContent = status==='inactive'?'● متوقف':'◌ مسودة';
+    btn.className='btn btn-sm btn-success'; btn.textContent='▶ تفعيل';
+  }
+}
+
+/* ══════════════════════════════════════════
+   Save actions
+══════════════════════════════════════════ */
+async function saveSettings() {
+  if (!currentBot) return;
+  const data = {
+    name:        document.getElementById('s-name').value.trim(),
+    description: document.getElementById('s-desc').value.trim(),
+    model:       document.getElementById('s-model').value,
+    language:    document.getElementById('s-lang').value,
+    temperature: parseFloat(document.getElementById('s-temp').value),
+    max_tokens:  parseInt(document.getElementById('s-tokens').value),
+    platform:    document.getElementById('s-platform').value,
+  };
+  if (!data.name) { toast('أدخل اسم الروبوت','error'); return; }
+
+  await apiFetch('PUT', `/chatbots/${currentBot.id}`, data);
+  Object.assign(currentBot, data);
+  allBots = allBots.map(b => b.id===currentBot.id ? {...b,...data} : b);
+  renderBotsList();
+  loadBotData();
+  toast('✅ تم حفظ الإعدادات');
+}
+
+async function savePersona() {
+  if (!currentBot) return;
+  const data = {
+    system_prompt: document.getElementById('p-prompt').value,
+    widget_config: {
+      ...currentBot.widget_config,
+      welcome_message: document.getElementById('p-welcome').value,
+      fallback_message: document.getElementById('p-fallback').value,
+    }
+  };
+  currentBot.welcome_message  = document.getElementById('p-welcome').value;
+  currentBot.fallback_message = document.getElementById('p-fallback').value;
+  currentBot.system_prompt    = data.system_prompt;
+  await apiFetch('PUT', `/chatbots/${currentBot.id}`, data);
+  toast('🧠 تم حفظ الشخصية');
+}
+
+async function saveWebhook() {
+  if (!currentBot) return;
+  const url = document.getElementById('webhookInput').value;
+  await apiFetch('PUT', `/chatbots/${currentBot.id}`, {webhook_url:url});
+  currentBot.webhook_url = url;
+  toast('🔗 تم حفظ Webhook');
+}
+
+/* ══════════════════════════════════════════
+   Toggle status
+══════════════════════════════════════════ */
+async function toggleStatus() {
+  if (!currentBot) return;
+  const isActive = currentBot.status === 'active';
+  const action   = isActive ? 'deactivate' : 'activate';
+  await apiFetch('POST', `/chatbots/${currentBot.id}/${action}`);
+  currentBot.status = isActive ? 'inactive' : 'active';
+  allBots = allBots.map(b => b.id===currentBot.id ? {...b,status:currentBot.status} : b);
+  updateStatusUI(currentBot.status);
+  renderBotsList();
+  toast(isActive ? '⏸ تم إيقاف الروبوت' : '▶ تم تفعيل الروبوت');
+}
+
+/* ══════════════════════════════════════════
+   Templates
+══════════════════════════════════════════ */
+function applyTpl(type)  { document.getElementById('p-prompt').value  = TPLS[type]||''; toast('📝 تم تطبيق القالب','info'); }
+function applyTplC(type) { document.getElementById('c-prompt').value  = TPLS[type]||''; }
+
+/* ══════════════════════════════════════════
+   Chat preview
+══════════════════════════════════════════ */
+function initPreview() {
+  const msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML = '';
+  const welcome = (currentBot?.welcome_message) || 'مرحباً! كيف يمكنني مساعدتك؟';
+  addMsg(welcome, false);
+}
+
+function addMsg(text, isUser) {
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = `msg ${isUser?'msg-user':'msg-bot'}`;
+  const t = new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = text.replace(/\n/g,'<br>') + `<div class="msg-time">${t}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text  = input.value.trim();
+  if (!text || !currentBot) return;
+  input.value = ''; autoResize(input);
+  addMsg(text, true);
+
+  const ti   = document.getElementById('typingInd');
+  const sb   = document.getElementById('sendBtn');
+  ti.style.display = 'flex';
+  sb.disabled = true;
+  document.getElementById('chatMsgs').scrollTop = 999999;
+
+  // Demo bots: local mock
+  if (currentBot.id.startsWith('d')) {
+    await delay(700 + Math.random()*900);
+    ti.style.display = 'none';
+    const replies = [
+      `شكراً على رسالتك! كـ${currentBot.name} يسعدني مساعدتك في موضوع «${text.slice(0,35)}». هل يمكنك توضيح المزيد؟`,
+      `فهمت طلبك تماماً. بناءً على تخصصي، يمكنني إخبارك أن هناك عدة خطوات لحل هذا الأمر.`,
+      `سؤال ممتاز! دعني أساعدك. الإجابة المختصرة: نعم، يمكن حل هذا بسهولة. إليك التفاصيل...`,
+      `أنا هنا لمساعدتك! بخصوص «${text.slice(0,30)}»، أنصح باتباع الخطوات التالية للحصول على أفضل نتيجة.`,
+    ];
+    addMsg(replies[Math.floor(Math.random()*replies.length)], false);
+    currentBot.total_messages = (currentBot.total_messages||0)+1;
+    document.getElementById('st-msgs').textContent = currentBot.total_messages.toLocaleString('ar-SA');
+    sb.disabled = false;
+    return;
+  }
+
+  // Real API
+  const r = await apiFetch('POST', `/chatbots/${currentBot.id}/chat`, {message:text});
+  ti.style.display = 'none';
+  if (r.ok && r.data.data?.reply) {
+    addMsg(r.data.data.reply, false);
+    currentBot.total_messages = (currentBot.total_messages||0)+1;
+    document.getElementById('st-msgs').textContent = currentBot.total_messages.toLocaleString('ar-SA');
+  } else {
+    addMsg('عذراً، حدث خطأ أثناء الاتصال بالخادم. حاول مرة أخرى.', false);
+  }
+  sb.disabled = false;
+}
+
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()} }
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px' }
+function clearChat() { initPreview(); }
+function exportChat() {
+  const msgs = [...document.getElementById('chatMsgs').querySelectorAll('.msg')];
+  const txt  = msgs.map(m => (m.classList.contains('msg-user')?'المستخدم':'الروبوت') + ': ' + m.innerText.replace(/\n.*$/,'')).join('\n');
+  const blob = new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`chat-${currentBot?.name||'bot'}-${Date.now()}.txt`; a.click();
+}
+
+/* ══════════════════════════════════════════
+   Sessions (demo)
+══════════════════════════════════════════ */
+const DEMO_SESSIONS = [
+  {name:'أحمد محمد',last:'كيف يمكنني إعادة تعيين كلمة المرور؟',msgs:8,time:'منذ 10 د'},
+  {name:'سارة العمري',last:'هل يمكنني الشحن للخارج؟',msgs:4,time:'منذ 25 د'},
+  {name:'خالد السيد',last:'شكراً، تم حل المشكلة',msgs:12,time:'منذ ساعة'},
+  {name:'نورة الحربي',last:'ما هي أوقات عمل الدعم؟',msgs:3,time:'منذ 2 س'},
+  {name:'عمر الغامدي',last:'أريد إلغاء اشتراكي',msgs:6,time:'أمس'},
+  {name:'فاطمة الشهراني',last:'المنتج وصلني تالف',msgs:9,time:'أمس'},
+];
+
+function renderSessions() {
+  const el = document.getElementById('sessionsList');
+  const count = (currentBot?.total_sessions||0);
+  document.getElementById('sessCount').textContent = `${count} محادثة`;
+  el.innerHTML = DEMO_SESSIONS.map((s,i) => `
+    <div class="session-item">
+      <div class="si-avatar">${s.name[0]}</div>
+      <div class="si-info">
+        <div class="si-name">${s.name}</div>
+        <div class="si-last">${s.last}</div>
+      </div>
+      <div class="si-meta">
+        <div class="si-count">${s.msgs} رسائل</div>
+        <div class="si-time">${s.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   Stats charts
+══════════════════════════════════════════ */
+function loadStats() {
+  // Destroy old charts
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+
+  const days = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const now  = new Date();
+  const labels = Array.from({length:7},(_,i)=>{
+    const d = new Date(now); d.setDate(d.getDate()-6+i);
+    return days[d.getDay()];
+  });
+  const data7 = labels.map(()=>Math.floor(Math.random()*120)+20);
+
+  charts.msgs = new Chart(document.getElementById('msgChart'),{
+    type:'bar',
+    data:{labels,datasets:[{data:data7,backgroundColor:'rgba(99,102,241,.6)',
+      borderColor:'rgba(99,102,241,1)',borderWidth:1,borderRadius:6}]},
+    options:{plugins:{legend:{display:false}},scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#94a3b8',font:{size:11}}},
+      y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#94a3b8',font:{size:11}}}
+    },responsive:true,maintainAspectRatio:true}
+  });
+
+  charts.plat = new Chart(document.getElementById('platformChart'),{
+    type:'doughnut',
+    data:{labels:['الموقع','واتساب','تيليغرام','API'],
+      datasets:[{data:[55,25,12,8],
+        backgroundColor:['rgba(99,102,241,.8)','rgba(16,185,129,.8)','rgba(34,211,238,.8)','rgba(245,158,11,.8)'],
+        borderWidth:0}]},
+    options:{plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},padding:8}}},
+      responsive:true,maintainAspectRatio:true}
+  });
+
+  charts.lang = new Chart(document.getElementById('langChart'),{
+    type:'doughnut',
+    data:{labels:['العربية','الإنجليزية','مختلط'],
+      datasets:[{data:[70,20,10],
+        backgroundColor:['rgba(139,92,246,.8)','rgba(245,158,11,.8)','rgba(34,211,238,.8)'],
+        borderWidth:0}]},
+    options:{plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},padding:8}}},
+      responsive:true,maintainAspectRatio:true}
+  });
+}
+
+/* ══════════════════════════════════════════
+   API Key
+══════════════════════════════════════════ */
+function updateKeyDisplay() {
+  const k = currentBot?.api_key||'';
+  document.getElementById('apiKeyDisplay').value = keyVisible ? k : k.slice(0,8)+'••••••••••••••••';
+}
+function toggleKey() {
+  keyVisible = !keyVisible; updateKeyDisplay();
+  document.getElementById('toggleKeyBtn').innerHTML = keyVisible
+    ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+}
+function copyKey() {
+  navigator.clipboard?.writeText(currentBot?.api_key||'');
+  toast('📋 تم نسخ API Key','info');
+}
+function copyEmbed() {
+  navigator.clipboard?.writeText(document.getElementById('embedCode').innerText);
+  toast('📋 تم نسخ الكود','info');
+}
+
+/* ══════════════════════════════════════════
+   Tabs
+══════════════════════════════════════════ */
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('active');p.style.display='none'});
+  btn.classList.add('active');
+  const pane = document.getElementById(id);
+  pane.style.display = id==='t-preview' ? 'flex' : 'block';
+  if (id==='t-preview') {
+    pane.style.flexDirection='column'; pane.style.flex='1'; pane.style.overflow='hidden';
+    pane.style.padding='0';
+  }
+  pane.classList.add('active');
+  if (id==='t-stats') loadStats();
+}
+
+/* ══════════════════════════════════════════
+   Create modal — wizard
+══════════════════════════════════════════ */
+function buildEmojiGrid() {
+  document.getElementById('emojiGrid').innerHTML = EMOJIS.map(e =>
+    `<div class="emoji-opt ${e===selectedEmoji?'selected':''}" onclick="pickEmoji('${e}')">${e}</div>`
+  ).join('');
+}
+function pickEmoji(e) {
+  selectedEmoji = e;
+  document.getElementById('c-emoji').value = e;
+  buildEmojiGrid();
+}
+function openCreate() {
+  createStep = 1; selectedEmoji = '🤖';
+  ['c-name','c-desc','c-prompt'].forEach(id=>document.getElementById(id).value='');
+  buildEmojiGrid(); updateWizardUI();
+  showOverlay('createOverlay');
+}
+function updateWizardUI() {
+  for (let i=1;i<=3;i++) {
+    document.getElementById(`cs${i}`).style.display = i===createStep ? 'block' : 'none';
+    const si = document.getElementById(`si${i}`);
+    si.className = 'step-item' + (i===createStep?' active':i<createStep?' done':'');
+  }
+  document.getElementById('prevBtn').style.display   = createStep>1  ? 'flex':'none';
+  document.getElementById('nextBtn').style.display   = createStep<3  ? 'flex':'none';
+  document.getElementById('createBtn').style.display = createStep===3 ? 'flex':'none';
+  if (createStep===3) {
+    document.getElementById('finalEmoji').textContent = selectedEmoji;
+    document.getElementById('finalName').textContent  = document.getElementById('c-name').value||'—';
+    document.getElementById('finalDesc').textContent  = document.getElementById('c-desc').value||'بدون وصف';
+    document.getElementById('finalPlat').textContent  = PLAT[document.getElementById('c-platform').value]||'';
+    document.getElementById('finalMdl').textContent   = MDL[document.getElementById('c-model').value]||'';
+  }
+}
+function nextStep() {
+  if (createStep===1 && !document.getElementById('c-name').value.trim()) {
+    toast('أدخل اسم الروبوت أولاً','error'); return;
+  }
+  if (createStep<3) { createStep++; updateWizardUI(); }
+}
+function prevStep() { if (createStep>1) { createStep--; updateWizardUI(); } }
+
+async function createBot() {
+  const data = {
+    name:          document.getElementById('c-name').value.trim(),
+    description:   document.getElementById('c-desc').value.trim(),
+    avatar_emoji:  selectedEmoji,
+    platform:      document.getElementById('c-platform').value,
+    model:         document.getElementById('c-model').value,
+    system_prompt: document.getElementById('c-prompt').value || TPLS.support,
+    temperature:   0.7, max_tokens:1024, language:'ar', widget_config:{},
+  };
+  const btn = document.getElementById('createBtn');
+  btn.textContent='⏳ جار الإنشاء...'; btn.disabled=true;
+
+  const r = await apiFetch('POST','/chatbots',data);
+  btn.textContent='🚀 إنشاء وإطلاق!'; btn.disabled=false;
+
+  let newBot;
+  if (r.ok && r.data.data?.id) {
+    newBot = {id:r.data.data.id, api_key:r.data.data.api_key, ...data,
+      status:'draft',total_messages:0,total_sessions:0,
+      welcome_message:'مرحباً! كيف يمكنني مساعدتك؟'};
+  } else {
+    newBot = {id:'n'+Date.now(), api_key:'local_'+Math.random().toString(36).slice(2),
+      ...data, status:'draft',total_messages:0,total_sessions:0,
+      welcome_message:'مرحباً! كيف يمكنني مساعدتك؟'};
+  }
+  allBots.unshift(newBot);
+  closeModal('createOverlay');
+  renderBotsList();
+  document.getElementById('botCount').textContent = allBots.length;
+  selectBot(newBot.id);
+  toast(`🚀 تم إنشاء "${data.name}" بنجاح!`);
+}
+
+/* ══════════════════════════════════════════
+   Delete
+══════════════════════════════════════════ */
+function openDeleteBot() {
+  if (!currentBot) return;
+  document.getElementById('deleteMsg').textContent =
+    `هل تريد حذف روبوت "${currentBot.name}"؟ لا يمكن التراجع.`;
+  showOverlay('deleteOverlay');
+}
+async function confirmDelete() {
+  if (!currentBot) return;
+  await apiFetch('DELETE',`/chatbots/${currentBot.id}`);
+  allBots = allBots.filter(b=>b.id!==currentBot.id);
+  currentBot = null;
+  closeModal('deleteOverlay');
+  renderBotsList();
+  document.getElementById('botCount').textContent = allBots.length;
+  document.getElementById('emptyState').style.display = 'flex';
+  document.getElementById('botDetail').style.display  = 'none';
+  toast('🗑️ تم حذف الروبوت','success');
+}
+
+/* ══════════════════════════════════════════
+   Duplicate
+══════════════════════════════════════════ */
+async function openDuplicate() {
+  if (!currentBot) return;
+  const data = {
+    name:          currentBot.name + ' (نسخة)',
+    description:   currentBot.description,
+    avatar_emoji:  currentBot.avatar_emoji,
+    platform:      currentBot.platform,
+    model:         currentBot.model,
+    system_prompt: currentBot.system_prompt,
+    temperature:   currentBot.temperature,
+    max_tokens:    currentBot.max_tokens,
+    language:      currentBot.language,
+    widget_config: currentBot.widget_config||{},
+  };
+  const r = await apiFetch('POST','/chatbots',data);
+  const newBot = {
+    id: r.ok&&r.data.data?.id ? r.data.data.id : 'n'+Date.now(),
+    api_key: r.ok&&r.data.data?.api_key ? r.data.data.api_key : 'local_'+Math.random().toString(36).slice(2),
+    ...data, status:'draft', total_messages:0, total_sessions:0,
+    welcome_message:currentBot.welcome_message,
+  };
+  allBots.splice(allBots.indexOf(currentBot)+1,0,newBot);
+  renderBotsList();
+  document.getElementById('botCount').textContent = allBots.length;
+  toast(`⧉ تم نسخ "${currentBot.name}"`, 'info');
+}
+
+/* ══════════════════════════════════════════
+   Helpers
+══════════════════════════════════════════ */
+function showOverlay(id) { document.getElementById(id).classList.add('show') }
+function closeModal(id)  { document.getElementById(id).classList.remove('show') }
+function closeOverlay(e,id) { if (e.target.id===id) closeModal(id) }
+function delay(ms) { return new Promise(r=>setTimeout(r,ms)) }
+
+function toast(msg, type='success') {
+  const wrap = document.getElementById('toastWrap');
+  const el   = document.createElement('div');
+  el.className = `toast ${type}`;
+  const ico = {success:'✅',error:'❌',info:'ℹ️'}[type]||'✅';
+  el.innerHTML = `<span>${ico}</span> ${msg}`;
+  wrap.appendChild(el);
+  setTimeout(()=>el.remove(), 3200);
+}
+
+/* ══════════════════════════════════════════
+   User info
+══════════════════════════════════════════ */
+async function loadUser() {
+  const r = await apiFetch('GET','/auth/me');
+  if (r.ok && r.data.data) {
+    const u = r.data.data;
+    document.getElementById('userName').textContent  = u.name||'المستخدم';
+    document.getElementById('userAv').textContent    = (u.name||'م')[0];
+    const rm = {owner:'مالك المنظمة',admin:'مشرف',member:'عضو',viewer:'مشاهد'};
+    document.getElementById('userRole').textContent  = rm[u.role]||u.role;
+  }
+}
+
+/* ══════════════════════════════════════════
+   Init
+══════════════════════════════════════════ */
+loadUser();
+loadBots();
+</script>
+<script src="/static/chat-widget.js"></script>
+<script src="/static/platform-i18n.js"></script>
+</body>
+</html>
